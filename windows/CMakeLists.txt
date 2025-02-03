@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Project-level configuration.
-set(PROJECT_NAME "lcpp")
+set(PROJECT_NAME "llama")
 project(${PROJECT_NAME} LANGUAGES CXX)
 
 set(LLAMA_CPP_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../src/llama_cpp)

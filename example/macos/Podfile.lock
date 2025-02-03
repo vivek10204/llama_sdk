@@ -2,26 +2,26 @@ PODS:
   - file_picker (0.0.1):
     - FlutterMacOS
   - FlutterMacOS (1.0.0)
-  - lcpp (0.0.1):
+  - llama (0.0.1):
     - FlutterMacOS
 
 DEPENDENCIES:
   - file_picker (from `Flutter/ephemeral/.symlinks/plugins/file_picker/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
-  - lcpp (from `Flutter/ephemeral/.symlinks/plugins/lcpp/macos`)
+  - llama (from `Flutter/ephemeral/.symlinks/plugins/llama/macos`)
 
 EXTERNAL SOURCES:
   file_picker:
     :path: Flutter/ephemeral/.symlinks/plugins/file_picker/macos
   FlutterMacOS:
     :path: Flutter/ephemeral
-  lcpp:
-    :path: Flutter/ephemeral/.symlinks/plugins/lcpp/macos
+  llama:
+    :path: Flutter/ephemeral/.symlinks/plugins/llama/macos
 
 SPEC CHECKSUMS:
   file_picker: e716a70a9fe5fd9e09ebc922d7541464289443af
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
-  lcpp: 00b58ece86653604067b1024980311c938f15cb7
+  llama: 1929932d9096ccd647e8158f0aaf02f5085bf6a1
 
 PODFILE CHECKSUM: 9ebaf0ce3d369aaa26a9ea0e159195ed94724cf3
 

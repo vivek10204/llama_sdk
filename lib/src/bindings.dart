@@ -5,16 +5,16 @@
 import 'dart:ffi' as ffi;
 
 /// llama.cpp binding
-class lcpp {
+class llama {
   /// Holds the symbol lookup function.
   final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
       _lookup;
 
   /// The symbols are looked up in [dynamicLibrary].
-  lcpp(ffi.DynamicLibrary dynamicLibrary) : _lookup = dynamicLibrary.lookup;
+  llama(ffi.DynamicLibrary dynamicLibrary) : _lookup = dynamicLibrary.lookup;
 
   /// The symbols are looked up with [lookup].
-  lcpp.fromLookup(
+  llama.fromLookup(
       ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
           lookup)
       : _lookup = lookup;

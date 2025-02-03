@@ -1,4 +1,4 @@
-part of '../lcpp.dart';
+part of '../llama.dart';
 
 class ChatMessage {
   final String role;

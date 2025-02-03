@@ -1,4 +1,4 @@
-part of '../lcpp.dart';
+part of '../llama.dart';
 
 typedef PArgs = ({
   double p, 

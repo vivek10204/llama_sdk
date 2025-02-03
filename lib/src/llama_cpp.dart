@@ -1,4 +1,4 @@
-part of '../lcpp.dart';
+part of '../llama.dart';
 
 typedef InitIsolateArguments = ({
   String modelPath,
@@ -23,7 +23,7 @@ class LlamaCPP {
   static Completer? _completer;
   static late SendPort _sendPort;
 
-  static lcpp? _lib;
+  static llama? _lib;
   static ffi.Pointer<llama_model>? _model;
   static ffi.Pointer<llama_context>? _context;
   static ffi.Pointer<llama_sampler>? _sampler;
@@ -35,16 +35,16 @@ class LlamaCPP {
   /// Getter for the Llama library.
   ///
   /// Loads the library based on the current platform.
-  static lcpp get lib {
+  static llama get lib {
     if (_lib == null) {
       if (Platform.isWindows) {
-        _lib = lcpp(ffi.DynamicLibrary.open('llama.dll'));
+        _lib = llama(ffi.DynamicLibrary.open('llama.dll'));
       } 
       else if (Platform.isLinux || Platform.isAndroid) {
-        _lib = lcpp(ffi.DynamicLibrary.open('libllama.so'));
+        _lib = llama(ffi.DynamicLibrary.open('libllama.so'));
       } 
       else if (Platform.isMacOS || Platform.isIOS) {
-        _lib = lcpp(ffi.DynamicLibrary.open('lcpp.framework/lcpp'));
+        _lib = llama(ffi.DynamicLibrary.open('llama.framework/llama'));
       } 
       else {
         throw Exception('Unsupported platform');

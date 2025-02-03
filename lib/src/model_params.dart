@@ -1,4 +1,4 @@
-part of '../lcpp.dart';
+part of '../llama.dart';
 
 typedef OnProgressCallback = bool Function(double progress);
 

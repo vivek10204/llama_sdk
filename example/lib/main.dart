@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:lcpp/lcpp.dart';
+import 'package:llama/llama.dart';
 
 void main() {
   runApp(const MaidLlmApp());
