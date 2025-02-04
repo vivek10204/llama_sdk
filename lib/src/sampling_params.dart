@@ -87,76 +87,76 @@ class SamplingParams {
   });
 
   ffi.Pointer<llama_sampler> toNative(ffi.Pointer<llama_vocab> vocab) {
-    final sampler = LlamaCPP.lib.llama_sampler_chain_init(LlamaCPP.lib.llama_sampler_chain_default_params());
+    final sampler = LlamaCppNative.lib.llama_sampler_chain_init(LlamaCppNative.lib.llama_sampler_chain_default_params());
 
     if (greedy) {
-      LlamaCPP.lib.llama_sampler_chain_add(sampler, LlamaCPP.lib.llama_sampler_init_greedy());
+      LlamaCppNative.lib.llama_sampler_chain_add(sampler, LlamaCppNative.lib.llama_sampler_init_greedy());
     }
 
     if (infill) {
-      LlamaCPP.lib.llama_sampler_chain_add(sampler, LlamaCPP.lib.llama_sampler_init_infill(vocab));
+      LlamaCppNative.lib.llama_sampler_chain_add(sampler, LlamaCppNative.lib.llama_sampler_init_infill(vocab));
     }
 
     if (seed != null) {
-      LlamaCPP.lib.llama_sampler_chain_add(sampler, LlamaCPP.lib.llama_sampler_init_dist(seed!));
+      LlamaCppNative.lib.llama_sampler_chain_add(sampler, LlamaCppNative.lib.llama_sampler_init_dist(seed!));
     }
 
     if (topK != null) {
-      LlamaCPP.lib.llama_sampler_chain_add(sampler, LlamaCPP.lib.llama_sampler_init_top_k(topK!));
+      LlamaCppNative.lib.llama_sampler_chain_add(sampler, LlamaCppNative.lib.llama_sampler_init_top_k(topK!));
     }
 
     if (topP != null) {
-      LlamaCPP.lib.llama_sampler_chain_add(sampler, LlamaCPP.lib.llama_sampler_init_top_p(topP!.p, topP!.minKeep));
+      LlamaCppNative.lib.llama_sampler_chain_add(sampler, LlamaCppNative.lib.llama_sampler_init_top_p(topP!.p, topP!.minKeep));
     }
 
     if (minP != null) {
-      LlamaCPP.lib.llama_sampler_chain_add(sampler, LlamaCPP.lib.llama_sampler_init_min_p(minP!.p, minP!.minKeep));
+      LlamaCppNative.lib.llama_sampler_chain_add(sampler, LlamaCppNative.lib.llama_sampler_init_min_p(minP!.p, minP!.minKeep));
     }
 
     if (typicalP != null) {
-      LlamaCPP.lib.llama_sampler_chain_add(sampler, LlamaCPP.lib.llama_sampler_init_typical(typicalP!.p, typicalP!.minKeep));
+      LlamaCppNative.lib.llama_sampler_chain_add(sampler, LlamaCppNative.lib.llama_sampler_init_typical(typicalP!.p, typicalP!.minKeep));
     }
 
     if (temperature != null) {
       if (temperature!.delta == null && temperature!.exponent == null) {
-        LlamaCPP.lib.llama_sampler_chain_add(
+        LlamaCppNative.lib.llama_sampler_chain_add(
           sampler, 
-          LlamaCPP.lib.llama_sampler_init_temp(temperature!.temperature)
+          LlamaCppNative.lib.llama_sampler_init_temp(temperature!.temperature)
         );
       } 
       else {
-        LlamaCPP.lib.llama_sampler_chain_add(
+        LlamaCppNative.lib.llama_sampler_chain_add(
           sampler, 
-          LlamaCPP.lib.llama_sampler_init_temp_ext(temperature!.temperature, temperature!.delta!, temperature!.exponent!)
+          LlamaCppNative.lib.llama_sampler_init_temp_ext(temperature!.temperature, temperature!.delta!, temperature!.exponent!)
         );
       }
     }
 
     if (xtc != null) {
-      LlamaCPP.lib.llama_sampler_chain_add(
+      LlamaCppNative.lib.llama_sampler_chain_add(
         sampler, 
-        LlamaCPP.lib.llama_sampler_init_xtc(xtc!.p, xtc!.t, xtc!.minKeep, xtc!.seed)
+        LlamaCppNative.lib.llama_sampler_init_xtc(xtc!.p, xtc!.t, xtc!.minKeep, xtc!.seed)
       );
     }
 
     if (mirostat != null) {
-      LlamaCPP.lib.llama_sampler_chain_add(
+      LlamaCppNative.lib.llama_sampler_chain_add(
         sampler, 
-        LlamaCPP.lib.llama_sampler_init_mirostat(mirostat!.nVocab, mirostat!.seed, mirostat!.tau, mirostat!.eta, mirostat!.m)
+        LlamaCppNative.lib.llama_sampler_init_mirostat(mirostat!.nVocab, mirostat!.seed, mirostat!.tau, mirostat!.eta, mirostat!.m)
       );
     }
 
     if (mirostatV2 != null) {
-      LlamaCPP.lib.llama_sampler_chain_add(
+      LlamaCppNative.lib.llama_sampler_chain_add(
         sampler, 
-        LlamaCPP.lib.llama_sampler_init_mirostat_v2(mirostatV2!.seed, mirostatV2!.tau, mirostatV2!.eta)
+        LlamaCppNative.lib.llama_sampler_init_mirostat_v2(mirostatV2!.seed, mirostatV2!.tau, mirostatV2!.eta)
       );
     }
 
     if (grammar != null) {
-      LlamaCPP.lib.llama_sampler_chain_add(
+      LlamaCppNative.lib.llama_sampler_chain_add(
         sampler, 
-        LlamaCPP.lib.llama_sampler_init_grammar(
+        LlamaCppNative.lib.llama_sampler_init_grammar(
           vocab, 
           grammar!.str.toNativeUtf8().cast<ffi.Char>(), 
           grammar!.root.toNativeUtf8().cast<ffi.Char>()
@@ -165,9 +165,9 @@ class SamplingParams {
     }
 
     if (penalties != null) {
-      LlamaCPP.lib.llama_sampler_chain_add(
+      LlamaCppNative.lib.llama_sampler_chain_add(
         sampler, 
-        LlamaCPP.lib.llama_sampler_init_penalties(
+        LlamaCppNative.lib.llama_sampler_init_penalties(
           penalties!.lastN, 
           penalties!.repeat, 
           penalties!.frequency, 
@@ -182,9 +182,9 @@ class SamplingParams {
         sequenceBreakers[i] = drySampler!.sequenceBreakers[i].toNativeUtf8().cast<ffi.Char>();
       }
 
-      LlamaCPP.lib.llama_sampler_chain_add(
+      LlamaCppNative.lib.llama_sampler_chain_add(
         sampler, 
-        LlamaCPP.lib.llama_sampler_init_dry(
+        LlamaCppNative.lib.llama_sampler_init_dry(
           vocab,
           drySampler!.nCtxTrain, 
           drySampler!.multiplier, 
