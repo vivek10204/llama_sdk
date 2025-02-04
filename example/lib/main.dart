@@ -50,7 +50,10 @@ class _LlamaAppState extends State<LlamaApp> {
     final llamaCpp = LlamaCppNative.fromParams(
       _model!,
       ModelParams(),
-      ContextParams(),
+      ContextParams(
+        nCtx: 2048,
+        nBatch: 2048
+      ),
       SamplingParams(
         minP: PArguments(p: 0.05, minKeep: 1),
         temperature: TemperatureArguments(temperature: 0.8),
