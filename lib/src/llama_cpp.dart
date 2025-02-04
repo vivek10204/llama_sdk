@@ -99,7 +99,6 @@ class LlamaCPP {
 }
 
 void entryPoint(IsolateArguments args) async {
-  print("Isolate started");
   final SendPort sendPort = args.$5;
   final LlamaCppNative llamaCppNative;
 
@@ -114,11 +113,8 @@ void entryPoint(IsolateArguments args) async {
       SamplingParams.fromJson(args.$4)
     );
 
-    print("LlamaCppNative created");
-
     await for (var data in receivePort) {
       if (data is List<ChatMessageRecord>) {
-        print("Received messages");
 
         final messages = ChatMessages.fromRecords(data);
 
