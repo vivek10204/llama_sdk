@@ -55,7 +55,7 @@ class _LlamaAppState extends State<LlamaApp> {
         nBatch: 2048
       ),
       SamplingParams(
-        minP: PArguments(p: 0.05, minKeep: 1),
+        minP: MinPArguments(p: 0.05, minKeep: 1),
         temperature: TemperatureArguments(temperature: 0.8),
         seed: Random().nextInt(1000000)
       )

@@ -1,15 +1,15 @@
 part of '../llama.dart';
 
-class PArguments {
+class TopPArguments {
   double p;
   int minKeep;
 
-  PArguments({
+  TopPArguments({
     required this.p,
     required this.minKeep
   });
 
-  factory PArguments.fromMap(Map<String, dynamic> map) => PArguments(
+  factory TopPArguments.fromMap(Map<String, dynamic> map) => TopPArguments(
     p: map['p'],
     minKeep: map['minKeep']
   );
@@ -18,6 +18,58 @@ class PArguments {
     'p': p,
     'minKeep': minKeep
   };
+  
+  void add(ffi.Pointer<llama_sampler> sampler) {
+    lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_top_p(p, minKeep));
+  }
+}
+
+class MinPArguments {
+  double p;
+  int minKeep;
+
+  MinPArguments({
+    required this.p,
+    required this.minKeep
+  });
+
+  factory MinPArguments.fromMap(Map<String, dynamic> map) => MinPArguments(
+    p: map['p'],
+    minKeep: map['minKeep']
+  );
+
+  Map<String, dynamic> toMap() => {
+    'p': p,
+    'minKeep': minKeep
+  };
+  
+  void add(ffi.Pointer<llama_sampler> sampler) {
+    lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_min_p(p, minKeep));
+  }
+}
+
+class TypicalPArguments {
+  double p;
+  int minKeep;
+
+  TypicalPArguments({
+    required this.p,
+    required this.minKeep
+  });
+
+  factory TypicalPArguments.fromMap(Map<String, dynamic> map) => TypicalPArguments(
+    p: map['p'],
+    minKeep: map['minKeep']
+  );
+
+  Map<String, dynamic> toMap() => {
+    'p': p,
+    'minKeep': minKeep
+  };
+  
+  void add(ffi.Pointer<llama_sampler> sampler) {
+    lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_typical(p, minKeep));
+  }
 }
 
 class TemperatureArguments {
@@ -42,6 +94,15 @@ class TemperatureArguments {
     'delta': delta,
     'exponent': exponent
   };
+
+  void add(ffi.Pointer<llama_sampler> sampler) {
+    if (delta == null || exponent == null) {
+      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_temp(temperature));
+    } 
+    else {
+      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_temp_ext(temperature, delta!, exponent!));
+    }
+  }
 }
 
 class XtcArguments {
@@ -70,6 +131,10 @@ class XtcArguments {
     'minKeep': minKeep,
     'seed': seed
   };
+
+  void add(ffi.Pointer<llama_sampler> sampler) {
+    lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_xtc(p, t, minKeep, seed));
+  }
 }
 
 class MirostatArguments {
@@ -102,6 +167,10 @@ class MirostatArguments {
     'eta': eta,
     'm': m
   };
+
+  void add(ffi.Pointer<llama_sampler> sampler) {
+    lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_mirostat(nVocab, seed, tau, eta, m));
+  }
 }
 
 class MirostatV2Arguments {
@@ -126,6 +195,10 @@ class MirostatV2Arguments {
     'tau': tau,
     'eta': eta
   };
+
+  void add(ffi.Pointer<llama_sampler> sampler) {
+    lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_mirostat_v2(seed, tau, eta));
+  }
 }
 
 class GrammarArguments {
@@ -146,6 +219,17 @@ class GrammarArguments {
     'str': str,
     'root': root
   };
+
+  void add(ffi.Pointer<llama_sampler> sampler, ffi.Pointer<llama_vocab> vocab) {
+    lib.llama_sampler_chain_add(
+      sampler, 
+      lib.llama_sampler_init_grammar(
+        vocab, 
+        str.toNativeUtf8().cast<ffi.Char>(), 
+        root.toNativeUtf8().cast<ffi.Char>()
+      )
+    );
+  }
 }
 
 class PenaltiesArguments {
@@ -174,6 +258,10 @@ class PenaltiesArguments {
     'frequency': frequency,
     'present': present
   };
+
+  void add(ffi.Pointer<llama_sampler> sampler) {
+    lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_penalties(lastN, repeat, frequency, present));
+  }
 }
 
 class DrySamplerArguments {
@@ -210,6 +298,27 @@ class DrySamplerArguments {
     'penaltyLastN': penaltyLastN,
     'sequenceBreakers': sequenceBreakers
   };
+
+  void add(ffi.Pointer<llama_sampler> sampler, ffi.Pointer<llama_vocab> vocab) {
+    final sequenceBreakers = calloc<ffi.Pointer<ffi.Char>>(this.sequenceBreakers.length);
+    for (var i = 0; i < this.sequenceBreakers.length; i++) {
+      sequenceBreakers[i] = this.sequenceBreakers[i].toNativeUtf8().cast<ffi.Char>();
+    }
+
+    lib.llama_sampler_chain_add(
+      sampler, 
+      lib.llama_sampler_init_dry(
+        vocab,
+        nCtxTrain, 
+        multiplier, 
+        dryBase, 
+        allowedLength, 
+        penaltyLastN, 
+        sequenceBreakers,
+        this.sequenceBreakers.length
+      )
+    );
+  }
 }
 
 class SamplingParams {
@@ -217,9 +326,9 @@ class SamplingParams {
   bool infill;
   int? seed;
   int? topK;
-  PArguments? topP;
-  PArguments? minP;
-  PArguments? typicalP;
+  TopPArguments? topP;
+  MinPArguments? minP;
+  TypicalPArguments? typicalP;
   TemperatureArguments? temperature;
   XtcArguments? xtc;
   MirostatArguments? mirostat;
@@ -250,9 +359,9 @@ class SamplingParams {
     infill: map['infill'],
     seed: map['seed'],
     topK: map['topK'],
-    topP: map['topP'] != null ? PArguments.fromMap(map['topP']) : null,
-    minP: map['minP'] != null ? PArguments.fromMap(map['minP']) : null,
-    typicalP: map['typicalP'] != null ? PArguments.fromMap(map['typicalP']) : null,
+    topP: map['topP'] != null ? TopPArguments.fromMap(map['topP']) : null,
+    minP: map['minP'] != null ? MinPArguments.fromMap(map['minP']) : null,
+    typicalP: map['typicalP'] != null ? TypicalPArguments.fromMap(map['typicalP']) : null,
     temperature: map['temperature'] != null ? TemperatureArguments.fromMap(map['temperature']) : null,
     xtc: map['xtc'] != null ? XtcArguments.fromMap(map['xtc']) : null,
     mirostat: map['mirostat'] != null ? MirostatArguments.fromMap(map['mirostat']) : null,
@@ -265,115 +374,43 @@ class SamplingParams {
   factory SamplingParams.fromJson(String source) => SamplingParams.fromMap(jsonDecode(source));
 
   ffi.Pointer<llama_sampler> toNative(ffi.Pointer<llama_vocab> vocab) {
-    final sampler = LlamaCppNative.lib.llama_sampler_chain_init(LlamaCppNative.lib.llama_sampler_chain_default_params());
+    final sampler = lib.llama_sampler_chain_init(lib.llama_sampler_chain_default_params());
 
     if (greedy) {
-      LlamaCppNative.lib.llama_sampler_chain_add(sampler, LlamaCppNative.lib.llama_sampler_init_greedy());
+      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_greedy());
     }
 
     if (infill) {
-      LlamaCppNative.lib.llama_sampler_chain_add(sampler, LlamaCppNative.lib.llama_sampler_init_infill(vocab));
+      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_infill(vocab));
     }
 
     if (seed != null) {
-      LlamaCppNative.lib.llama_sampler_chain_add(sampler, LlamaCppNative.lib.llama_sampler_init_dist(seed!));
+      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_dist(seed!));
     }
 
     if (topK != null) {
-      LlamaCppNative.lib.llama_sampler_chain_add(sampler, LlamaCppNative.lib.llama_sampler_init_top_k(topK!));
+      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_top_k(topK!));
     }
 
-    if (topP != null) {
-      LlamaCppNative.lib.llama_sampler_chain_add(sampler, LlamaCppNative.lib.llama_sampler_init_top_p(topP!.p, topP!.minKeep));
-    }
+    topP?.add(sampler);
 
-    if (minP != null) {
-      LlamaCppNative.lib.llama_sampler_chain_add(sampler, LlamaCppNative.lib.llama_sampler_init_min_p(minP!.p, minP!.minKeep));
-    }
+    minP?.add(sampler);
 
-    if (typicalP != null) {
-      LlamaCppNative.lib.llama_sampler_chain_add(sampler, LlamaCppNative.lib.llama_sampler_init_typical(typicalP!.p, typicalP!.minKeep));
-    }
+    typicalP?.add(sampler);
 
-    if (temperature != null) {
-      if (temperature!.delta == null && temperature!.exponent == null) {
-        LlamaCppNative.lib.llama_sampler_chain_add(
-          sampler, 
-          LlamaCppNative.lib.llama_sampler_init_temp(temperature!.temperature)
-        );
-      } 
-      else {
-        LlamaCppNative.lib.llama_sampler_chain_add(
-          sampler, 
-          LlamaCppNative.lib.llama_sampler_init_temp_ext(temperature!.temperature, temperature!.delta!, temperature!.exponent!)
-        );
-      }
-    }
+    temperature?.add(sampler);
 
-    if (xtc != null) {
-      LlamaCppNative.lib.llama_sampler_chain_add(
-        sampler, 
-        LlamaCppNative.lib.llama_sampler_init_xtc(xtc!.p, xtc!.t, xtc!.minKeep, xtc!.seed)
-      );
-    }
+    xtc?.add(sampler);
 
-    if (mirostat != null) {
-      LlamaCppNative.lib.llama_sampler_chain_add(
-        sampler, 
-        LlamaCppNative.lib.llama_sampler_init_mirostat(mirostat!.nVocab, mirostat!.seed, mirostat!.tau, mirostat!.eta, mirostat!.m)
-      );
-    }
+    mirostat?.add(sampler);
 
-    if (mirostatV2 != null) {
-      LlamaCppNative.lib.llama_sampler_chain_add(
-        sampler, 
-        LlamaCppNative.lib.llama_sampler_init_mirostat_v2(mirostatV2!.seed, mirostatV2!.tau, mirostatV2!.eta)
-      );
-    }
+    mirostatV2?.add(sampler);
 
-    if (grammar != null) {
-      LlamaCppNative.lib.llama_sampler_chain_add(
-        sampler, 
-        LlamaCppNative.lib.llama_sampler_init_grammar(
-          vocab, 
-          grammar!.str.toNativeUtf8().cast<ffi.Char>(), 
-          grammar!.root.toNativeUtf8().cast<ffi.Char>()
-        )
-      );
-    }
+    grammar?.add(sampler, vocab);
 
-    if (penalties != null) {
-      LlamaCppNative.lib.llama_sampler_chain_add(
-        sampler, 
-        LlamaCppNative.lib.llama_sampler_init_penalties(
-          penalties!.lastN, 
-          penalties!.repeat, 
-          penalties!.frequency, 
-          penalties!.present
-        )
-      );
-    }
+    penalties?.add(sampler);
 
-    if (drySampler != null) {
-      final sequenceBreakers = calloc<ffi.Pointer<ffi.Char>>(drySampler!.sequenceBreakers.length);
-      for (var i = 0; i < drySampler!.sequenceBreakers.length; i++) {
-        sequenceBreakers[i] = drySampler!.sequenceBreakers[i].toNativeUtf8().cast<ffi.Char>();
-      }
-
-      LlamaCppNative.lib.llama_sampler_chain_add(
-        sampler, 
-        LlamaCppNative.lib.llama_sampler_init_dry(
-          vocab,
-          drySampler!.nCtxTrain, 
-          drySampler!.multiplier, 
-          drySampler!.dryBase, 
-          drySampler!.allowedLength, 
-          drySampler!.penaltyLastN, 
-          sequenceBreakers,
-          drySampler!.sequenceBreakers.length
-        )
-      );
-    }
+    drySampler?.add(sampler, vocab);
 
     return sampler;
   }

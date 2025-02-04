@@ -23,7 +23,7 @@ class ModelParams {
   factory ModelParams.fromJson(String source) => ModelParams.fromMap(jsonDecode(source));
 
   llama_model_params toNative() {
-    final llama_model_params modelParams = LlamaCppNative.lib.llama_model_default_params();
+    final llama_model_params modelParams = lib.llama_model_default_params();
 
     if (vocabOnly != null) {
       modelParams.vocab_only = vocabOnly!;
