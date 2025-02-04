@@ -144,9 +144,9 @@ class LlamaCPP {
       _sampler = args.samplingParams.toNative(vocab);
       assert(_sampler != null && _sampler != ffi.nullptr, 'Failed to initialize sampler');
 
-      args.sendPort.send(null);
+      _sendPort.send(null);
     } catch (e) {
-      args.sendPort.send(e.toString());
+      _sendPort.send(e.toString());
     }
   }
 

@@ -4,20 +4,21 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:llama/bindings.dart';
 import 'package:llama/llama.dart';
 
 void main() {
-  runApp(const MaidLlmApp());
+  runApp(const LlamaApp());
 }
 
-class MaidLlmApp extends StatefulWidget {
-  const MaidLlmApp({super.key});
+class LlamaApp extends StatefulWidget {
+  const LlamaApp({super.key});
 
   @override
-  State<MaidLlmApp> createState() => _MaidLlmAppState();
+  State<LlamaApp> createState() => _LlamaAppState();
 }
 
-class _MaidLlmAppState extends State<MaidLlmApp> {
+class _LlamaAppState extends State<LlamaApp> {
   final TextEditingController _controller = TextEditingController();
   final List<ChatMessage> _messages = [];
   String? _model;
@@ -47,7 +48,7 @@ class _MaidLlmAppState extends State<MaidLlmApp> {
       _controller.clear();
     });
 
-    Stream<String> stream = LlamaCPP(
+    final llamaCpp = LlamaCPP(
       _model!,
       ModelParams(),
       ContextParams(),
@@ -56,7 +57,11 @@ class _MaidLlmAppState extends State<MaidLlmApp> {
         temperature: (temperature: 0.8, delta: null, exponent: null),
         seed: Random().nextInt(1000000)
       )
-    ).prompt(_messages);
+    );
+
+    print('LlamaCPP created');
+
+    Stream<String> stream = llamaCpp.prompt(_messages);
 
     setState(() {
       _messages.add(ChatMessage(role: 'assistant', content: ""));
