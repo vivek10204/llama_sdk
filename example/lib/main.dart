@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:llama/bindings.dart';
 import 'package:llama/llama.dart';
 
 void main() {
@@ -58,8 +57,6 @@ class _LlamaAppState extends State<LlamaApp> {
         seed: Random().nextInt(1000000)
       )
     );
-
-    print('LlamaCPP created');
 
     Stream<String> stream = llamaCpp.prompt(_messages);
 
