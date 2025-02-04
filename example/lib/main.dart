@@ -48,7 +48,7 @@ class _LlamaAppState extends State<LlamaApp> {
       _controller.clear();
     });
 
-    final llamaCpp = LlamaCPP(
+    final llamaCpp = LlamaCppNative.fromParams(
       _model!,
       ModelParams(),
       ContextParams(),

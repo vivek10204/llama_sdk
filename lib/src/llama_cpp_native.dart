@@ -1,12 +1,5 @@
 part of '../llama.dart';
 
-typedef InitArguments = (
-  String modelPath,
-  String modelParams,
-  String contextParams,
-  String samplingParams
-);
-
 class LlamaCppNative {
   static llama? _lib;
 
@@ -41,7 +34,12 @@ class LlamaCppNative {
     required ffi.Pointer<llama_sampler> sampler
   }) : _model = model, _context = context, _sampler = sampler;
 
-  factory LlamaCppNative.fromParams(String modelPath, ModelParams modelParams, ContextParams contextParams, SamplingParams samplingParams) {
+  factory LlamaCppNative.fromParams(
+    String modelPath, 
+    ModelParams modelParams, 
+    ContextParams contextParams, 
+    SamplingParams samplingParams
+  ) {
     lib.ggml_backend_load_all();
 
     final nativeModelParams = modelParams.toNative();
@@ -128,7 +126,7 @@ class LlamaCppNative {
     final vocab = lib.llama_model_get_vocab(_model);
     final isFirst = lib.llama_get_kv_cache_used_cells(_context) == 0;
 
-    final nPromptTokens = lib.llama_tokenize(vocab, prompt.toNativeUtf8().cast<ffi.Char>(), prompt.length, ffi.nullptr, 0, isFirst, true);
+    final nPromptTokens = -lib.llama_tokenize(vocab, prompt.toNativeUtf8().cast<ffi.Char>(), prompt.length, ffi.nullptr, 0, isFirst, true);
     ffi.Pointer<llama_token> promptTokens = calloc<llama_token>(nPromptTokens);
 
     if (lib.llama_tokenize(vocab, prompt.toNativeUtf8().cast<ffi.Char>(), prompt.length, promptTokens, nPromptTokens, isFirst, true) < 0) {

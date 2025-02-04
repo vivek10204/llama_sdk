@@ -38,7 +38,7 @@ class LlamaCPP {
       receivePort.sendPort
     );
 
-    await Isolate.spawn(LlamaCppIsolate.entryPoint, isolateParams);
+    await Isolate.spawn(entryPoint, isolateParams);
 
     await for (var data in receivePort) {
       if (data is StringResponse) {
@@ -76,7 +76,7 @@ class LlamaCPP {
     
     _sendPort!.send(messages.toRecords());
 
-    await for (var message in _responseController.stream) {
+    await for (final message in _responseController.stream) {
       yield message;
     }
   }
@@ -98,62 +98,53 @@ class LlamaCPP {
   }
 }
 
-class LlamaCppIsolate {
-  static LlamaCppNative? _llamaCppNative;
-  static SendPort? _sendPort;
+void entryPoint(IsolateArguments args) async {
+  print("Isolate started");
+  final SendPort sendPort = args.$5;
+  final LlamaCppNative llamaCppNative;
 
-  static void entryPoint(IsolateArguments args) async {
-    _sendPort = args.$5;
-
-    try {
-      _llamaCppNative = LlamaCppNative.fromParams(
-        args.$1,
-        ModelParams.fromJson(args.$2),
-        ContextParams.fromJson(args.$3),
-        SamplingParams.fromJson(args.$4)
-      );
-
-      _isolateListener();
-    }
-    catch (e) {
-      _sendPort!.send((message: e.toString()));
-    }
-  }
-
-  static void _isolateListener() async {
+  try {
     final receivePort = ReceivePort();
-    _sendPort!.send(receivePort.sendPort);
+    sendPort.send(receivePort.sendPort);
+
+    llamaCppNative = LlamaCppNative.fromParams(
+      args.$1,
+      ModelParams.fromJson(args.$2),
+      ContextParams.fromJson(args.$3),
+      SamplingParams.fromJson(args.$4)
+    );
+
+    print("LlamaCppNative created");
 
     await for (var data in receivePort) {
-      if (data is IsolateCommand) {
-        _isolateCommand(data);
+      if (data is List<ChatMessageRecord>) {
+        print("Received messages");
+
+        final messages = ChatMessages.fromRecords(data);
+
+        final response = llamaCppNative.prompt(messages);
+
+        await for (var message in response) {
+          sendPort.send((false, message));
+        }
+
+        sendPort.send(null);
       }
-      else if (data is List<ChatMessageRecord>) {
-        _isolatePrompt(data);
+      else if (data is IsolateCommand) {
+        switch (data) {
+          case IsolateCommand.stop:
+            llamaCppNative.stop();
+            break;
+          case IsolateCommand.clear:
+            llamaCppNative.clear();
+            break;
+        }
+
+        sendPort.send(data);
       }
     }
   }
-
-  static void _isolateCommand(IsolateCommand command) {
-    switch (command) {
-      case IsolateCommand.stop:
-        _llamaCppNative!.stop();
-        break;
-      case IsolateCommand.clear:
-        _llamaCppNative!.clear();
-        break;
-    }
-
-    _sendPort!.send(command);
-  }
-
-  static void _isolatePrompt(List<ChatMessageRecord> messages) async {
-    final response = _llamaCppNative!.prompt(ChatMessages.fromRecords(messages));
-
-    await for (var message in response) {
-      _sendPort!.send((false, message));
-    }
-
-    _sendPort!.send(null);
+  catch (e) {
+    sendPort.send((message: e.toString()));
   }
 }
