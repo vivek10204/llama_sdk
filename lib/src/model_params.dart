@@ -1,7 +1,5 @@
 part of '../llama.dart';
 
-typedef OnProgressCallback = bool Function(double progress);
-
 class ModelParams {
   bool? vocabOnly;
   bool? useMmap;
@@ -15,27 +13,14 @@ class ModelParams {
     this.checkTensors,
   });
 
-  factory ModelParams.fromInt(int buffer) {
-    final modelParams = ModelParams();
+  factory ModelParams.fromMap(Map<String, dynamic> map) => ModelParams(
+    vocabOnly: map['vocabOnly'],
+    useMmap: map['useMmap'],
+    useMlock: map['useMlock'],
+    checkTensors: map['checkTensors']
+  );
 
-    if ((buffer & 1 << 0) != 0) {
-      modelParams.vocabOnly = (buffer & 1 << 1) != 0;
-    }
-
-    if ((buffer & 1 << 2) != 0) {
-      modelParams.useMmap = (buffer & 1 << 3) != 0;
-    }
-
-    if ((buffer & 1 << 4) != 0) {
-      modelParams.useMlock = (buffer & 1 << 5) != 0;
-    }
-
-    if ((buffer & 1 << 6) != 0) {
-      modelParams.checkTensors = (buffer & 1 << 7) != 0;
-    }
-
-    return modelParams;
-  }
+  factory ModelParams.fromJson(String source) => ModelParams.fromMap(jsonDecode(source));
 
   llama_model_params toNative() {
     final llama_model_params modelParams = LlamaCppNative.lib.llama_model_default_params();
@@ -59,29 +44,12 @@ class ModelParams {
     return modelParams;
   }
 
-  int toInt() {
-    int buffer = 0;
+  Map<String, dynamic> toMap() => {
+    'vocabOnly': vocabOnly,
+    'useMmap': useMmap,
+    'useMlock': useMlock,
+    'checkTensors': checkTensors,
+  };
 
-    if (vocabOnly != null) {
-      buffer |= 1 << 0;
-      buffer |= (vocabOnly! ? 1 : 0) << 1;
-    }
-
-    if (useMmap != null) {
-      buffer |= 1 << 2;
-      buffer |= (useMmap! ? 1 : 0) << 3;
-    }
-
-    if (useMlock != null) {
-      buffer |= 1 << 4;
-      buffer |= (useMlock! ? 1 : 0) << 5;
-    }
-
-    if (checkTensors != null) {
-      buffer |= 1 << 6;
-      buffer |= (checkTensors! ? 1 : 0) << 7;
-    }
-
-    return buffer;
-  }
+  String toJson() => jsonEncode(toMap());
 }

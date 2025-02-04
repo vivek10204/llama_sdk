@@ -1,5 +1,10 @@
 part of '../llama.dart';
 
+typedef ChatMessageRecord = (
+  String role,
+  String content
+);
+
 class ChatMessage {
   final String role;
   final String content;
@@ -8,6 +13,10 @@ class ChatMessage {
     required this.role,
     required this.content,
   });
+
+  ChatMessage.fromRecord(ChatMessageRecord record)
+      : role = record.$1,
+        content = record.$2;
 
   ChatMessage.fromNative(llama_chat_message message)
       : role = message.role.cast<Utf8>().toDartString(),
@@ -20,9 +29,24 @@ class ChatMessage {
 
     return message.ref;
   }
+
+  ChatMessageRecord toRecord() => (
+    role,
+    content
+  );
 }
 
 extension ChatMessages on List<ChatMessage> {
+  static List<ChatMessage> fromRecords(List<ChatMessageRecord> records) {
+    final List<ChatMessage> messages = [];
+
+    for (var record in records) {
+      messages.add(ChatMessage.fromRecord(record));
+    }
+
+    return messages;
+  }
+
   ffi.Pointer<llama_chat_message> toNative() {
     final messages = calloc<llama_chat_message>(length);
 
@@ -31,5 +55,15 @@ extension ChatMessages on List<ChatMessage> {
     }
 
     return messages;
+  }
+
+  List<ChatMessageRecord> toRecords() {
+    final List<ChatMessageRecord> records = [];
+
+    for (var i = 0; i < length; i++) {
+      records.add(this[i].toRecord());
+    }
+
+    return records;
   }
 }

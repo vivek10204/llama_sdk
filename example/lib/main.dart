@@ -53,8 +53,8 @@ class _LlamaAppState extends State<LlamaApp> {
       ModelParams(),
       ContextParams(),
       SamplingParams(
-        minP: (p: 0.05, minKeep: 1),
-        temperature: (temperature: 0.8, delta: null, exponent: null),
+        minP: PArguments(p: 0.05, minKeep: 1),
+        temperature: TemperatureArguments(temperature: 0.8),
         seed: Random().nextInt(1000000)
       )
     );

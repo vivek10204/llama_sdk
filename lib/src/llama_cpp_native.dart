@@ -1,11 +1,11 @@
 part of '../llama.dart';
 
-typedef InitArguments = ({
+typedef InitArguments = (
   String modelPath,
-  ModelParams modelParams,
-  ContextParams contextParams,
-  SamplingParams samplingParams
-});
+  String modelParams,
+  String contextParams,
+  String samplingParams
+);
 
 class LlamaCppNative {
   static llama? _lib;
@@ -41,24 +41,24 @@ class LlamaCppNative {
     required ffi.Pointer<llama_sampler> sampler
   }) : _model = model, _context = context, _sampler = sampler;
 
-  factory LlamaCppNative.fromInitArguments(InitArguments args) {
+  factory LlamaCppNative.fromParams(String modelPath, ModelParams modelParams, ContextParams contextParams, SamplingParams samplingParams) {
     lib.ggml_backend_load_all();
 
-    final modelParams = args.modelParams.toNative();
+    final nativeModelParams = modelParams.toNative();
       
     final model = lib.llama_load_model_from_file(
-      args.modelPath.toNativeUtf8().cast<ffi.Char>(), 
-      modelParams
+      modelPath.toNativeUtf8().cast<ffi.Char>(), 
+      nativeModelParams
     );
     assert(model != ffi.nullptr, 'Failed to load model');
 
-    final contextParams = args.contextParams.toNative();
+    final nativeContextParams = contextParams.toNative();
 
-    final context = lib.llama_init_from_model(model, contextParams);
+    final context = lib.llama_init_from_model(model, nativeContextParams);
     assert(context != ffi.nullptr, 'Failed to initialize context');
 
     final vocab = lib.llama_model_get_vocab(model);
-    final sampler = args.samplingParams.toNative(vocab);
+    final sampler = samplingParams.toNative(vocab);
     assert(sampler != ffi.nullptr, 'Failed to initialize sampler');
 
     return LlamaCppNative(model: model, context: context, sampler: sampler);
