@@ -69,9 +69,7 @@ class _LlamaAppState extends State<LlamaApp> {
 
     await for (final message in stream) {
       setState(() {
-        final newContent = _messages.last.content + message;
-        final newLastMessage = ChatMessage(role: 'assistant', content: newContent);
-        _messages[_messages.length - 1] = newLastMessage;
+        _messages.last.content = message;
       });
     }
 

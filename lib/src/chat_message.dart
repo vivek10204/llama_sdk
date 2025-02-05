@@ -7,7 +7,7 @@ typedef ChatMessageRecord = (
 
 class ChatMessage {
   final String role;
-  final String content;
+  String content;
 
   ChatMessage({
     required this.role,
