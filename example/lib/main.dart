@@ -20,7 +20,8 @@ class LlamaApp extends StatefulWidget {
 class _LlamaAppState extends State<LlamaApp> {
   final TextEditingController _controller = TextEditingController();
   final List<ChatMessage> _messages = [];
-  String? _model;
+  LlamaCppNative? _model;
+  String? _modelPath;
 
   void _loadModel() async {
     final result = await FilePicker.platform.pickFiles(
@@ -30,25 +31,12 @@ class _LlamaAppState extends State<LlamaApp> {
       allowCompression: false
     );
 
-    if (result != null && result.files.isNotEmpty) {
-      setState(() {
-        _model = result.files.single.path!;
-      });
-    }
-  }
-
-  void _onSubmitted(String value) async {
-    if (_model == null) {
+    if (result == null || result.files.isEmpty || result.files.single.path == null) {
       return;
     }
 
-    setState(() {
-      _messages.add(ChatMessage(role: 'user', content: value));
-      _controller.clear();
-    });
-
     final llamaCpp = LlamaCppNative.fromParams(
-      _model!,
+      result.files.single.path!,
       ModelParams(),
       ContextParams(
         nCtx: 2048,
@@ -61,7 +49,23 @@ class _LlamaAppState extends State<LlamaApp> {
       )
     );
 
-    Stream<String> stream = llamaCpp.prompt(_messages);
+    setState(() {
+      _model = llamaCpp;
+      _modelPath = result.files.single.path;
+    });
+  }
+
+  void _onSubmitted(String value) async {
+    if (_model == null) {
+      return;
+    }
+
+    setState(() {
+      _messages.add(ChatMessage(role: 'user', content: value));
+      _controller.clear();
+    });
+
+    Stream<String> stream = _model!.prompt(_messages);
 
     setState(() {
       _messages.add(ChatMessage(role: 'assistant', content: ""));
@@ -72,8 +76,6 @@ class _LlamaAppState extends State<LlamaApp> {
         _messages.last.content = message;
       });
     }
-
-    llamaCpp.free();
   }
 
   @override
@@ -92,7 +94,7 @@ class _LlamaAppState extends State<LlamaApp> {
 
   PreferredSizeWidget buildAppBar() {
     return AppBar(
-      title: Text(_model ?? 'No model loaded'),
+      title: Text(_modelPath ?? 'No model loaded'),
       leading: IconButton(
         icon: const Icon(Icons.folder_open),
         onPressed: _loadModel,
