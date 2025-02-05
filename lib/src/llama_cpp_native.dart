@@ -140,8 +140,7 @@ class LlamaCppNative {
       }
 
       final buffer = calloc<ffi.Char>(256);
-      final n = lib.llama_token_to_piece(vocab, newTokenId, buffer, 256, 0, true);
-      if (n < 0) {
+      if (lib.llama_token_to_piece(vocab, newTokenId, buffer, 256, 0, true) < 0) {
         throw Exception('Failed to convert token to piece');
       }
 
