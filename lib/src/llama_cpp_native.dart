@@ -161,4 +161,10 @@ class LlamaCppNative {
   void clear() {
     _contextLength = 0;
   }
+
+  void free() {
+    lib.llama_sampler_free(_sampler);
+    lib.llama_free(_context);
+    lib.llama_free_model(_model);
+  }
 }
