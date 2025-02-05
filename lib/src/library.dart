@@ -2,7 +2,7 @@ part of '../llama.dart';
 
 llama? _lib;
 
-llama get libLLama {
+llama get lib {
   if (_lib == null) {
     if (Platform.isWindows) {
       _lib = llama(ffi.DynamicLibrary.open('llama.dll'));
