@@ -26,6 +26,35 @@ A new Flutter FFI plugin project.
   # paths, so Classes contains a forwarder C file that relatively imports
   # `../src/*` so that the C sources can be shared among all target platforms.
   s.source           = { :path => '.' }
+
+  # Add the prepare_command to copy files
+  s.prepare_command = <<-CMD
+    set -e
+    set -u
+    set -o pipefail
+
+    SOURCE_DIR="../src/llama_cpp"
+    TARGET_DIR="./llama_cpp"
+
+    # Ensure source directory exists
+    if [ ! -d "$SOURCE_DIR" ]; then
+        echo "Source directory $SOURCE_DIR does not exist. Exiting."
+        exit 1
+    fi
+
+    # Remove existing target directory if it exists
+    if [ -d "$TARGET_DIR" ]; then
+        echo "Removing existing target directory $TARGET_DIR..."
+        rm -rf "$TARGET_DIR"
+    fi
+
+    # Copy source to target
+    echo "Copying $SOURCE_DIR to $TARGET_DIR..."
+    cp -R "$SOURCE_DIR" "$TARGET_DIR"
+
+    echo "Copy completed successfully."
+  CMD
+
   s.source_files = 'build-info.c', 
                    'llama_cpp/src/*.cpp',
                    'llama_cpp/common/*.cpp',
