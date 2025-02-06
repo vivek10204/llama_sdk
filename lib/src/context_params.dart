@@ -3,98 +3,102 @@ part of '../llama.dart';
 
 class ContextParams {
   // text context, 0 = from model
-  int? nCtx;
+  int nCtx;
 
   // logical maximum batch size that can be submitted to llama_decode
-  int? nBatch;
+  int nBatch;
 
   // physical maximum batch size
-  int? nUBatch;
+  int nUBatch;
 
   // max number of sequences (i.e. distinct states for recurrent models)
-  int? nSeqMax;
+  int nSeqMax;
 
   // number of threads to use for generation
-  int? nThreads;
+  int nThreads;
 
   // number of threads to use for batch processing
-  int? nThreadsBatch;
+  int nThreadsBatch;
 
   // RoPE scaling type, from `enum llama_rope_scaling_type`
-  RopeScalingType? ropeScalingType;
+  RopeScalingType ropeScalingType;
 
   // whether to pool (sum) embedding results by sequence id
-  PoolingType? poolingType;
+  PoolingType poolingType;
 
   // attention type to use for embeddings
-  AttentionType? attentionType;
+  AttentionType attentionType;
 
   // RoPE base frequency, 0 = from model
-  double? ropeFrequencyBase;
+  double ropeFrequencyBase;
 
   // RoPE frequency scaling factor, 0 = from model
-  double? ropeFrequencyScale;
+  double ropeFrequencyScale;
 
   // YaRN extrapolation mix factor, negative = from model
-  double? yarnExtrapolationFactor;
+  double yarnExtrapolationFactor;
 
   // YaRN magnitude scaling factor
-  double? yarnAttenuationFactor;
+  double yarnAttenuationFactor;
 
   // YaRN low correction dim
-  double? yarnBetaFast;
+  double yarnBetaFast;
 
   // YaRN high correction dim
-  double? yarnBetaSlow;
+  double yarnBetaSlow;
 
   // YaRN original context size
-  int? yarnOriginalContext;
+  int yarnOriginalContext;
 
   // defragment the KV cache if holes/size > thold, < 0 disabled (default)
-  double? defragmentationThreshold;
+  double defragmentationThreshold;
 
   // data type for K cache
-  GgmlType? typeK;
+  GgmlType typeK;
 
   // data type for V cache
-  GgmlType? typeV;
+  GgmlType typeV;
+
+  // if true, extract logits for each token
+  bool logitsAll;
 
   // if true, extract embeddings (together with logits)
-  bool? embeddings;
+  bool embeddings;
 
   // whether to offload the KQV ops (including the KV cache) to GPU
-  bool? offloadKqv;
+  bool offloadKqv;
 
   // whether to use flash attention
-  bool? flashAttention;
+  bool flashAttention;
 
   // whether to measure performance timings
-  bool? noPerformance;
+  bool noPerformance;
 
   ContextParams({
-    this.nCtx,
-    this.nBatch,
-    this.nUBatch,
-    this.nSeqMax,
-    this.nThreads,
-    this.nThreadsBatch,
-    this.ropeScalingType,
-    this.poolingType,
-    this.attentionType,
-    this.ropeFrequencyBase,
-    this.ropeFrequencyScale,
-    this.yarnExtrapolationFactor,
-    this.yarnAttenuationFactor,
-    this.yarnBetaFast,
-    this.yarnBetaSlow,
-    this.yarnOriginalContext,
-    this.defragmentationThreshold,
-    this.typeK,
-    this.typeV,
-    this.embeddings,
-    this.offloadKqv,
-    this.flashAttention,
-    this.noPerformance,
+    this.nCtx = 512,
+    this.nBatch = 2048,
+    this.nUBatch = 512,
+    this.nSeqMax = 1,
+    this.nThreads = 4,
+    this.nThreadsBatch = 4,
+    this.ropeScalingType = RopeScalingType.unspecified,
+    this.poolingType = PoolingType.unspecified,
+    this.attentionType = AttentionType.unspecified,
+    this.ropeFrequencyBase = 0.0,
+    this.ropeFrequencyScale = 0.0,
+    this.yarnExtrapolationFactor = -1.0,
+    this.yarnAttenuationFactor = 1.0,
+    this.yarnBetaFast = 32.0,
+    this.yarnBetaSlow = 1.0,
+    this.yarnOriginalContext = 0,
+    this.defragmentationThreshold = -1.0,
+    this.typeK = GgmlType.f16,
+    this.typeV = GgmlType.f16,
+    this.logitsAll = false,
+    this.embeddings = false,
+    this.offloadKqv = true,
+    this.flashAttention = false,
+    this.noPerformance = true,
   });
 
   factory ContextParams.fromMap(Map<String, dynamic> map) => ContextParams(
@@ -126,100 +130,32 @@ class ContextParams {
   factory ContextParams.fromJson(String source) => ContextParams.fromMap(jsonDecode(source));
 
   llama_context_params toNative() {
-    final llama_context_params contextParams = lib.llama_context_default_params();
-    log('Context params initialized');
+    final llama_context_params contextParams = calloc<llama_context_params>().ref;
 
-    if (nCtx != null) {
-      contextParams.n_ctx = nCtx!;
-    }
-
-    if (nBatch != null) {
-      contextParams.n_batch = nBatch!;
-    }
-
-    if (nUBatch != null) {
-      contextParams.n_ubatch = nUBatch!;
-    }
-
-    if (nSeqMax != null) {
-      contextParams.n_seq_max = nSeqMax!;
-    }
-
-    if (nThreads != null) {
-      contextParams.n_threads = nThreads!;
-    }
-
-    if (nThreadsBatch != null) {
-      contextParams.n_threads_batch = nThreadsBatch!;
-    }
-
-    if (ropeScalingType != null) {
-      contextParams.rope_scaling_type = ropeScalingType!.index;
-    }
-
-    if (poolingType != null) {
-      contextParams.pooling_type = poolingType!.index;
-    }
-
-    if (attentionType != null) {
-      contextParams.attention_type = attentionType!.index;
-    }
-
-    if (ropeFrequencyBase != null) {
-      contextParams.rope_freq_base = ropeFrequencyBase!;
-    }
-
-    if (ropeFrequencyScale != null) {
-      contextParams.rope_freq_scale = ropeFrequencyScale!;
-    }
-
-    if (yarnExtrapolationFactor != null) {
-      contextParams.yarn_ext_factor = yarnExtrapolationFactor!;
-    }
-
-    if (yarnAttenuationFactor != null) {
-      contextParams.yarn_attn_factor = yarnAttenuationFactor!;
-    }
-
-    if (yarnBetaFast != null) {
-      contextParams.yarn_beta_fast = yarnBetaFast!;
-    }
-
-    if (yarnBetaSlow != null) {
-      contextParams.yarn_beta_slow = yarnBetaSlow!;
-    }
-
-    if (yarnOriginalContext != null) {
-      contextParams.yarn_orig_ctx = yarnOriginalContext!;
-    }
-
-    if (defragmentationThreshold != null) {
-      contextParams.defrag_thold = defragmentationThreshold!;
-    }
-
-    if (typeK != null) {
-      contextParams.type_k = typeK!.index;
-    }
-
-    if (typeV != null) {
-      contextParams.type_v = typeV!.index;
-    }
-
-    if (embeddings != null) {
-      contextParams.embeddings = embeddings!;
-    }
-
-    if (offloadKqv != null) {
-      contextParams.offload_kqv = offloadKqv!;
-    }
-
-    if (flashAttention != null) {
-      contextParams.flash_attn = flashAttention!;
-    }
-
-    if (noPerformance != null) {
-      contextParams.no_perf = noPerformance!;
-    }
+    contextParams.n_ctx = nCtx;
+    contextParams.n_batch = nBatch;
+    contextParams.n_ubatch = nUBatch;
+    contextParams.n_seq_max = nSeqMax;
+    contextParams.n_threads = nThreads;
+    contextParams.n_threads_batch = nThreadsBatch;
+    contextParams.rope_scaling_type = ropeScalingType.index - 1;
+    contextParams.pooling_type = poolingType.index - 1;
+    contextParams.attention_type = attentionType.index - 1;
+    contextParams.rope_freq_base = ropeFrequencyBase;
+    contextParams.rope_freq_scale = ropeFrequencyScale;
+    contextParams.yarn_ext_factor = yarnExtrapolationFactor;
+    contextParams.yarn_attn_factor = yarnAttenuationFactor;
+    contextParams.yarn_beta_fast = yarnBetaFast;
+    contextParams.yarn_beta_slow = yarnBetaSlow;
+    contextParams.yarn_orig_ctx = yarnOriginalContext;
+    contextParams.defrag_thold = defragmentationThreshold;
+    contextParams.type_k = typeK.index;
+    contextParams.type_v = typeV.index;
+    contextParams.logits_all = logitsAll;
+    contextParams.embeddings = embeddings;
+    contextParams.offload_kqv = offloadKqv;
+    contextParams.flash_attn = flashAttention;
+    contextParams.no_perf = noPerformance;
 
     return contextParams;
   }
@@ -231,9 +167,9 @@ class ContextParams {
     'nSeqMax': nSeqMax,
     'nThreads': nThreads,
     'nThreadsBatch': nThreadsBatch,
-    'ropeScalingType': ropeScalingType?.name,
-    'poolingType': poolingType?.name,
-    'attentionType': attentionType?.name,
+    'ropeScalingType': ropeScalingType.name,
+    'poolingType': poolingType.name,
+    'attentionType': attentionType.name,
     'ropeFrequencyBase': ropeFrequencyBase,
     'ropeFrequencyScale': ropeFrequencyScale,
     'yarnExtrapolationFactor': yarnExtrapolationFactor,
@@ -242,8 +178,8 @@ class ContextParams {
     'yarnBetaSlow': yarnBetaSlow,
     'yarnOriginalContext': yarnOriginalContext,
     'defragmentationThreshold': defragmentationThreshold,
-    'typeK': typeK?.name,
-    'typeV': typeV?.name,
+    'typeK': typeK.name,
+    'typeV': typeV.name,
     'embeddings': embeddings,
     'offloadKqv': offloadKqv,
     'flashAttention': flashAttention,
