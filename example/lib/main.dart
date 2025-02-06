@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -32,7 +33,14 @@ class _LlamaAppState extends State<LlamaApp> {
     );
 
     if (result == null || result.files.isEmpty || result.files.single.path == null) {
-      return;
+      throw Exception('No file selected');
+    }
+
+    File resultFile = File(result.files.single.path!);
+
+    final exists = await resultFile.exists();
+    if (!exists) {
+      throw Exception('File does not exist');
     }
 
     final llamaCpp = LlamaCppNative.fromParams(

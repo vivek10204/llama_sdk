@@ -1,10 +1,5 @@
 part of '../llama.dart';
 
-enum IsolateCommand {
-  stop,
-  clear;
-}
-
 typedef StringResponse = (
   bool error,
   String message
@@ -53,13 +48,8 @@ class LlamaCPP {
         _sendPort = data;
         _initialized.complete();
       }
-      else if (data is IsolateCommand) {
-        switch (data) {
-          case IsolateCommand.stop:
-            break;
-          case IsolateCommand.clear:
-            break;
-        }
+      else if (data is bool) {
+        print('Isolate stopped');
       }
       else if (data == null) {
         _responseController.close();
@@ -86,15 +76,7 @@ class LlamaCPP {
       await _initialized.future;
     }
 
-    _sendPort!.send(IsolateCommand.stop);
-  }
-
-  void clear() async {
-    if (!_initialized.isCompleted) {
-      await _initialized.future;
-    }
-
-    _sendPort!.send(IsolateCommand.clear);
+    _sendPort!.send(true);
   }
 }
 
@@ -126,16 +108,7 @@ void entryPoint(IsolateArguments args) async {
 
         sendPort.send(null);
       }
-      else if (data is IsolateCommand) {
-        switch (data) {
-          case IsolateCommand.stop:
-            llamaCppNative.stop();
-            break;
-          case IsolateCommand.clear:
-            llamaCppNative.clear();
-            break;
-        }
-
+      else if (data is bool) {
         sendPort.send(data);
       }
     }

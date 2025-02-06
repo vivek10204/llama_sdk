@@ -6,7 +6,6 @@ class LlamaCppNative {
   final ffi.Pointer<llama_sampler> _sampler;
 
   Completer? _completer;
-  int _contextLength = 0;
 
   LlamaCppNative({
     required ffi.Pointer<llama_model> model, 
@@ -21,31 +20,39 @@ class LlamaCppNative {
     SamplingParams samplingParams
   ) {
     lib.ggml_backend_load_all();
+    lib.llama_backend_init();
+    log("backend loaded");
 
     final nativeModelParams = modelParams.toNative();
+    final nativeModelPath = modelPath.toNativeUtf8().cast<ffi.Char>();
       
     final model = lib.llama_load_model_from_file(
-      modelPath.toNativeUtf8().cast<ffi.Char>(), 
+      nativeModelPath, 
       nativeModelParams
     );
-    assert(model != ffi.nullptr, 'Failed to load model');
+    assert(model.address != 0, 'Failed to load model');
+
+    malloc.free(nativeModelPath);
+    log("Model loaded");
 
     final nativeContextParams = contextParams.toNative();
 
     final context = lib.llama_init_from_model(model, nativeContextParams);
-    assert(context != ffi.nullptr, 'Failed to initialize context');
+    assert(context.address != 0, 'Failed to initialize context');
+    log("Context initialized");
 
     final vocab = lib.llama_model_get_vocab(model);
     final sampler = samplingParams.toNative(vocab);
-    assert(sampler != ffi.nullptr, 'Failed to initialize sampler');
+    assert(sampler.address != 0, 'Failed to initialize sampler');
+    log("Sampler initialized");
 
     return LlamaCppNative(model: model, context: context, sampler: sampler);
   }
 
-  Stream<String> prompt(List<ChatMessage> messages) async* {
-    assert(_model != ffi.nullptr, 'Model is not loaded');
-    assert(_context != ffi.nullptr, 'Context is not initialized');
-    assert(_sampler != ffi.nullptr, 'Sampler is not initialized');
+  Stream<String> prompt(List<ChatMessage> messages) {
+    assert(_model.address != 0, 'Model is not loaded');
+    assert(_context.address != 0, 'Context is not initialized');
+    assert(_sampler.address != 0, 'Sampler is not initialized');
 
     _completer = Completer();
 
@@ -55,7 +62,7 @@ class LlamaCppNative {
 
     final template = lib.llama_model_chat_template(_model, ffi.nullptr);
 
-    int newContextLength = lib.llama_chat_apply_template(
+    int contextLength = lib.llama_chat_apply_template(
       template, 
       messages.toNative(), 
       messages.length, 
@@ -64,46 +71,25 @@ class LlamaCppNative {
       nCtx
     );
 
-    if (newContextLength > nCtx) {
-      formatted = calloc<ffi.Char>(newContextLength);
-      newContextLength = lib.llama_chat_apply_template(
+    if (contextLength > nCtx) {
+      formatted = calloc<ffi.Char>(contextLength);
+      contextLength = lib.llama_chat_apply_template(
         template, 
         messages.toNative(), 
         messages.length, 
         true, 
         formatted, 
-        newContextLength
+        contextLength
       );
     }
 
-    if (newContextLength < 0) {
+    if (contextLength < 0) {
       throw Exception('Failed to apply template');
     }
 
-    final prompt = formatted.cast<Utf8>().toDartString().substring(_contextLength);
+    final prompt = formatted.cast<Utf8>().toDartString();
 
-    final generation = _generate(prompt);
-
-    String finalOutput = '';
-
-    await for (final piece in generation) {
-      finalOutput += piece;
-      yield piece;
-    }
-
-    messages.add(ChatMessage(
-      role: 'assistant',
-      content: finalOutput
-    ));
-
-    _contextLength = lib.llama_chat_apply_template(
-      template, 
-      messages.toNative(), 
-      messages.length, 
-      false, 
-      ffi.nullptr, 
-      0
-    );
+    return _generate(prompt);
   }
 
   Stream<String> _generate(String prompt) async* {
@@ -144,21 +130,29 @@ class LlamaCppNative {
         throw Exception('Failed to convert token to piece');
       }
 
-      yield buffer.cast<Utf8>().toDartString();
+      try {
+        yield buffer.cast<Utf8>().toDartString();
+      }
+      catch (e) {
+        throw FormatException('Failed to parse UTF-8 string from buffer', e);
+      }
+      finally {
+        calloc.free(buffer);
+      }
 
       final newTokenPointer = calloc<llama_token>(1);
       newTokenPointer.value = newTokenId;
 
       batch = lib.llama_batch_get_one(newTokenPointer, 1);
+      calloc.free(newTokenPointer);
     }
+
+    lib.llama_batch_free(batch);
+    calloc.free(promptTokens);
   }
 
   void stop() {
     _completer?.complete();
-  }
-
-  void clear() {
-    _contextLength = 0;
   }
 
   void free() {

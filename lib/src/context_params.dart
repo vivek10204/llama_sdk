@@ -127,6 +127,7 @@ class ContextParams {
 
   llama_context_params toNative() {
     final llama_context_params contextParams = lib.llama_context_default_params();
+    log('Context params initialized');
 
     if (nCtx != null) {
       contextParams.n_ctx = nCtx!;
