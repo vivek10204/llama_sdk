@@ -118,12 +118,24 @@ A new Flutter FFI plugin project.
       :output_files => ["${METAL_LIBRARY_OUTPUT_DIR}/default.metallib"],
       :execution_position => :after_compile,
       :script => <<-SCRIPT
-set -e
-set -u
-set -o pipefail
-cd "${PODS_TARGET_SRCROOT}/llama_cpp"
-xcrun metal -target "air64-${LLVM_TARGET_TRIPLE_VENDOR}-${LLVM_TARGET_TRIPLE_OS_VERSION}${LLVM_TARGET_TRIPLE_SUFFIX:-\"\"}" -ffast-math -std=ios-metal2.3 -o "${METAL_LIBRARY_OUTPUT_DIR}/default.metallib" ggml/src/ggml-metal/*.metal
-SCRIPT
+      set -e
+      set -u
+      set -o pipefail
+      cd "${PODS_TARGET_SRCROOT}/llama_cpp"
+      xcrun metal -target "air64-${LLVM_TARGET_TRIPLE_VENDOR}-${LLVM_TARGET_TRIPLE_OS_VERSION}${LLVM_TARGET_TRIPLE_SUFFIX:-\"\"}" -ffast-math -std=ios-metal2.3 -o "${METAL_LIBRARY_OUTPUT_DIR}/default.metallib" ggml/src/ggml-metal/*.metal
+      SCRIPT
+    },
+    {
+      :name => 'Cleanup llama_cpp',
+      :execution_position => :after_compile,
+      :script => <<-SCRIPT
+      set -e
+      set -u
+      set -o pipefail
+      echo "Cleaning up llama_cpp directory..."
+      rm -rf "${PODS_TARGET_SRCROOT}/llama_cpp"
+      echo "Cleanup complete."
+      SCRIPT
     }
   ]
 end
