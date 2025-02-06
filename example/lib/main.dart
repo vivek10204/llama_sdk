@@ -43,17 +43,6 @@ class _LlamaAppState extends State<LlamaApp> {
       throw Exception('File does not exist');
     }
 
-    print("testing llama");
-
-    final ctxParams = ContextParams(
-        nCtx: 2048,
-        nBatch: 2048
-      );
-
-    ctxParams.toNative();
-
-    print("Context params initialized");
-
     final llamaCpp = LlamaCppNative.fromParams(
       result.files.single.path!,
       ModelParams(),

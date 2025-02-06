@@ -19,7 +19,6 @@ class LlamaCppNative {
     ContextParams contextParams, 
     SamplingParams samplingParams
   ) {
-    lib.ggml_backend_load_all();
     lib.llama_backend_init();
     log("backend loaded");
 
