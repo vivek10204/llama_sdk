@@ -1,12 +1,12 @@
 part of '../llama.dart';
 
 class ModelParams {
-  bool? vocabOnly;
-  bool? useMmap;
-  bool? useMlock;
-  bool? checkTensors;
+  final bool? vocabOnly;
+  final bool? useMmap;
+  final bool? useMlock;
+  final bool? checkTensors;
 
-  ModelParams({
+  const ModelParams({
     this.vocabOnly,
     this.useMmap,
     this.useMlock,

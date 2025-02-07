@@ -24,10 +24,13 @@ class LlamaCppNative {
 
   LlamaCppNative({
     required String modelPath,
-    required ModelParams modelParams,
-    required this.contextParams,
-    required this.samplingParams
+    ModelParams modelParams = const ModelParams(),
+    this.contextParams = const ContextParams(),
+    this.samplingParams = const SamplingParams()
   }) : _modelPath = modelPath, _modelParams = modelParams {
+    lib.ggml_backend_load_all();
+    lib.llama_backend_init();
+
     _initModel();
   }
 
@@ -50,7 +53,7 @@ class LlamaCppNative {
 
     _completer = Completer();
 
-    final nCtx = contextParams.nCtx;
+    final nCtx = contextParams.nCtx ?? 2048;
 
     ffi.Pointer<ffi.Char> formatted = calloc<ffi.Char>(nCtx);
 
@@ -87,14 +90,14 @@ class LlamaCppNative {
   }
 
   Stream<String> _generate(String prompt) async* {
+    final vocab = lib.llama_model_get_vocab(_model);
+    final sampler = samplingParams.toNative(vocab);
+    assert(sampler != ffi.nullptr, 'Failed to initialize sampler');
+    
     final nativeContextParams = contextParams.toNative();
 
     final context = lib.llama_init_from_model(_model, nativeContextParams);
     assert(context != ffi.nullptr, 'Failed to initialize context');
-
-    final vocab = lib.llama_model_get_vocab(_model);
-    final sampler = samplingParams.toNative(vocab);
-    assert(sampler != ffi.nullptr, 'Failed to initialize sampler');
 
     final isFirst = lib.llama_get_kv_cache_used_cells(context) == 0;
 

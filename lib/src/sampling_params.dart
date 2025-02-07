@@ -1,10 +1,10 @@
 part of '../llama.dart';
 
 class TopPArguments {
-  double p;
-  int minKeep;
+  final double p;
+  final int minKeep;
 
-  TopPArguments({
+  const TopPArguments({
     required this.p,
     required this.minKeep
   });
@@ -25,10 +25,10 @@ class TopPArguments {
 }
 
 class MinPArguments {
-  double p;
-  int minKeep;
+  final double p;
+  final int minKeep;
 
-  MinPArguments({
+  const MinPArguments({
     required this.p,
     required this.minKeep
   });
@@ -49,10 +49,10 @@ class MinPArguments {
 }
 
 class TypicalPArguments {
-  double p;
-  int minKeep;
+  final double p;
+  final int minKeep;
 
-  TypicalPArguments({
+  const TypicalPArguments({
     required this.p,
     required this.minKeep
   });
@@ -73,11 +73,11 @@ class TypicalPArguments {
 }
 
 class TemperatureArguments {
-  double temperature;
-  double? delta;
-  double? exponent;
+  final double temperature;
+  final double? delta;
+  final double? exponent;
 
-  TemperatureArguments({
+  const TemperatureArguments({
     required this.temperature,
     this.delta,
     this.exponent
@@ -106,12 +106,12 @@ class TemperatureArguments {
 }
 
 class XtcArguments {
-  double p;
-  double t;
-  int minKeep;
-  int seed;
+  final double p;
+  final double t;
+  final int minKeep;
+  final int seed;
 
-  XtcArguments({
+  const XtcArguments({
     required this.p,
     required this.t,
     required this.minKeep,
@@ -138,13 +138,13 @@ class XtcArguments {
 }
 
 class MirostatArguments {
-  int nVocab;
-  int seed;
-  double tau;
-  double eta;
-  int m;
+  final int nVocab;
+  final int seed;
+  final double tau;
+  final double eta;
+  final int m;
 
-  MirostatArguments({
+  const MirostatArguments({
     required this.nVocab,
     required this.seed,
     required this.tau,
@@ -174,11 +174,11 @@ class MirostatArguments {
 }
 
 class MirostatV2Arguments {
-  int seed;
-  double tau;
-  double eta;
+  final int seed;
+  final double tau;
+  final double eta;
 
-  MirostatV2Arguments({
+  const MirostatV2Arguments({
     required this.seed,
     required this.tau,
     required this.eta
@@ -202,10 +202,10 @@ class MirostatV2Arguments {
 }
 
 class GrammarArguments {
-  String str;
-  String root;
+  final String str;
+  final String root;
 
-  GrammarArguments({
+  const GrammarArguments({
     required this.str,
     required this.root
   });
@@ -233,12 +233,12 @@ class GrammarArguments {
 }
 
 class PenaltiesArguments {
-  int lastN;
-  double repeat;
-  double frequency;
-  double present;
+  final int lastN;
+  final double repeat;
+  final double frequency;
+  final double present;
 
-  PenaltiesArguments({
+  const PenaltiesArguments({
     required this.lastN,
     required this.repeat,
     required this.frequency,
@@ -265,14 +265,14 @@ class PenaltiesArguments {
 }
 
 class DrySamplerArguments {
-  int nCtxTrain;
-  double multiplier;
-  double dryBase;
-  int allowedLength;
-  int penaltyLastN;
-  List<String> sequenceBreakers;
+  final int nCtxTrain;
+  final double multiplier;
+  final double dryBase;
+  final int allowedLength;
+  final int penaltyLastN;
+  final List<String> sequenceBreakers;
 
-  DrySamplerArguments({
+  const DrySamplerArguments({
     required this.nCtxTrain,
     required this.multiplier,
     required this.dryBase,
@@ -322,22 +322,22 @@ class DrySamplerArguments {
 }
 
 class SamplingParams {
-  bool greedy;
-  bool infill;
-  int? seed;
-  int? topK;
-  TopPArguments? topP;
-  MinPArguments? minP;
-  TypicalPArguments? typicalP;
-  TemperatureArguments? temperature;
-  XtcArguments? xtc;
-  MirostatArguments? mirostat;
-  MirostatV2Arguments? mirostatV2;
-  GrammarArguments? grammar;
-  PenaltiesArguments? penalties;
-  DrySamplerArguments? drySampler;
+  final bool greedy;
+  final bool infill;
+  final int? seed;
+  final int? topK;
+  final TopPArguments? topP;
+  final MinPArguments? minP;
+  final TypicalPArguments? typicalP;
+  final TemperatureArguments? temperature;
+  final XtcArguments? xtc;
+  final MirostatArguments? mirostat;
+  final MirostatV2Arguments? mirostatV2;
+  final GrammarArguments? grammar;
+  final PenaltiesArguments? penalties;
+  final DrySamplerArguments? drySampler;
 
-  SamplingParams({
+  const SamplingParams({
     this.greedy = false,
     this.infill = false,
     this.seed,
