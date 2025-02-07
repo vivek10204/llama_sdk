@@ -43,14 +43,14 @@ class _LlamaAppState extends State<LlamaApp> {
       throw Exception('File does not exist');
     }
 
-    final llamaCpp = LlamaCppNative.fromParams(
-      result.files.single.path!,
-      ModelParams(),
-      ContextParams(
+    final llamaCpp = LlamaCppNative(
+      modelPath: result.files.single.path!,
+      modelParams: ModelParams(),
+      contextParams: ContextParams(
         nCtx: 2048,
         nBatch: 2048
       ),
-      SamplingParams(
+      samplingParams: SamplingParams(
         minP: MinPArguments(p: 0.05, minKeep: 1),
         temperature: TemperatureArguments(temperature: 0.8),
         seed: Random().nextInt(1000000)

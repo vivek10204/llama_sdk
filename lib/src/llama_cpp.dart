@@ -88,11 +88,11 @@ void entryPoint(IsolateArguments args) async {
     final receivePort = ReceivePort();
     sendPort.send(receivePort.sendPort);
 
-    llamaCppNative = LlamaCppNative.fromParams(
-      args.$1,
-      ModelParams.fromJson(args.$2),
-      ContextParams.fromJson(args.$3),
-      SamplingParams.fromJson(args.$4)
+    llamaCppNative = LlamaCppNative(
+      modelPath: args.$1,
+      modelParams: ModelParams.fromJson(args.$2),
+      contextParams: ContextParams.fromJson(args.$3),
+      samplingParams: SamplingParams.fromJson(args.$4)
     );
 
     await for (var data in receivePort) {

@@ -1,59 +1,56 @@
 part of '../llama.dart';
 
 class LlamaCppNative {
-  final ffi.Pointer<llama_model> _model;
-  final ffi.Pointer<llama_context> _context;
-  final ffi.Pointer<llama_sampler> _sampler;
+  ffi.Pointer<llama_model> _model = ffi.nullptr;
+
+  String _modelPath;
+  ModelParams _modelParams;
+  ContextParams contextParams; 
+  SamplingParams samplingParams;
 
   Completer? _completer;
 
+  set modelPath(String modelPath) {
+    _modelPath = modelPath;
+
+    _initModel();
+  }
+
+  set modelParams(ModelParams modelParams) {
+    _modelParams = modelParams;
+
+    _initModel();
+  }
+
   LlamaCppNative({
-    required ffi.Pointer<llama_model> model, 
-    required ffi.Pointer<llama_context> context, 
-    required ffi.Pointer<llama_sampler> sampler
-  }) : _model = model, _context = context, _sampler = sampler;
+    required String modelPath,
+    required ModelParams modelParams,
+    required this.contextParams,
+    required this.samplingParams
+  }) : _modelPath = modelPath, _modelParams = modelParams {
+    _initModel();
+  }
 
-  factory LlamaCppNative.fromParams(
-    String modelPath, 
-    ModelParams modelParams, 
-    ContextParams contextParams, 
-    SamplingParams samplingParams
-  ) {
-    lib.llama_backend_init();
-    log("backend loaded");
-
-    final nativeModelParams = modelParams.toNative();
-    final nativeModelPath = modelPath.toNativeUtf8().cast<ffi.Char>();
+  void _initModel() {
+    final nativeModelParams = _modelParams.toNative();
+    final nativeModelPath = _modelPath.toNativeUtf8().cast<ffi.Char>();
       
-    final model = lib.llama_load_model_from_file(
+    if (_model != ffi.nullptr) {
+      lib.llama_free_model(_model);
+    }
+
+    _model = lib.llama_load_model_from_file(
       nativeModelPath, 
       nativeModelParams
     );
-    assert(model.address != 0, 'Failed to load model');
-    log("Model loaded");
-
-    final nativeContextParams = contextParams.toNative();
-
-    final context = lib.llama_init_from_model(model, nativeContextParams);
-    assert(context.address != 0, 'Failed to initialize context');
-    log("Context initialized");
-
-    final vocab = lib.llama_model_get_vocab(model);
-    final sampler = samplingParams.toNative(vocab);
-    assert(sampler.address != 0, 'Failed to initialize sampler');
-    log("Sampler initialized");
-
-    return LlamaCppNative(model: model, context: context, sampler: sampler);
   }
 
   Stream<String> prompt(List<ChatMessage> messages) {
-    assert(_model.address != 0, 'Model is not loaded');
-    assert(_context.address != 0, 'Context is not initialized');
-    assert(_sampler.address != 0, 'Sampler is not initialized');
+    assert(_model != ffi.nullptr, 'Model is not loaded');
 
     _completer = Completer();
 
-    final nCtx = lib.llama_n_ctx(_context);
+    final nCtx = contextParams.nCtx;
 
     ffi.Pointer<ffi.Char> formatted = calloc<ffi.Char>(nCtx);
 
@@ -90,8 +87,16 @@ class LlamaCppNative {
   }
 
   Stream<String> _generate(String prompt) async* {
+    final nativeContextParams = contextParams.toNative();
+
+    final context = lib.llama_init_from_model(_model, nativeContextParams);
+    assert(context != ffi.nullptr, 'Failed to initialize context');
+
     final vocab = lib.llama_model_get_vocab(_model);
-    final isFirst = lib.llama_get_kv_cache_used_cells(_context) == 0;
+    final sampler = samplingParams.toNative(vocab);
+    assert(sampler != ffi.nullptr, 'Failed to initialize sampler');
+
+    final isFirst = lib.llama_get_kv_cache_used_cells(context) == 0;
 
     final nPromptTokens = -lib.llama_tokenize(vocab, prompt.toNativeUtf8().cast<ffi.Char>(), prompt.length, ffi.nullptr, 0, isFirst, true);
     ffi.Pointer<llama_token> promptTokens = calloc<llama_token>(nPromptTokens);
@@ -104,18 +109,18 @@ class LlamaCppNative {
     int newTokenId;
     
     while (!_completer!.isCompleted) {
-      final nCtx = lib.llama_n_ctx(_context);
-      final nCtxUsed = lib.llama_get_kv_cache_used_cells(_context);
+      final nCtx = lib.llama_n_ctx(context);
+      final nCtxUsed = lib.llama_get_kv_cache_used_cells(context);
 
       if (nCtxUsed + batch.n_tokens > nCtx) {
         throw Exception('Context size exceeded');
       }
 
-      if (lib.llama_decode(_context, batch) != 0) {
+      if (lib.llama_decode(context, batch) != 0) {
         throw Exception('Failed to decode');
       }
 
-      newTokenId = lib.llama_sampler_sample(_sampler, _context, -1);
+      newTokenId = lib.llama_sampler_sample(sampler, context, -1);
 
       // is it an end of generation?
       if (lib.llama_vocab_is_eog(vocab, newTokenId)) {
@@ -145,6 +150,8 @@ class LlamaCppNative {
     }
 
     lib.llama_batch_free(batch);
+    lib.llama_sampler_free(sampler);
+    lib.llama_free(context);
     calloc.free(promptTokens);
   }
 
@@ -153,8 +160,6 @@ class LlamaCppNative {
   }
 
   void free() {
-    lib.llama_sampler_free(_sampler);
-    lib.llama_free(_context);
     lib.llama_free_model(_model);
   }
 }
