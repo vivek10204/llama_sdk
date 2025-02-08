@@ -66,4 +66,14 @@ extension ChatMessages on List<ChatMessage> {
 
     return records;
   }
+
+  List<ChatMessage> copy() {
+    final List<ChatMessage> messages = [];
+
+    for (var message in this) {
+      messages.add(ChatMessage(role: message.role, content: message.content));
+    }
+
+    return messages;
+  }
 }
