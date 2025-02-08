@@ -21,7 +21,7 @@ class LlamaApp extends StatefulWidget {
 class _LlamaAppState extends State<LlamaApp> {
   final TextEditingController _controller = TextEditingController();
   final List<ChatMessage> _messages = [];
-  LlamaCppNative? _model;
+  LlamaNative? _model;
   String? _modelPath;
 
   void _loadModel() async {
@@ -43,16 +43,15 @@ class _LlamaAppState extends State<LlamaApp> {
       throw Exception('File does not exist');
     }
 
-    final llamaCpp = LlamaCppNative(
+    final llamaCpp = LlamaNative(
       modelPath: result.files.single.path!,
-      modelParams: ModelParams(),
-      contextParams: ContextParams(
+      contextParams: const ContextParams(
         nCtx: 2048,
         nBatch: 2048
       ),
       samplingParams: SamplingParams(
-        minP: MinPArguments(p: 0.05, minKeep: 1),
-        temperature: TemperatureArguments(temperature: 0.8),
+        minP: const MinPArguments(p: 0.05, minKeep: 1),
+        temperature: const TemperatureArguments(temperature: 0.8),
         seed: Random().nextInt(1000000)
       )
     );

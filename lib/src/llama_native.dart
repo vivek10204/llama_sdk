@@ -1,6 +1,6 @@
 part of '../llama.dart';
 
-class LlamaCppNative {
+class LlamaNative {
   ffi.Pointer<llama_model> _model = ffi.nullptr;
 
   String _modelPath;
@@ -22,7 +22,7 @@ class LlamaCppNative {
     _initModel();
   }
 
-  LlamaCppNative({
+  LlamaNative({
     required String modelPath,
     ModelParams modelParams = const ModelParams(),
     this.contextParams = const ContextParams(),
@@ -81,7 +81,7 @@ class LlamaCppNative {
     }
 
     if (contextLength < 0) {
-      throw Exception('Failed to apply template');
+      throw LlamaException('Failed to apply template');
     }
 
     final prompt = formatted.cast<Utf8>().toDartString();
@@ -105,7 +105,7 @@ class LlamaCppNative {
     ffi.Pointer<llama_token> promptTokens = calloc<llama_token>(nPromptTokens);
 
     if (lib.llama_tokenize(vocab, prompt.toNativeUtf8().cast<ffi.Char>(), prompt.length, promptTokens, nPromptTokens, isFirst, true) < 0) {
-      throw Exception('Failed to tokenize');
+      throw LlamaException('Failed to tokenize');
     }
 
     llama_batch batch = lib.llama_batch_get_one(promptTokens, nPromptTokens);
@@ -116,11 +116,11 @@ class LlamaCppNative {
       final nCtxUsed = lib.llama_get_kv_cache_used_cells(context);
 
       if (nCtxUsed + batch.n_tokens > nCtx) {
-        throw Exception('Context size exceeded');
+        throw LlamaException('Context size exceeded');
       }
 
       if (lib.llama_decode(context, batch) != 0) {
-        throw Exception('Failed to decode');
+        throw LlamaException('Failed to decode');
       }
 
       newTokenId = lib.llama_sampler_sample(sampler, context, -1);
@@ -132,7 +132,7 @@ class LlamaCppNative {
 
       final buffer = calloc<ffi.Char>(256);
       if (lib.llama_token_to_piece(vocab, newTokenId, buffer, 256, 0, true) < 0) {
-        throw Exception('Failed to convert token to piece');
+        throw LlamaException('Failed to convert token to piece');
       }
 
       try {

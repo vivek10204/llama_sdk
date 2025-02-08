@@ -20,3 +20,16 @@ set(LLAMA_NATIVE OFF CACHE BOOL "llama: disable -march=native flag" FORCE)
 set(LLAMA_VULKAN ON CACHE BOOL "llama: enable vulkan" FORCE)
 
 add_subdirectory(${LLAMA_CPP_DIR} ${CMAKE_CURRENT_BINARY_DIR}/shared)
+
+set_target_properties(llama PROPERTIES
+  PUBLIC_HEADER ${LLAMA_CPP_DIR}/include/llama.h
+  BUILD_WITH_INSTALL_RPATH TRUE
+  INSTALL_RPATH "$ORIGIN"
+)
+
+target_compile_definitions(llama PUBLIC DART_SHARED_LIB)
+
+set(llama_bundled_libraries
+  $<TARGET_FILE:llama>
+  PARENT_SCOPE
+)

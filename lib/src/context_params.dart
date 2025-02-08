@@ -127,7 +127,6 @@ class ContextParams {
 
   llama_context_params toNative() {
     final llama_context_params contextParams = lib.llama_context_default_params();
-    log('Context params initialized');
 
     if (nCtx != null) {
       contextParams.n_ctx = nCtx!;
@@ -154,15 +153,18 @@ class ContextParams {
     }
 
     if (ropeScalingType != null) {
-      contextParams.rope_scaling_type = ropeScalingType!.index;
+      // This enum starts at -1, so we need to subtract 1 from the index
+      contextParams.rope_scaling_type = ropeScalingType!.index - 1;
     }
 
     if (poolingType != null) {
-      contextParams.pooling_type = poolingType!.index;
+      // This enum starts at -1, so we need to subtract 1 from the index
+      contextParams.pooling_type = poolingType!.index - 1;
     }
 
     if (attentionType != null) {
-      contextParams.attention_type = attentionType!.index;
+      // This enum starts at -1, so we need to subtract 1 from the index
+      contextParams.attention_type = attentionType!.index - 1;
     }
 
     if (ropeFrequencyBase != null) {
@@ -198,11 +200,13 @@ class ContextParams {
     }
 
     if (typeK != null) {
-      contextParams.type_k = typeK!.index;
+      // It may seem redundant to multiply by 1, but it's necessary to convert to a C int
+      contextParams.type_k = typeK!.index * 1;
     }
 
     if (typeV != null) {
-      contextParams.type_v = typeV!.index;
+      // It may seem redundant to multiply by 1, but it's necessary to convert to a C int
+      contextParams.type_v = typeV!.index * 1;
     }
 
     if (embeddings != null) {

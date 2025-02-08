@@ -82,13 +82,13 @@ class LlamaCPP {
 
 void entryPoint(IsolateArguments args) async {
   final SendPort sendPort = args.$5;
-  final LlamaCppNative llamaCppNative;
+  final LlamaNative llamaCppNative;
 
   try {
     final receivePort = ReceivePort();
     sendPort.send(receivePort.sendPort);
 
-    llamaCppNative = LlamaCppNative(
+    llamaCppNative = LlamaNative(
       modelPath: args.$1,
       modelParams: ModelParams.fromJson(args.$2),
       contextParams: ContextParams.fromJson(args.$3),
