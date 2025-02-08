@@ -89,7 +89,6 @@ void entryPoint(IsolateArguments args) async {
     sendPort.send(receivePort.sendPort);
 
     llamaCppNative = LlamaNative(
-      modelPath: args.$1,
       modelParams: ModelParams.fromJson(args.$2),
       contextParams: ContextParams.fromJson(args.$3),
       samplingParams: SamplingParams.fromJson(args.$4)

@@ -5,7 +5,6 @@ class LlamaNative {
   ffi.Pointer<llama_context> _context = ffi.nullptr;
   ffi.Pointer<llama_sampler> _sampler = ffi.nullptr;
 
-  String _modelPath;
   ModelParams _modelParams;
   ContextParams _contextParams; 
   SamplingParams _samplingParams;
@@ -13,12 +12,6 @@ class LlamaNative {
   int _prevContextLength = 0;
 
   Completer? _completer;
-
-  set modelPath(String modelPath) {
-    _modelPath = modelPath;
-
-    _initModel();
-  }
 
   set modelParams(ModelParams modelParams) {
     _modelParams = modelParams;
@@ -39,25 +32,21 @@ class LlamaNative {
   }
 
   LlamaNative({
-    required String modelPath,
-    ModelParams modelParams = const ModelParams(),
+    required ModelParams modelParams,
     ContextParams contextParams = const ContextParams(),
     SamplingParams samplingParams = const SamplingParams()
-  }) : _modelPath = modelPath, 
-       _modelParams = modelParams, 
+  }) : _modelParams = modelParams, 
        _contextParams = contextParams, 
        _samplingParams = samplingParams {
     lib.ggml_backend_load_all();
     lib.llama_backend_init();
 
     _initModel();
-    _initContext();
-    _initSampler();
   }
 
   void _initModel() {
     final nativeModelParams = _modelParams.toNative();
-    final nativeModelPath = _modelPath.toNativeUtf8().cast<ffi.Char>();
+    final nativeModelPath = _modelParams.path.toNativeUtf8().cast<ffi.Char>();
       
     if (_model != ffi.nullptr) {
       lib.llama_free_model(_model);
@@ -68,6 +57,9 @@ class LlamaNative {
       nativeModelParams
     );
     assert(_model != ffi.nullptr, 'Failed to load model');
+
+    _initContext();
+    _initSampler();
   }
 
   void _initContext() {

@@ -44,7 +44,9 @@ class _LlamaAppState extends State<LlamaApp> {
     }
 
     final llamaCpp = LlamaNative(
-      modelPath: result.files.single.path!,
+      modelParams: ModelParams(
+        path: result.files.single.path!
+      ),
       contextParams: const ContextParams(
         nCtx: 2048,
         nBatch: 2048

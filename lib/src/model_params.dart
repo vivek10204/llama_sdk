@@ -1,12 +1,14 @@
 part of '../llama.dart';
 
 class ModelParams {
+  final String path;
   final bool? vocabOnly;
   final bool? useMmap;
   final bool? useMlock;
   final bool? checkTensors;
 
   const ModelParams({
+    required this.path,
     this.vocabOnly,
     this.useMmap,
     this.useMlock,
@@ -14,6 +16,7 @@ class ModelParams {
   });
 
   factory ModelParams.fromMap(Map<String, dynamic> map) => ModelParams(
+    path: map['path'],
     vocabOnly: map['vocabOnly'],
     useMmap: map['useMmap'],
     useMlock: map['useMlock'],
@@ -46,6 +49,7 @@ class ModelParams {
   }
 
   Map<String, dynamic> toMap() => {
+    'path': path,
     'vocabOnly': vocabOnly,
     'useMmap': useMmap,
     'useMlock': useMlock,
