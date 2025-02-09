@@ -135,7 +135,6 @@ class LlamaNative {
     }
 
     llama_batch batch = lib.llama_batch_get_one(promptTokens, nPromptTokens);
-    ffi.Pointer<llama_token> newTokenId = calloc<llama_token>(1);
 
     String response = '';
     
@@ -150,15 +149,15 @@ class LlamaNative {
         throw LlamaException('Failed to decode');
       }
 
-      newTokenId.value = lib.llama_sampler_sample(_sampler, _context, -1);
+      final newToken = lib.llama_sampler_sample(_sampler, _context, -1);
 
       // is it an end of generation?
-      if (lib.llama_vocab_is_eog(vocab, newTokenId.value)) {
+      if (lib.llama_vocab_is_eog(vocab, newToken)) {
         break;
       }
 
       final buffer = calloc<ffi.Char>(256);
-      if (lib.llama_token_to_piece(vocab, newTokenId.value, buffer, 256, 0, true) < 0) {
+      if (lib.llama_token_to_piece(vocab, newToken, buffer, 256, 0, true) < 0) {
         throw LlamaException('Failed to convert token to piece');
       }
 
@@ -174,7 +173,11 @@ class LlamaNative {
         calloc.free(buffer);
       }
 
-      batch = lib.llama_batch_get_one(newTokenId, 1);
+      final newTokenPointer = calloc<llama_token>(1);
+      newTokenPointer.value = newToken;
+
+      batch = lib.llama_batch_get_one(newTokenPointer, 1);
+      calloc.free(newTokenPointer);
     }
 
     lib.llama_batch_free(batch);
