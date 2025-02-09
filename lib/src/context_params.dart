@@ -154,17 +154,17 @@ class ContextParams {
 
     if (ropeScalingType != null) {
       // This enum starts at -1, so we need to subtract 1 from the index
-      contextParams.rope_scaling_type = ropeScalingType!.index - 1;
+      contextParams.rope_scaling_typeAsInt = ropeScalingType!.index - 1;
     }
 
     if (poolingType != null) {
       // This enum starts at -1, so we need to subtract 1 from the index
-      contextParams.pooling_type = poolingType!.index - 1;
+      contextParams.pooling_typeAsInt = poolingType!.index - 1;
     }
 
     if (attentionType != null) {
       // This enum starts at -1, so we need to subtract 1 from the index
-      contextParams.attention_type = attentionType!.index - 1;
+      contextParams.attention_typeAsInt = attentionType!.index - 1;
     }
 
     if (ropeFrequencyBase != null) {
@@ -201,12 +201,12 @@ class ContextParams {
 
     if (typeK != null) {
       // It may seem redundant to multiply by 1, but it's necessary to convert to a C int
-      contextParams.type_k = typeK!.index * 1;
+      contextParams.type_kAsInt = typeK!.index * 1;
     }
 
     if (typeV != null) {
       // It may seem redundant to multiply by 1, but it's necessary to convert to a C int
-      contextParams.type_v = typeV!.index * 1;
+      contextParams.type_vAsInt = typeV!.index * 1;
     }
 
     if (embeddings != null) {
