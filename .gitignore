@@ -30,3 +30,7 @@ build/
 
 macos/llama_cpp
 ios/llama_cpp
+macos/*.h
+macos/lib/*.h
+macos/lib/*.dylib
+macos/lib/*.metal

@@ -24,6 +24,11 @@ class _LlamaAppState extends State<LlamaApp> {
   LlamaNative? _model;
   String? _modelPath;
 
+  void _test() {
+    final test = lib.llama_context_default_params();
+    print(test.n_ctx);
+  }
+
   void _loadModel() async {
     final result = await FilePicker.platform.pickFiles(
       dialogTitle: "Load Model File",
@@ -108,6 +113,12 @@ class _LlamaAppState extends State<LlamaApp> {
         icon: const Icon(Icons.folder_open),
         onPressed: _loadModel,
       ),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.info),
+          onPressed: _test,
+        ),
+      ]
     );
   }
 
