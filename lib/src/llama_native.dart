@@ -122,7 +122,7 @@ class LlamaNative implements Llama {
       throw Exception('Failed to apply template');
     }
 
-    final prompt = formatted.cast<Utf8>().toDartString().substring(_contextLength);
+    final prompt = formatted.cast<Utf8>().toDartString().substring(_contextLength, newContextLength);
 
     final vocab = Llama.lib.llama_model_get_vocab(_model);
     final isFirst = Llama.lib.llama_get_kv_cache_used_cells(_context) == 0;
