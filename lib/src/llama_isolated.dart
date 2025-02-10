@@ -43,17 +43,15 @@ class LlamaIsolated implements Llama {
         _sendPort = data;
         _initialized.complete();
       }
-      else if (data is bool) {
-        log('Isolate stopped');
-      }
       else if (data == null) {
         _responseController.close();
+        break;
       }
     }
   }
 
   @override
-  Stream<String> prompt(List<ChatMessage> messages) async* {  
+  Future<String> prompt(List<ChatMessage> messages) async {  
     if (!_initialized.isCompleted) {
       await _initialized.future;
     }
@@ -62,9 +60,17 @@ class LlamaIsolated implements Llama {
     
     _sendPort!.send(messages.toRecords());
 
+    messages.add(ChatMessage(
+      role: 'assistant',
+      content: ''
+    ));
+
     await for (final message in _responseController.stream) {
-      yield message;
+      messages.last.content += message;
+      _responseController.close();
     }
+
+    return messages.last.content;
   }
 
   @override
@@ -73,6 +79,6 @@ class LlamaIsolated implements Llama {
       await _initialized.future;
     }
 
-    _sendPort!.send(true);
+    _sendPort!.send(null);
   }
 }

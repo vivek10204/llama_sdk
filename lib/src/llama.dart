@@ -36,7 +36,7 @@ abstract interface class Llama {
     samplingParams: samplingParams,
   );
 
-  Stream<String> prompt(List<ChatMessage> messages);
+  Future<String> prompt(List<ChatMessage> messages);
 
   void stop();
 }

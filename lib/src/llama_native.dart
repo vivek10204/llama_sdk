@@ -84,9 +84,7 @@ class LlamaNative implements Llama {
   }
 
   @override
-  Stream<String> prompt(List<ChatMessage> messages) async* {
-    //final messagesCopy = messages.copy();
-
+  Future<String> prompt(List<ChatMessage> messages) async {
     assert(_model != ffi.nullptr, 'Model is not loaded');
     assert(_context != ffi.nullptr, 'Context is not initialized');
     assert(_sampler != ffi.nullptr, 'Sampler is not initialized');
@@ -126,31 +124,6 @@ class LlamaNative implements Llama {
 
     final prompt = formatted.cast<Utf8>().toDartString().substring(_contextLength);
 
-    final generation = _generate(prompt);
-
-    String finalOutput = '';
-
-    await for (final piece in generation) {
-      finalOutput += piece;
-      yield piece;
-    }
-
-    messages.add(ChatMessage(
-      role: 'assistant',
-      content: finalOutput
-    ));
-
-    _contextLength = Llama.lib.llama_chat_apply_template(
-      template, 
-      messages.toNative(), 
-      messages.length, 
-      false, 
-      ffi.nullptr, 
-      0
-    );
-  }
-
-  Stream<String> _generate(String prompt) async* {
     final vocab = Llama.lib.llama_model_get_vocab(_model);
     final isFirst = Llama.lib.llama_get_kv_cache_used_cells(_context) == 0;
 
@@ -163,6 +136,8 @@ class LlamaNative implements Llama {
 
     llama_batch batch = Llama.lib.llama_batch_get_one(promptTokens, nPromptTokens);
     int newTokenId;
+
+    String response = '';
     
     while (!_completer!.isCompleted) {
       final nCtx = Llama.lib.llama_n_ctx(_context);
@@ -189,13 +164,29 @@ class LlamaNative implements Llama {
         throw Exception('Failed to convert token to piece');
       }
 
-      yield buffer.cast<Utf8>().toDartString();
+      response += buffer.cast<Utf8>().toDartString();
 
       final newTokenPointer = calloc<llama_token>(1);
       newTokenPointer.value = newTokenId;
 
       batch = Llama.lib.llama_batch_get_one(newTokenPointer, 1);
     }
+
+    messages.add(ChatMessage(
+      role: 'assistant',
+      content: response
+    ));
+
+    _contextLength = Llama.lib.llama_chat_apply_template(
+      template, 
+      messages.toNative(), 
+      messages.length, 
+      false, 
+      ffi.nullptr, 
+      0
+    );
+
+    return messages.last.content;
   }
 
   @override

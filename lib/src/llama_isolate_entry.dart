@@ -55,16 +55,13 @@ class LlamaIsolateEntry {
 
           final messages = ChatMessages.fromRecords(data);
 
-          final response = llamaCppNative.prompt(messages);
+          final response = await llamaCppNative.prompt(messages);
 
-          await for (var message in response) {
-            sendPort.send((false, message));
-          }
-
-          sendPort.send(null);
+          sendPort.send((false, response));
         }
-        else if (data is bool) {
-          sendPort.send(data);
+        else if (data == null) {
+          sendPort.send(null);
+          return;
         }
       }
     }

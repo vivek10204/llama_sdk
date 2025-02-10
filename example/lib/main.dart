@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'dart:async';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:llama/llama.dart';
@@ -23,11 +22,6 @@ class _LlamaAppState extends State<LlamaApp> {
   final List<ChatMessage> _messages = [];
   Llama? _model;
   String? _modelPath;
-
-  void _test() {
-    final test = Llama.lib.llama_context_default_params();
-    print(test.n_ctx);
-  }
 
   void _loadModel() async {
     final result = await FilePicker.platform.pickFiles(
@@ -79,17 +73,11 @@ class _LlamaAppState extends State<LlamaApp> {
       _controller.clear();
     });
 
-    Stream<String> stream = _model!.prompt(_messages);
+    final response = await _model!.prompt(_messages.copy());
 
     setState(() {
-      _messages.add(ChatMessage(role: 'assistant', content: ""));
+      _messages.add(ChatMessage(role: 'assistant', content: response));
     });
-
-    await for (final message in stream) {
-      setState(() {
-        _messages.last.content = message;
-      });
-    }
   }
 
   @override
@@ -112,13 +100,7 @@ class _LlamaAppState extends State<LlamaApp> {
       leading: IconButton(
         icon: const Icon(Icons.folder_open),
         onPressed: _loadModel,
-      ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.info),
-          onPressed: _test,
-        ),
-      ]
+      )
     );
   }
 
