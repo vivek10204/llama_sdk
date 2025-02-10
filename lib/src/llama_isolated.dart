@@ -44,7 +44,6 @@ class LlamaIsolated implements Llama {
         _initialized.complete();
       }
       else if (data == null) {
-        print('LlamaIsolated: stopping');
         _responseController.close();
         break;
       }
