@@ -1,5 +1,5 @@
 // ignore_for_file: constant_identifier_names
-part of '../../llama.dart';
+part of '../../lcpp.dart';
 
 class ContextParams {
   // text context, 0 = from model

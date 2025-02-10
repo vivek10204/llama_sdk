@@ -1,4 +1,4 @@
-part of '../llama.dart';
+part of '../lcpp.dart';
 
 class LlamaException implements Exception {
   final String message;

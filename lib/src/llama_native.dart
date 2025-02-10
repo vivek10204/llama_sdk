@@ -1,4 +1,4 @@
-part of '../llama.dart';
+part of '../lcpp.dart';
 
 class LlamaNative implements Llama {
   ffi.Pointer<llama_model> _model = ffi.nullptr;

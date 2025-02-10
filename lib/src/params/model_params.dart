@@ -1,4 +1,4 @@
-part of '../../llama.dart';
+part of '../../lcpp.dart';
 
 /// A class representing the parameters for a model.
 ///

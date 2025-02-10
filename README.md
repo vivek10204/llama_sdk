@@ -13,7 +13,7 @@ To use this package, add `llama` as a [dependency in your pubspec.yaml file](htt
 
 ```yaml
 dependencies:
-  lcpp: ^0.0.1
+  lcpp: ^0.0.2
 ```
 
 then you can import llama in your Dart code
