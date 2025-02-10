@@ -1,6 +1,6 @@
-# llama
+# lcpp
 
-llama is a dart implementation of llama.cpp used by the mobile artificial intelligence distribution (maid)
+lcpp is a dart implementation of llama.cpp used by the mobile artificial intelligence distribution (maid)
 
 ## Features
 
@@ -13,7 +13,7 @@ To use this package, add `llama` as a [dependency in your pubspec.yaml file](htt
 
 ```yaml
 dependencies:
-  llama: ^0.0.1
+  lcpp: ^0.0.1
 ```
 
 then you can import llama in your Dart code
