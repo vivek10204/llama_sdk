@@ -48,8 +48,8 @@ void _isolateEntry(_SerializableIsolateArguments args) async {
     );
 
     await for (final data in receivePort) {
-      if (data is List<ChatMessageRecord>) {
-        final messages = ChatMessages.fromRecords(data);
+      if (data is List<_ChatMessageRecord>) {
+        final messages = ChatMessages._fromRecords(data);
         final stream = llamaCppNative.prompt(messages);
 
         await for (final response in stream) {
@@ -125,7 +125,7 @@ class LlamaIsolated implements Llama {
 
     _responseController = StreamController<String>();
     
-    _sendPort!.send(messages.toRecords());
+    _sendPort!.send(messages._toRecords());
 
     await for (final response in _responseController.stream) {
       yield response;

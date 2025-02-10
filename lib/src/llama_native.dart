@@ -188,10 +188,7 @@ class LlamaNative implements Llama {
       batch = Llama.lib.llama_batch_get_one(newTokenId, 1);
     }
 
-    messagesCopy.add(ChatMessage(
-      role: 'assistant',
-      content: response
-    ));
+    messagesCopy.add(AssistantChatMessage(response));
 
     messagesPtr = messagesCopy.toNative();
 

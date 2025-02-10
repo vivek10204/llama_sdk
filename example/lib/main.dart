@@ -66,13 +66,13 @@ class _LlamaAppState extends State<LlamaApp> {
     }
 
     setState(() {
-      _messages.add(ChatMessage(role: 'user', content: value));
+      _messages.add(UserChatMessage(value));
       _controller.clear();
     });
 
     final stream = _model!.prompt(_messages.copy());
 
-    _messages.add(ChatMessage(role: 'assistant', content: ''));
+    _messages.add(AssistantChatMessage(''));
 
     await for (var response in stream) {
       setState(() {
