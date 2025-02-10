@@ -15,6 +15,7 @@ part 'src/llama_cpp.dart';
 part 'src/llama_exception.dart';
 part 'src/library.dart';
 part 'src/llama_native.dart';
+part 'src/llama_isolate_entry.dart';
 part 'src/model_params.dart';
 part 'src/chat_message.dart';
 part 'src/context_params.dart';

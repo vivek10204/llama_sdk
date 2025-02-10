@@ -11,7 +11,7 @@ llama get lib {
       _lib = llama(ffi.DynamicLibrary.open('libllama.so'));
     } 
     else if (Platform.isMacOS || Platform.isIOS) {
-      _lib = llama(ffi.DynamicLibrary.open('libllama.dylib'));
+      _lib = llama(ffi.DynamicLibrary.open('llama.framework/llama'));
     } 
     else {
       throw Exception('Unsupported platform');
