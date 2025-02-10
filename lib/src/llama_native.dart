@@ -84,7 +84,9 @@ class LlamaNative implements Llama {
   }
 
   @override
-  Future<String> prompt(List<ChatMessage> messages) async {
+  Stream<String> prompt(List<ChatMessage> messages) async* {
+    final messagesCopy = messages.copy();
+
     assert(_model != ffi.nullptr, 'Model is not loaded');
     assert(_context != ffi.nullptr, 'Context is not initialized');
     assert(_sampler != ffi.nullptr, 'Sampler is not initialized');
@@ -99,8 +101,8 @@ class LlamaNative implements Llama {
 
     int newContextLength = Llama.lib.llama_chat_apply_template(
       template, 
-      messages.toNative(), 
-      messages.length, 
+      messagesCopy.toNative(), 
+      messagesCopy.length, 
       true, 
       formatted, 
       nCtx
@@ -110,8 +112,8 @@ class LlamaNative implements Llama {
       formatted = calloc<ffi.Char>(newContextLength);
       newContextLength = Llama.lib.llama_chat_apply_template(
         template, 
-        messages.toNative(), 
-        messages.length, 
+        messagesCopy.toNative(), 
+        messagesCopy.length, 
         true, 
         formatted, 
         newContextLength
@@ -164,7 +166,9 @@ class LlamaNative implements Llama {
         throw Exception('Failed to convert token to piece');
       }
 
-      response += buffer.cast<Utf8>().toDartString();
+      final piece = buffer.cast<Utf8>().toDartString();
+      response += piece;
+      yield piece;
 
       final newTokenPointer = calloc<llama_token>(1);
       newTokenPointer.value = newTokenId;
@@ -172,21 +176,19 @@ class LlamaNative implements Llama {
       batch = Llama.lib.llama_batch_get_one(newTokenPointer, 1);
     }
 
-    messages.add(ChatMessage(
+    messagesCopy.add(ChatMessage(
       role: 'assistant',
       content: response
     ));
 
     _contextLength = Llama.lib.llama_chat_apply_template(
       template, 
-      messages.toNative(), 
-      messages.length, 
+      messagesCopy.toNative(), 
+      messagesCopy.length, 
       false, 
       ffi.nullptr, 
       0
     );
-
-    return messages.last.content;
   }
 
   @override

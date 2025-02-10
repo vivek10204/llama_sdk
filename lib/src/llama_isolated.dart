@@ -31,13 +31,8 @@ class LlamaIsolated implements Llama {
     await Isolate.spawn(LlamaIsolateEntry.entry, isolateParams.toSerializable);
 
     await for (var data in receivePort) {
-      if (data is StringResponse) {
-        if (data.$1) {
-          throw Exception(data.$2);
-        }
-        else {
-          _responseController.add(data.$2);
-        }
+      if (data is String) {
+         _responseController.add(data);
       } 
       else if (data is SendPort) {
         _sendPort = data;
@@ -51,7 +46,7 @@ class LlamaIsolated implements Llama {
   }
 
   @override
-  Future<String> prompt(List<ChatMessage> messages) async {  
+  Stream<String> prompt(List<ChatMessage> messages) async* {  
     if (!_initialized.isCompleted) {
       await _initialized.future;
     }
@@ -60,14 +55,11 @@ class LlamaIsolated implements Llama {
     
     _sendPort!.send(messages.toRecords());
 
-    messages.add(ChatMessage(
-      role: 'assistant',
-      content: await _responseController.stream.first
-    ));
+    await for (final response in _responseController.stream) {
+      yield response;
+    }
 
     _responseController.close();
-
-    return messages.last.content;
   }
 
   @override
