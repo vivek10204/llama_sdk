@@ -1,5 +1,5 @@
 // ignore_for_file: constant_identifier_names
-part of '../llama.dart';
+part of '../../llama.dart';
 
 class ContextParams {
   // text context, 0 = from model
@@ -71,6 +71,34 @@ class ContextParams {
   // whether to measure performance timings
   final bool? noPerformance;
 
+  /// A class representing the parameters for context configuration.
+  ///
+  /// The parameters include various settings for context size, batch size,
+  /// threading, scaling, pooling, attention, and other advanced configurations.
+  ///
+  /// - `nCtx`: The context size.
+  /// - `nBatch`: The batch size.
+  /// - `nUBatch`: The unrolled batch size.
+  /// - `nSeqMax`: The maximum sequence length.
+  /// - `nThreads`: The number of threads.
+  /// - `nThreadsBatch`: The number of threads for batch processing.
+  /// - `ropeScalingType`: The type of scaling for ROPE (Rotary Position Embedding).
+  /// - `poolingType`: The type of pooling to be used.
+  /// - `attentionType`: The type of attention mechanism to be used.
+  /// - `ropeFrequencyBase`: The base frequency for ROPE.
+  /// - `ropeFrequencyScale`: The scaling factor for ROPE frequency.
+  /// - `yarnExtrapolationFactor`: The extrapolation factor for YARN.
+  /// - `yarnAttenuationFactor`: The attenuation factor for YARN.
+  /// - `yarnBetaFast`: The fast beta parameter for YARN.
+  /// - `yarnBetaSlow`: The slow beta parameter for YARN.
+  /// - `yarnOriginalContext`: The original context for YARN.
+  /// - `defragmentationThreshold`: The threshold for defragmentation.
+  /// - `typeK`: The type of key embeddings.
+  /// - `typeV`: The type of value embeddings.
+  /// - `embeddings`: The embeddings to be used.
+  /// - `offloadKqv`: Whether to offload KQV (Key, Query, Value) computations.
+  /// - `flashAttention`: Whether to use flash attention.
+  /// - `noPerformance`: Whether to disable performance optimizations.
   const ContextParams({
     this.nCtx,
     this.nBatch,
@@ -97,6 +125,32 @@ class ContextParams {
     this.noPerformance,
   });
 
+  /// Creates a new instance of [ContextParams] from a map.
+  ///
+  /// The [map] parameter should contain the following keys:
+  /// - `nCtx`: The context size.
+  /// - `nBatch`: The batch size.
+  /// - `nUBatch`: The unrolled batch size.
+  /// - `nSeqMax`: The maximum sequence length.
+  /// - `nThreads`: The number of threads.
+  /// - `nThreadsBatch`: The number of threads for batch processing.
+  /// - `ropeScalingType`: The type of rope scaling, parsed using [RopeScalingType.fromString].
+  /// - `poolingType`: The type of pooling, parsed using [PoolingType.fromString].
+  /// - `attentionType`: The type of attention, parsed using [AttentionType.fromString].
+  /// - `ropeFrequencyBase`: The base frequency for rope.
+  /// - `ropeFrequencyScale`: The scale frequency for rope.
+  /// - `yarnExtrapolationFactor`: The extrapolation factor for yarn.
+  /// - `yarnAttenuationFactor`: The attenuation factor for yarn.
+  /// - `yarnBetaFast`: The beta fast parameter for yarn.
+  /// - `yarnBetaSlow`: The beta slow parameter for yarn.
+  /// - `yarnOriginalContext`: The original context for yarn.
+  /// - `defragmentationThreshold`: The threshold for defragmentation.
+  /// - `typeK`: The type K, parsed using [GgmlType.fromString].
+  /// - `typeV`: The type V, parsed using [GgmlType.fromString].
+  /// - `embeddings`: The embeddings.
+  /// - `offloadKqv`: The offload KQV parameter.
+  /// - `flashAttention`: The flash attention parameter.
+  /// - `noPerformance`: The no performance parameter.
   factory ContextParams.fromMap(Map<String, dynamic> map) => ContextParams(
     nCtx: map['nCtx'],
     nBatch: map['nBatch'],
@@ -123,8 +177,46 @@ class ContextParams {
     noPerformance: map['noPerformance'],
   );
 
+  /// Creates an instance of [ContextParams] from a JSON string.
+  ///
+  /// The [source] parameter is a JSON-encoded string representation of the
+  /// context parameters.
+  ///
+  /// Returns an instance of [ContextParams] created from the decoded JSON map.
   factory ContextParams.fromJson(String source) => ContextParams.fromMap(jsonDecode(source));
 
+  /// Converts the current instance to a native `llama_context_params` object.
+  /// 
+  /// This method initializes a `llama_context_params` object with default values
+  /// and then updates its fields based on the current instance's properties if they are not null.
+  /// 
+  /// The following fields are set if they are not null:
+  /// - `nCtx`: Sets the `n_ctx` field.
+  /// - `nBatch`: Sets the `n_batch` field.
+  /// - `nUBatch`: Sets the `n_ubatch` field.
+  /// - `nSeqMax`: Sets the `n_seq_max` field.
+  /// - `nThreads`: Sets the `n_threads` field.
+  /// - `nThreadsBatch`: Sets the `n_threads_batch` field.
+  /// - `ropeScalingType`: Sets the `rope_scaling_typeAsInt` field (enum index - 1).
+  /// - `poolingType`: Sets the `pooling_typeAsInt` field (enum index - 1).
+  /// - `attentionType`: Sets the `attention_typeAsInt` field (enum index - 1).
+  /// - `ropeFrequencyBase`: Sets the `rope_freq_base` field.
+  /// - `ropeFrequencyScale`: Sets the `rope_freq_scale` field.
+  /// - `yarnExtrapolationFactor`: Sets the `yarn_ext_factor` field.
+  /// - `yarnAttenuationFactor`: Sets the `yarn_attn_factor` field.
+  /// - `yarnBetaFast`: Sets the `yarn_beta_fast` field.
+  /// - `yarnBetaSlow`: Sets the `yarn_beta_slow` field.
+  /// - `yarnOriginalContext`: Sets the `yarn_orig_ctx` field.
+  /// - `defragmentationThreshold`: Sets the `defrag_thold` field.
+  /// - `typeK`: Sets the `type_kAsInt` field (enum index * 1).
+  /// - `typeV`: Sets the `type_vAsInt` field (enum index * 1).
+  /// - `embeddings`: Sets the `embeddings` field.
+  /// - `offloadKqv`: Sets the `offload_kqv` field.
+  /// - `flashAttention`: Sets the `flash_attn` field.
+  /// - `noPerformance`: Sets the `no_perf` field.
+  /// 
+  /// Returns:
+  /// - A `llama_context_params` object with the updated fields.
   llama_context_params toNative() {
     final llama_context_params contextParams = Llama.lib.llama_context_default_params();
 
@@ -228,6 +320,32 @@ class ContextParams {
     return contextParams;
   }
 
+  /// Converts the context parameters to a map.
+  ///
+  /// The map contains the following key-value pairs:
+  /// - `nCtx`: The context size.
+  /// - `nBatch`: The batch size.
+  /// - `nUBatch`: The unbatched size.
+  /// - `nSeqMax`: The maximum sequence length.
+  /// - `nThreads`: The number of threads.
+  /// - `nThreadsBatch`: The number of threads for batching.
+  /// - `ropeScalingType`: The type of rope scaling, if any.
+  /// - `poolingType`: The type of pooling, if any.
+  /// - `attentionType`: The type of attention, if any.
+  /// - `ropeFrequencyBase`: The base frequency for rope.
+  /// - `ropeFrequencyScale`: The scale frequency for rope.
+  /// - `yarnExtrapolationFactor`: The extrapolation factor for yarn.
+  /// - `yarnAttenuationFactor`: The attenuation factor for yarn.
+  /// - `yarnBetaFast`: The fast beta value for yarn.
+  /// - `yarnBetaSlow`: The slow beta value for yarn.
+  /// - `yarnOriginalContext`: The original context for yarn.
+  /// - `defragmentationThreshold`: The threshold for defragmentation.
+  /// - `typeK`: The type K, if any.
+  /// - `typeV`: The type V, if any.
+  /// - `embeddings`: The embeddings.
+  /// - `offloadKqv`: Whether to offload KQV.
+  /// - `flashAttention`: Whether flash attention is enabled.
+  /// - `noPerformance`: Whether performance optimizations are disabled.
   Map<String, dynamic> toMap() => {
     'nCtx': nCtx,
     'nBatch': nBatch,
@@ -254,9 +372,27 @@ class ContextParams {
     'noPerformance': noPerformance,
   };
 
+  /// Converts the current object to a JSON string representation.
+  ///
+  /// This method uses the `toMap` method to first convert the object to a
+  /// map, and then encodes the map to a JSON string using `jsonEncode`.
+  ///
+  /// Returns:
+  ///   A JSON string representation of the current object.
   String toJson() => jsonEncode(toMap());
 }
 
+/// Enum representing different types of rope scaling.
+/// 
+/// The available types are:
+/// - `unspecified`: Default value when the type is not specified.
+/// - `none`: No scaling applied.
+/// - `linear`: Linear scaling.
+/// - `yarn`: Yarn scaling.
+/// - `longrope`: Long rope scaling.
+/// 
+/// Provides a method to convert a string value to the corresponding 
+/// `RopeScalingType` enum value.
 enum RopeScalingType {
   unspecified,
   none,
@@ -280,6 +416,19 @@ enum RopeScalingType {
   }
 }
 
+/// Enum representing different types of pooling operations.
+///
+/// The available pooling types are:
+/// - `unspecified`: Default value when no pooling type is specified.
+/// - `none`: No pooling operation.
+/// - `mean`: Mean pooling operation.
+/// - `cls`: CLS token pooling operation.
+/// - `last`: Last token pooling operation.
+/// - `rank`: Rank pooling operation.
+///
+/// The `fromString` method converts a string value to the corresponding
+/// `PoolingType` enum value. If the string does not match any known pooling
+/// type, it returns `PoolingType.unspecified`.
 enum PoolingType {
   unspecified,
   none,
@@ -306,6 +455,13 @@ enum PoolingType {
   }
 }
 
+/// Enum representing different types of attention mechanisms.
+///
+/// - `unspecified`: Default value when the attention type is not specified.
+/// - `causal`: Represents causal attention.
+/// - `nonCausal`: Represents non-causal attention.
+///
+/// Provides a method to convert a string representation to an `AttentionType` enum value.
 enum AttentionType {
   unspecified,
   causal,
@@ -323,6 +479,26 @@ enum AttentionType {
   }
 }
 
+/// Enum representing different GGML (General Graphical Modeling Language) types.
+///
+/// Each type corresponds to a specific data format or quantization level used in GGML.
+///
+/// The available types are:
+/// - `f32`: 32-bit floating point
+/// - `f16`: 16-bit floating point
+/// - `q4_0`, `q4_1`, `q4_2`, `q4_3`: 4-bit quantization levels
+/// - `q5_0`, `q5_1`: 5-bit quantization levels
+/// - `q8_0`, `q8_1`: 8-bit quantization levels
+/// - `q2_k`, `q3_k`, `q4_k`, `q5_k`, `q6_k`, `q8_k`: Various quantization levels with different bit depths
+/// - `iq2_xxs`, `iq2_xs`, `iq3_xxs`, `iq1_s`, `iq4_nl`, `iq3_s`, `iq2_s`, `iq4_xs`: Integer quantization levels with different bit depths and suffixes
+/// - `i8`, `i16`, `i32`, `i64`: Integer types with different bit depths
+/// - `f64`: 64-bit floating point
+/// - `iq1_m`: Integer quantization with a specific suffix
+/// - `bf16`: Brain floating point 16-bit
+/// - `q4_0_4_4`, `q4_0_4_8`, `q4_0_8_8`: Mixed quantization levels
+/// - `tq1_0`, `tq2_0`: Tensor quantization levels
+///
+/// The `fromString` method allows converting a string representation of a GGML type to its corresponding enum value.
 enum GgmlType {
   f32,
   f16,
