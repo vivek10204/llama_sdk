@@ -50,10 +50,8 @@ class _LlamaAppState extends State<LlamaApp> {
         nCtx: 2048,
         nBatch: 2048
       ),
-      samplingParams: SamplingParams(
-        minP: const MinPArguments(p: 0.05, minKeep: 1),
-        temperature: const TemperatureArguments(temperature: 0.8),
-        seed: Random().nextInt(1000000)
+      samplingParams: const SamplingParams(
+        greedy: true
       )
     );
 
