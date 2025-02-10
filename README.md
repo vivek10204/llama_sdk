@@ -29,7 +29,7 @@ Below is a simple example of how to use llama
 ```dart
 final llama = Llama(
   modelParams: ModelParams(
-    path: result.files.single.path!
+    path: 'path/to/model',
   ),
   contextParams: const ContextParams(
     nCtx: 2048,
