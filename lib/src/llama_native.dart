@@ -88,6 +88,8 @@ class LlamaNative implements Llama {
     final messageCopy = messages.copy();
 
     assert(_model != ffi.nullptr, 'Model is not loaded');
+    assert(_context != ffi.nullptr, 'Context is not initialized');
+    assert(_sampler != ffi.nullptr, 'Sampler is not initialized');
 
     _completer = Completer();
 
