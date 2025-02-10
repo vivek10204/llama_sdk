@@ -1,74 +1,75 @@
 // ignore_for_file: constant_identifier_names
 part of '../../lcpp.dart';
 
+/// A class representing the parameters for context configuration.
 class ContextParams {
-  // text context, 0 = from model
+  /// text context, 0 = from model
   final int? nCtx;
 
-  // logical maximum batch size that can be submitted to llama_decode
+  /// logical maximum batch size that can be submitted to llama_decode
   final int? nBatch;
 
-  // physical maximum batch size
+  /// physical maximum batch size
   final int? nUBatch;
 
-  // max number of sequences (i.e. distinct states for recurrent models)
+  /// max number of sequences (i.e. distinct states for recurrent models)
   final int? nSeqMax;
 
-  // number of threads to use for generation
+  /// number of threads to use for generation
   final int? nThreads;
 
-  // number of threads to use for batch processing
+  /// number of threads to use for batch processing
   final int? nThreadsBatch;
 
-  // RoPE scaling type, from `enum llama_rope_scaling_type`
+  /// RoPE scaling type, from `enum llama_rope_scaling_type`
   final RopeScalingType? ropeScalingType;
 
-  // whether to pool (sum) embedding results by sequence id
+  /// whether to pool (sum) embedding results by sequence id
   final PoolingType? poolingType;
 
-  // attention type to use for embeddings
+  /// attention type to use for embeddings
   final AttentionType? attentionType;
 
-  // RoPE base frequency, 0 = from model
+  /// RoPE base frequency, 0 = from model
   final double? ropeFrequencyBase;
 
-  // RoPE frequency scaling factor, 0 = from model
+  /// RoPE frequency scaling factor, 0 = from model
   final double? ropeFrequencyScale;
 
-  // YaRN extrapolation mix factor, negative = from model
+  /// YaRN extrapolation mix factor, negative = from model
   final double? yarnExtrapolationFactor;
 
-  // YaRN magnitude scaling factor
+  /// YaRN magnitude scaling factor
   final double? yarnAttenuationFactor;
 
-  // YaRN low correction dim
+  /// YaRN low correction dim
   final double? yarnBetaFast;
 
-  // YaRN high correction dim
+  /// YaRN high correction dim
   final double? yarnBetaSlow;
 
-  // YaRN original context size
+  /// YaRN original context size
   final int? yarnOriginalContext;
 
-  // defragment the KV cache if holes/size > thold, < 0 disabled (default)
+  /// defragment the KV cache if holes/size > thold, < 0 disabled (default)
   final double? defragmentationThreshold;
 
-  // data type for K cache
+  /// data type for K cache
   final GgmlType? typeK;
 
-  // data type for V cache
+  /// data type for V cache
   final GgmlType? typeV;
 
-  // if true, extract embeddings (together with logits)
+  /// if true, extract embeddings (together with logits)
   final bool? embeddings;
 
-  // whether to offload the KQV ops (including the KV cache) to GPU
+  /// whether to offload the KQV ops (including the KV cache) to GPU
   final bool? offloadKqv;
 
-  // whether to use flash attention
+  /// whether to use flash attention
   final bool? flashAttention;
 
-  // whether to measure performance timings
+  /// whether to measure performance timings
   final bool? noPerformance;
 
   /// A class representing the parameters for context configuration.
@@ -394,12 +395,22 @@ class ContextParams {
 /// Provides a method to convert a string value to the corresponding 
 /// `RopeScalingType` enum value.
 enum RopeScalingType {
+  /// Default value when the type is not specified.
   unspecified,
+
+  /// No scaling applied.
   none,
+
+  /// Linear scaling.
   linear,
+
+  /// Yarn scaling.
   yarn,
+
+  /// Long rope scaling.
   longrope;
 
+  /// Converts a string value to the corresponding `RopeScalingType` enum value.
   static RopeScalingType fromString(String value) {
     switch (value) {
       case 'none':
@@ -430,13 +441,25 @@ enum RopeScalingType {
 /// `PoolingType` enum value. If the string does not match any known pooling
 /// type, it returns `PoolingType.unspecified`.
 enum PoolingType {
+  /// Default value when no pooling type is specified.
   unspecified,
+
+  /// No pooling operation.
   none,
+
+  /// Mean pooling operation.
   mean,
+
+  /// CLS token pooling operation.
   cls,
+
+  /// Last token pooling operation.
   last,
+
+  /// Rank pooling operation.
   rank;
 
+  /// Converts a string value to the corresponding `PoolingType` enum value.
   static PoolingType fromString(String value) {
     switch (value) {
       case 'none':
@@ -463,10 +486,16 @@ enum PoolingType {
 ///
 /// Provides a method to convert a string representation to an `AttentionType` enum value.
 enum AttentionType {
+  /// Default value when the attention type is not specified.
   unspecified,
+
+  /// Causal attention.
   causal,
+
+  /// Non-causal attention.
   nonCausal;
 
+  /// Converts a string value to the corresponding `AttentionType` enum value.
   static AttentionType fromString(String value) {
     switch (value) {
       case 'causal':
@@ -500,43 +529,115 @@ enum AttentionType {
 ///
 /// The `fromString` method allows converting a string representation of a GGML type to its corresponding enum value.
 enum GgmlType {
+  /// 32-bit floating point
   f32,
+
+  /// 16-bit floating point
   f16,
+
+  /// 4-bit quantization level 0
   q4_0,
+
+  /// 4-bit quantization level 1
   q4_1,
+
+  /// 4-bit quantization level 2
   q4_2,
+
+  /// 4-bit quantization level 3
   q4_3,
+
+  /// 5-bit quantization level 0
   q5_0,
+
+  /// 5-bit quantization level 1
   q5_1,
+
+  /// 8-bit quantization level 0
   q8_0,
+
+  /// 8-bit quantization level 1
   q8_1,
+
+  /// 2-bit quantization level for keys
   q2_k,
+
+  /// 3-bit quantization level for keys
   q3_k,
+
+  /// 4-bit quantization level for keys
   q4_k,
+
+  /// 5-bit quantization level for keys
   q5_k,
+
+  /// 6-bit quantization level for keys
   q6_k,
+
+  /// 8-bit quantization level for keys
   q8_k,
+
+  /// Integer quantization level 2 xxs
   iq2_xxs,
+
+  /// Integer quantization level 2 xs
   iq2_xs,
+
+  /// Integer quantization level 3 xxs
   iq3_xxs,
+
+  /// Integer quantization level 1 s
   iq1_s,
+
+  /// Integer quantization level 4 nl
   iq4_nl,
+
+  /// Integer quantization level 3 s
   iq3_s,
+
+  /// Integer quantization level 2 s
   iq2_s,
+
+  /// Integer quantization level 4 xs
   iq4_xs,
+
+  /// 8-bit integer
   i8,
+
+  /// 16-bit integer
   i16,
+
+  /// 32-bit integer
   i32,
+
+  /// 64-bit integer
   i64,
+
+  /// 64-bit floating point
   f64,
+
+  /// Integer quantization level 1 m
   iq1_m,
+
+  /// Brain floating point 16-bit
   bf16,
+
+  /// Mixed quantization level 4-4
   q4_0_4_4,
+
+  /// Mixed quantization level 4-8
   q4_0_4_8,
+
+  /// Mixed quantization level 8-8
   q4_0_8_8,
+
+  /// Tensor quantization level 1
   tq1_0,
+
+  /// Tensor quantization level 2
   tq2_0;
 
+  /// Converts a string value to the corresponding `GgmlType` enum value.
   static GgmlType fromString(String value) {
     switch (value) {
       case 'f32':
