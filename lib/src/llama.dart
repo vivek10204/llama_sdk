@@ -1,14 +1,14 @@
 part of '../lcpp.dart';
 
 /// An abstract interface class representing a Llama library.
-/// 
+///
 /// This class provides a factory constructor to create instances of either
 /// `LlamaIsolated` or `LlamaNative` based on the `isolate` parameter. It also
 /// provides a static getter to load the appropriate dynamic library based on
 /// the platform.
-/// 
+///
 /// The `Llama` class has the following members:
-/// 
+///
 /// - `lib`: A static getter that returns an instance of the `llama` library,
 ///   loading the appropriate dynamic library based on the platform if it has
 ///   not been loaded already.
@@ -18,7 +18,7 @@ part of '../lcpp.dart';
 ///   a stream of strings.
 /// - `stop`: A method to stop the Llama instance.
 /// - `free`: A method to free the resources used by the Llama instance.
-/// 
+///
 /// Throws an `LlamaException` if the platform is unsupported.
 abstract interface class Llama {
   static llama? _lib;
@@ -27,7 +27,7 @@ abstract interface class Llama {
   ///
   /// This getter initializes the `_lib` field if it is `null` by loading the
   /// appropriate dynamic library based on the current platform:
-  /// 
+  ///
   /// - On Windows, it loads `llama.dll`.
   /// - On Linux or Android, it loads `libllama.so`.
   /// - On macOS or iOS, it loads `llama.framework/llama`.
@@ -37,14 +37,11 @@ abstract interface class Llama {
     if (_lib == null) {
       if (Platform.isWindows) {
         _lib = llama(ffi.DynamicLibrary.open('llama.dll'));
-      } 
-      else if (Platform.isLinux || Platform.isAndroid) {
+      } else if (Platform.isLinux || Platform.isAndroid) {
         _lib = llama(ffi.DynamicLibrary.open('libllama.so'));
-      } 
-      else if (Platform.isMacOS || Platform.isIOS) {
+      } else if (Platform.isMacOS || Platform.isIOS) {
         _lib = llama(ffi.DynamicLibrary.open('llama.framework/llama'));
-      } 
-      else {
+      } else {
         throw LlamaException('Unsupported platform');
       }
     }
@@ -64,19 +61,22 @@ abstract interface class Llama {
   /// - [isolate]: If true, creates an instance of [LlamaIsolated], otherwise
   ///   creates an instance of [LlamaNative].
   factory Llama({
-    required ModelParams modelParams, 
+    required ModelParams modelParams,
     ContextParams contextParams = const ContextParams(),
     SamplingParams samplingParams = const SamplingParams(),
     bool isolate = false,
-  }) => isolate ? LlamaIsolated(
-    modelParams: modelParams,
-    contextParams: contextParams,
-    samplingParams: samplingParams,
-  ) : LlamaNative(
-    modelParams: modelParams,
-    contextParams: contextParams,
-    samplingParams: samplingParams,
-  );
+  }) =>
+      isolate
+          ? LlamaIsolated(
+              modelParams: modelParams,
+              contextParams: contextParams,
+              samplingParams: samplingParams,
+            )
+          : LlamaNative(
+              modelParams: modelParams,
+              contextParams: contextParams,
+              samplingParams: samplingParams,
+            );
 
   /// Generates a stream of responses based on the provided list of chat messages.
   ///

@@ -9,21 +9,17 @@ typedef _IsolateArguments = ({
 
 extension _IsolateArgumentsExtension on _IsolateArguments {
   _SerializableIsolateArguments get toSerializable => (
-    modelParams.toJson(),
-    contextParams.toJson(),
-    samplingParams.toJson(),
-    sendPort
-  );
+        modelParams.toJson(),
+        contextParams.toJson(),
+        samplingParams.toJson(),
+        sendPort
+      );
 }
 
-typedef _SerializableIsolateArguments = (
-  String,
-  String,
-  String,
-  SendPort
-);
+typedef _SerializableIsolateArguments = (String, String, String, SendPort);
 
-extension _SerializableIsolateArgumentsExtension on _SerializableIsolateArguments {
+extension _SerializableIsolateArgumentsExtension
+    on _SerializableIsolateArguments {
   ModelParams get modelParams => ModelParams.fromJson(this.$1);
 
   ContextParams get contextParams => ContextParams.fromJson(this.$2);
@@ -42,10 +38,9 @@ void _isolateEntry(_SerializableIsolateArguments args) async {
     sendPort.send(receivePort.sendPort);
 
     llamaCppNative = LlamaNative(
-      modelParams: args.modelParams,
-      contextParams: args.contextParams,
-      samplingParams: args.samplingParams
-    );
+        modelParams: args.modelParams,
+        contextParams: args.contextParams,
+        samplingParams: args.samplingParams);
 
     await for (final data in receivePort) {
       if (data is List<_ChatMessageRecord>) {
@@ -57,21 +52,18 @@ void _isolateEntry(_SerializableIsolateArguments args) async {
         }
 
         sendPort.send(false);
-      }
-      else if (data is bool) {
+      } else if (data is bool) {
         if (data) {
           llamaCppNative.free();
           return;
-        }
-        else {
+        } else {
           llamaCppNative.stop();
         }
 
         sendPort.send(data);
       }
     }
-  }
-  catch (e) {
+  } catch (e) {
     log('LlamaIsolateEntry: $e');
   }
 }
@@ -99,7 +91,8 @@ void _isolateEntry(_SerializableIsolateArguments args) async {
 /// for the isolate to be initialized before sending the signal.
 class LlamaIsolated implements Llama {
   final Completer _initialized = Completer();
-  StreamController<String> _responseController = StreamController<String>()..close();
+  StreamController<String> _responseController = StreamController<String>()
+    ..close();
   SendPort? _sendPort;
 
   /// Constructs an instance of [LlamaIsolated].
@@ -111,15 +104,15 @@ class LlamaIsolated implements Llama {
   /// - [modelParams]: The parameters required for the model. This parameter is required.
   /// - [contextParams]: The parameters for the context. This parameter is optional and defaults to an instance of [ContextParams].
   /// - [samplingParams]: The parameters for sampling. This parameter is optional and defaults to an instance of [SamplingParams] with `greedy` set to `true`.
-  LlamaIsolated({
-    required ModelParams modelParams, 
-    ContextParams contextParams = const ContextParams(),
-    SamplingParams samplingParams = const SamplingParams(greedy: true)
-  }) {
+  LlamaIsolated(
+      {required ModelParams modelParams,
+      ContextParams contextParams = const ContextParams(),
+      SamplingParams samplingParams = const SamplingParams(greedy: true)}) {
     _listener(modelParams, contextParams, samplingParams);
   }
 
-  void _listener(ModelParams modelParams, ContextParams contextParams, SamplingParams samplingParams) async {
+  void _listener(ModelParams modelParams, ContextParams contextParams,
+      SamplingParams samplingParams) async {
     final receivePort = ReceivePort();
 
     final isolateParams = (
@@ -133,28 +126,26 @@ class LlamaIsolated implements Llama {
 
     await for (final data in receivePort) {
       if (data is String) {
-         _responseController.add(data);
-      } 
-      else if (data is SendPort) {
+        _responseController.add(data);
+      } else if (data is SendPort) {
         _sendPort = data;
         _initialized.complete();
-      }
-      else if (data is bool) {
+      } else if (data is bool) {
         _responseController.close();
-        
+
         if (data) return;
       }
     }
   }
 
   @override
-  Stream<String> prompt(List<ChatMessage> messages) async* {  
+  Stream<String> prompt(List<ChatMessage> messages) async* {
     if (!_initialized.isCompleted) {
       await _initialized.future;
     }
 
     _responseController = StreamController<String>();
-    
+
     _sendPort!.send(messages._toRecords());
 
     await for (final response in _responseController.stream) {

@@ -24,13 +24,14 @@ class _LlamaAppState extends State<LlamaApp> {
 
   void _loadModel() async {
     final result = await FilePicker.platform.pickFiles(
-      dialogTitle: "Load Model File",
-      type: FileType.any,
-      allowMultiple: false,
-      allowCompression: false
-    );
+        dialogTitle: "Load Model File",
+        type: FileType.any,
+        allowMultiple: false,
+        allowCompression: false);
 
-    if (result == null || result.files.isEmpty || result.files.single.path == null) {
+    if (result == null ||
+        result.files.isEmpty ||
+        result.files.single.path == null) {
       throw Exception('No file selected');
     }
 
@@ -42,17 +43,9 @@ class _LlamaAppState extends State<LlamaApp> {
     }
 
     final llamaCpp = LlamaIsolated(
-      modelParams: ModelParams(
-        path: result.files.single.path!
-      ),
-      contextParams: const ContextParams(
-        nCtx: 2048,
-        nBatch: 2048
-      ),
-      samplingParams: const SamplingParams(
-        greedy: true
-      )
-    );
+        modelParams: ModelParams(path: result.files.single.path!),
+        contextParams: const ContextParams(nCtx: 2048, nBatch: 2048),
+        samplingParams: const SamplingParams(greedy: true));
 
     setState(() {
       _model = llamaCpp;
@@ -83,9 +76,7 @@ class _LlamaAppState extends State<LlamaApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: buildHome()
-    );
+    return MaterialApp(home: buildHome());
   }
 
   Widget buildHome() {
@@ -97,12 +88,11 @@ class _LlamaAppState extends State<LlamaApp> {
 
   PreferredSizeWidget buildAppBar() {
     return AppBar(
-      title: Text(_modelPath ?? 'No model loaded'),
-      leading: IconButton(
-        icon: const Icon(Icons.folder_open),
-        onPressed: _loadModel,
-      )
-    );
+        title: Text(_modelPath ?? 'No model loaded'),
+        leading: IconButton(
+          icon: const Icon(Icons.folder_open),
+          onPressed: _loadModel,
+        ));
   }
 
   Widget buildBody() {

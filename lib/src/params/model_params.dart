@@ -28,30 +28,30 @@ class ModelParams {
   final String path;
 
   /// Indicates whether only the vocabulary should be loaded.
-  /// 
-  /// If `true`, only the vocabulary is loaded, which can be useful for 
-  /// certain operations where the full model is not required. If `false` 
+  ///
+  /// If `true`, only the vocabulary is loaded, which can be useful for
+  /// certain operations where the full model is not required. If `false`
   /// or `null`, the full model is loaded.
   final bool? vocabOnly;
 
   /// Indicates whether memory-mapped files should be used.
-  /// 
+  ///
   /// If `true`, memory-mapped files will be used, which can improve performance
   /// by allowing the operating system to manage memory more efficiently.
   /// If `false` or `null`, memory-mapped files will not be used.
   final bool? useMmap;
 
   /// Indicates whether memory locking (mlock) should be used.
-  /// 
-  /// When `true`, the memory used by the application will be locked, 
-  /// preventing it from being swapped out to disk. This can improve 
-  /// performance by ensuring that the memory remains in RAM. 
-  /// 
+  ///
+  /// When `true`, the memory used by the application will be locked,
+  /// preventing it from being swapped out to disk. This can improve
+  /// performance by ensuring that the memory remains in RAM.
+  ///
   /// When `false` or `null`, memory locking is not used.
   final bool? useMlock;
 
   /// A flag indicating whether to check tensors.
-  /// 
+  ///
   /// If `true`, tensors will be checked. If `false` or `null`, tensors will not be checked.
   final bool? checkTensors;
 
@@ -82,12 +82,11 @@ class ModelParams {
   ///
   /// Returns an instance of [ModelParams] with values from the provided map.
   factory ModelParams.fromMap(Map<String, dynamic> map) => ModelParams(
-    path: map['path'],
-    vocabOnly: map['vocabOnly'],
-    useMmap: map['useMmap'],
-    useMlock: map['useMlock'],
-    checkTensors: map['checkTensors']
-  );
+      path: map['path'],
+      vocabOnly: map['vocabOnly'],
+      useMmap: map['useMmap'],
+      useMlock: map['useMlock'],
+      checkTensors: map['checkTensors']);
 
   /// Creates a new `ModelParams` instance from a JSON string.
   ///
@@ -95,7 +94,8 @@ class ModelParams {
   /// `ModelParams` object.
   ///
   /// Returns a `ModelParams` instance created from the decoded JSON map.
-  factory ModelParams.fromJson(String source) => ModelParams.fromMap(jsonDecode(source));
+  factory ModelParams.fromJson(String source) =>
+      ModelParams.fromMap(jsonDecode(source));
 
   /// Converts the current instance of `model_params` to its native representation.
   ///
@@ -105,7 +105,8 @@ class ModelParams {
   /// Returns:
   ///   A `llama_model_params` instance with the updated values.
   llama_model_params toNative() {
-    final llama_model_params modelParams = Llama.lib.llama_model_default_params();
+    final llama_model_params modelParams =
+        Llama.lib.llama_model_default_params();
     log("Model params initialized");
 
     if (vocabOnly != null) {
@@ -138,12 +139,12 @@ class ModelParams {
   ///
   /// Returns a map representation of the model parameters.
   Map<String, dynamic> toMap() => {
-    'path': path,
-    'vocabOnly': vocabOnly,
-    'useMmap': useMmap,
-    'useMlock': useMlock,
-    'checkTensors': checkTensors,
-  };
+        'path': path,
+        'vocabOnly': vocabOnly,
+        'useMmap': useMmap,
+        'useMlock': useMlock,
+        'checkTensors': checkTensors,
+      };
 
   /// Converts the model parameters to a JSON string.
   ///

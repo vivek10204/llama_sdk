@@ -153,30 +153,36 @@ class ContextParams {
   /// - `flashAttention`: The flash attention parameter.
   /// - `noPerformance`: The no performance parameter.
   factory ContextParams.fromMap(Map<String, dynamic> map) => ContextParams(
-    nCtx: map['nCtx'],
-    nBatch: map['nBatch'],
-    nUBatch: map['nUBatch'],
-    nSeqMax: map['nSeqMax'],
-    nThreads: map['nThreads'],
-    nThreadsBatch: map['nThreadsBatch'],
-    ropeScalingType: map['ropeScalingType'] != null ? RopeScalingType.fromString(map['ropeScalingType']) : null,
-    poolingType: map['poolingType'] != null ? PoolingType.fromString(map['poolingType']) : null,
-    attentionType: map['attentionType'] != null ? AttentionType.fromString(map['attentionType']) : null,
-    ropeFrequencyBase: map['ropeFrequencyBase'],
-    ropeFrequencyScale: map['ropeFrequencyScale'],
-    yarnExtrapolationFactor: map['yarnExtrapolationFactor'],
-    yarnAttenuationFactor: map['yarnAttenuationFactor'],
-    yarnBetaFast: map['yarnBetaFast'],
-    yarnBetaSlow: map['yarnBetaSlow'],
-    yarnOriginalContext: map['yarnOriginalContext'],
-    defragmentationThreshold: map['defragmentationThreshold'],
-    typeK: map['typeK'] != null ? GgmlType.fromString(map['typeK']) : null,
-    typeV: map['typeV'] != null ? GgmlType.fromString(map['typeV']) : null,
-    embeddings: map['embeddings'],
-    offloadKqv: map['offloadKqv'],
-    flashAttention: map['flashAttention'],
-    noPerformance: map['noPerformance'],
-  );
+        nCtx: map['nCtx'],
+        nBatch: map['nBatch'],
+        nUBatch: map['nUBatch'],
+        nSeqMax: map['nSeqMax'],
+        nThreads: map['nThreads'],
+        nThreadsBatch: map['nThreadsBatch'],
+        ropeScalingType: map['ropeScalingType'] != null
+            ? RopeScalingType.fromString(map['ropeScalingType'])
+            : null,
+        poolingType: map['poolingType'] != null
+            ? PoolingType.fromString(map['poolingType'])
+            : null,
+        attentionType: map['attentionType'] != null
+            ? AttentionType.fromString(map['attentionType'])
+            : null,
+        ropeFrequencyBase: map['ropeFrequencyBase'],
+        ropeFrequencyScale: map['ropeFrequencyScale'],
+        yarnExtrapolationFactor: map['yarnExtrapolationFactor'],
+        yarnAttenuationFactor: map['yarnAttenuationFactor'],
+        yarnBetaFast: map['yarnBetaFast'],
+        yarnBetaSlow: map['yarnBetaSlow'],
+        yarnOriginalContext: map['yarnOriginalContext'],
+        defragmentationThreshold: map['defragmentationThreshold'],
+        typeK: map['typeK'] != null ? GgmlType.fromString(map['typeK']) : null,
+        typeV: map['typeV'] != null ? GgmlType.fromString(map['typeV']) : null,
+        embeddings: map['embeddings'],
+        offloadKqv: map['offloadKqv'],
+        flashAttention: map['flashAttention'],
+        noPerformance: map['noPerformance'],
+      );
 
   /// Creates an instance of [ContextParams] from a JSON string.
   ///
@@ -184,13 +190,14 @@ class ContextParams {
   /// context parameters.
   ///
   /// Returns an instance of [ContextParams] created from the decoded JSON map.
-  factory ContextParams.fromJson(String source) => ContextParams.fromMap(jsonDecode(source));
+  factory ContextParams.fromJson(String source) =>
+      ContextParams.fromMap(jsonDecode(source));
 
   /// Converts the current instance to a native `llama_context_params` object.
-  /// 
+  ///
   /// This method initializes a `llama_context_params` object with default values
   /// and then updates its fields based on the current instance's properties if they are not null.
-  /// 
+  ///
   /// The following fields are set if they are not null:
   /// - `nCtx`: Sets the `n_ctx` field.
   /// - `nBatch`: Sets the `n_batch` field.
@@ -215,11 +222,12 @@ class ContextParams {
   /// - `offloadKqv`: Sets the `offload_kqv` field.
   /// - `flashAttention`: Sets the `flash_attn` field.
   /// - `noPerformance`: Sets the `no_perf` field.
-  /// 
+  ///
   /// Returns:
   /// - A `llama_context_params` object with the updated fields.
   llama_context_params toNative() {
-    final llama_context_params contextParams = Llama.lib.llama_context_default_params();
+    final llama_context_params contextParams =
+        Llama.lib.llama_context_default_params();
 
     if (nCtx != null) {
       contextParams.n_ctx = nCtx!;
@@ -348,30 +356,30 @@ class ContextParams {
   /// - `flashAttention`: Whether flash attention is enabled.
   /// - `noPerformance`: Whether performance optimizations are disabled.
   Map<String, dynamic> toMap() => {
-    'nCtx': nCtx,
-    'nBatch': nBatch,
-    'nUBatch': nUBatch,
-    'nSeqMax': nSeqMax,
-    'nThreads': nThreads,
-    'nThreadsBatch': nThreadsBatch,
-    'ropeScalingType': ropeScalingType?.name,
-    'poolingType': poolingType?.name,
-    'attentionType': attentionType?.name,
-    'ropeFrequencyBase': ropeFrequencyBase,
-    'ropeFrequencyScale': ropeFrequencyScale,
-    'yarnExtrapolationFactor': yarnExtrapolationFactor,
-    'yarnAttenuationFactor': yarnAttenuationFactor,
-    'yarnBetaFast': yarnBetaFast,
-    'yarnBetaSlow': yarnBetaSlow,
-    'yarnOriginalContext': yarnOriginalContext,
-    'defragmentationThreshold': defragmentationThreshold,
-    'typeK': typeK?.name,
-    'typeV': typeV?.name,
-    'embeddings': embeddings,
-    'offloadKqv': offloadKqv,
-    'flashAttention': flashAttention,
-    'noPerformance': noPerformance,
-  };
+        'nCtx': nCtx,
+        'nBatch': nBatch,
+        'nUBatch': nUBatch,
+        'nSeqMax': nSeqMax,
+        'nThreads': nThreads,
+        'nThreadsBatch': nThreadsBatch,
+        'ropeScalingType': ropeScalingType?.name,
+        'poolingType': poolingType?.name,
+        'attentionType': attentionType?.name,
+        'ropeFrequencyBase': ropeFrequencyBase,
+        'ropeFrequencyScale': ropeFrequencyScale,
+        'yarnExtrapolationFactor': yarnExtrapolationFactor,
+        'yarnAttenuationFactor': yarnAttenuationFactor,
+        'yarnBetaFast': yarnBetaFast,
+        'yarnBetaSlow': yarnBetaSlow,
+        'yarnOriginalContext': yarnOriginalContext,
+        'defragmentationThreshold': defragmentationThreshold,
+        'typeK': typeK?.name,
+        'typeV': typeV?.name,
+        'embeddings': embeddings,
+        'offloadKqv': offloadKqv,
+        'flashAttention': flashAttention,
+        'noPerformance': noPerformance,
+      };
 
   /// Converts the current object to a JSON string representation.
   ///
@@ -384,15 +392,15 @@ class ContextParams {
 }
 
 /// Enum representing different types of rope scaling.
-/// 
+///
 /// The available types are:
 /// - `unspecified`: Default value when the type is not specified.
 /// - `none`: No scaling applied.
 /// - `linear`: Linear scaling.
 /// - `yarn`: Yarn scaling.
 /// - `longrope`: Long rope scaling.
-/// 
-/// Provides a method to convert a string value to the corresponding 
+///
+/// Provides a method to convert a string value to the corresponding
 /// `RopeScalingType` enum value.
 enum RopeScalingType {
   /// Default value when the type is not specified.

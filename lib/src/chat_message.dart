@@ -1,9 +1,6 @@
 part of '../lcpp.dart';
 
-typedef _ChatMessageRecord = (
-  String role,
-  String content
-);
+typedef _ChatMessageRecord = (String role, String content);
 
 /// An abstract class representing a chat message.
 ///
@@ -28,7 +25,7 @@ typedef _ChatMessageRecord = (
 /// - `_ChatMessageRecord _toRecord()`: Converts the chat message to a record.
 abstract class ChatMessage {
   /// The role of the chat message sender.
-  /// 
+  ///
   /// This property represents the role of the entity that sent the chat message,
   /// such as 'user', 'assistant', or any other defined role.
   String get role;
@@ -37,7 +34,7 @@ abstract class ChatMessage {
   String content;
 
   /// Creates a new instance of [ChatMessage] with the given content.
-  /// 
+  ///
   /// The [content] parameter represents the message content.
   ChatMessage(this.content);
 
@@ -69,10 +66,8 @@ abstract class ChatMessage {
     }
   }
 
-  factory ChatMessage._fromRecord(_ChatMessageRecord record) => ChatMessage.withRole(
-    role: record.$1, 
-    content: record.$2
-  );
+  factory ChatMessage._fromRecord(_ChatMessageRecord record) =>
+      ChatMessage.withRole(role: record.$1, content: record.$2);
 
   /// Creates a [ChatMessage] instance from a native [llama_chat_message].
   ///
@@ -89,10 +84,10 @@ abstract class ChatMessage {
   /// - [message]: The native [llama_chat_message] object to be converted.
   ///
   /// Returns a new [ChatMessage] instance with the role and content from the native message.
-  factory ChatMessage.fromNative(llama_chat_message message) => ChatMessage.withRole(
-    role: message.role.cast<Utf8>().toDartString(),
-    content: message.content.cast<Utf8>().toDartString()
-  );
+  factory ChatMessage.fromNative(llama_chat_message message) =>
+      ChatMessage.withRole(
+          role: message.role.cast<Utf8>().toDartString(),
+          content: message.content.cast<Utf8>().toDartString());
 
   /// Converts the current chat message instance to its native representation.
   ///
@@ -113,10 +108,7 @@ abstract class ChatMessage {
     return message.ref;
   }
 
-  _ChatMessageRecord _toRecord() => (
-    role,
-    content
-  );
+  _ChatMessageRecord _toRecord() => (role, content);
 }
 
 /// A class representing a chat message from a user.
@@ -137,15 +129,15 @@ class UserChatMessage extends ChatMessage {
   String get role => 'user';
 
   /// A class representing a user chat message.
-  /// 
+  ///
   /// This class extends a base class and takes the content of the message as a parameter.
-  /// 
+  ///
   /// Example usage:
   /// ```dart
   /// var message = UserChatMessage('Hello, world!');
   /// print(message.content); // Outputs: Hello, world!
   /// ```
-  /// 
+  ///
   /// Parameters:
   /// - `content`: The content of the chat message.
   UserChatMessage(super.content);
@@ -170,34 +162,34 @@ class AssistantChatMessage extends ChatMessage {
   String get role => 'assistant';
 
   /// Represents a chat message from the assistant.
-  /// 
-  /// The [AssistantChatMessage] class extends a base class with the provided 
+  ///
+  /// The [AssistantChatMessage] class extends a base class with the provided
   /// content of the message.
-  /// 
+  ///
   /// Example usage:
   /// ```dart
   /// var message = AssistantChatMessage('Hello, how can I assist you?');
   /// print(message.content); // Output: Hello, how can I assist you?
   /// ```
-  /// 
+  ///
   /// Parameters:
   /// - `content`: The content of the chat message.
   AssistantChatMessage(super.content);
 }
 
 /// A class representing a system-generated chat message.
-/// 
+///
 /// This class extends the [ChatMessage] class and overrides the `role`
 /// property to return 'system', indicating that the message is generated
 /// by the system.
-/// 
+///
 /// Example usage:
 /// ```dart
 /// var systemMessage = SystemChatMessage('System maintenance scheduled.');
 /// print(systemMessage.role); // Outputs: system
 /// print(systemMessage.content); // Outputs: System maintenance scheduled.
 /// ```
-/// 
+///
 /// The [SystemChatMessage] constructor takes a single parameter, `content`,
 /// which represents the content of the chat message.
 class SystemChatMessage extends ChatMessage {
@@ -205,15 +197,15 @@ class SystemChatMessage extends ChatMessage {
   String get role => 'system';
 
   /// Represents a system-generated chat message.
-  /// 
+  ///
   /// This class extends the base class and takes the content of the message as a parameter.
-  /// 
+  ///
   /// Example usage:
   /// ```dart
   /// var message = SystemChatMessage('System maintenance scheduled.');
   /// print(message.content); // Outputs: System maintenance scheduled.
   /// ```
-  /// 
+  ///
   /// Parameters:
   /// - `content`: The content of the chat message.
   SystemChatMessage(super.content);
@@ -261,18 +253,19 @@ extension ChatMessages on List<ChatMessage> {
   }
 
   /// Creates a copy of the list of `ChatMessage` objects.
-  /// 
+  ///
   /// This method iterates over the current list of `ChatMessage` instances,
   /// creates a new `ChatMessage` for each one with the same role and content,
   /// and returns a new list containing these copied messages.
-  /// 
+  ///
   /// Returns:
   ///   A new list of `ChatMessage` objects with the same role and content as the original list.
   List<ChatMessage> copy() {
     final List<ChatMessage> messages = [];
 
     for (var message in this) {
-      messages.add(ChatMessage.withRole(role: message.role, content: message.content));
+      messages.add(
+          ChatMessage.withRole(role: message.role, content: message.content));
     }
 
     return messages;
