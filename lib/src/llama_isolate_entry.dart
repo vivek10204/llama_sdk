@@ -38,7 +38,7 @@ class LlamaIsolateEntry {
     final SendPort sendPort = args.sendPort;
     final LlamaNative llamaCppNative;
 
-    lib.llama_log_set(ffi.Pointer.fromFunction(_logCallback), ffi.nullptr);
+    Llama.lib.llama_log_set(ffi.Pointer.fromFunction(_logCallback), ffi.nullptr);
 
     try {
       final receivePort = ReceivePort();

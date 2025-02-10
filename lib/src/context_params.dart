@@ -126,7 +126,7 @@ class ContextParams {
   factory ContextParams.fromJson(String source) => ContextParams.fromMap(jsonDecode(source));
 
   llama_context_params toNative() {
-    final llama_context_params contextParams = lib.llama_context_default_params();
+    final llama_context_params contextParams = Llama.lib.llama_context_default_params();
 
     if (nCtx != null) {
       contextParams.n_ctx = nCtx!;

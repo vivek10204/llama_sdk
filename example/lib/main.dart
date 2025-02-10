@@ -21,11 +21,11 @@ class LlamaApp extends StatefulWidget {
 class _LlamaAppState extends State<LlamaApp> {
   final TextEditingController _controller = TextEditingController();
   final List<ChatMessage> _messages = [];
-  LlamaCPP? _model;
+  Llama? _model;
   String? _modelPath;
 
   void _test() {
-    final test = lib.llama_context_default_params();
+    final test = Llama.lib.llama_context_default_params();
     print(test.n_ctx);
   }
 
@@ -48,7 +48,7 @@ class _LlamaAppState extends State<LlamaApp> {
       throw Exception('File does not exist');
     }
 
-    final llamaCpp = LlamaCPP(
+    final llamaCpp = LlamaNative(
       modelParams: ModelParams(
         path: result.files.single.path!
       ),

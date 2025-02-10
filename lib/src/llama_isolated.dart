@@ -5,12 +5,16 @@ typedef StringResponse = (
   String message
 );
 
-class LlamaCPP {
+class LlamaIsolated implements Llama {
   final Completer _initialized = Completer();
   StreamController<String> _responseController = StreamController<String>()..close();
   SendPort? _sendPort;
 
-  LlamaCPP({required ModelParams modelParams, required ContextParams contextParams, required SamplingParams samplingParams}) {
+  LlamaIsolated({
+    required ModelParams modelParams, 
+    ContextParams contextParams = const ContextParams(),
+    SamplingParams samplingParams = const SamplingParams()
+  }) {
     _listener(modelParams, contextParams, samplingParams);
   }
 
@@ -48,6 +52,7 @@ class LlamaCPP {
     }
   }
 
+  @override
   Stream<String> prompt(List<ChatMessage> messages) async* {  
     if (!_initialized.isCompleted) {
       await _initialized.future;
@@ -62,6 +67,7 @@ class LlamaCPP {
     }
   }
 
+  @override
   void stop() async {
     if (!_initialized.isCompleted) {
       await _initialized.future;

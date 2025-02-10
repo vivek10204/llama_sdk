@@ -11,9 +11,9 @@ import 'package:ffi/ffi.dart';
 
 import 'bindings.dart';
 
-part 'src/llama_cpp.dart';
+part 'src/llama_isolated.dart';
 part 'src/llama_exception.dart';
-part 'src/library.dart';
+part 'src/llama.dart';
 part 'src/llama_native.dart';
 part 'src/llama_isolate_entry.dart';
 part 'src/model_params.dart';

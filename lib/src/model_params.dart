@@ -26,7 +26,7 @@ class ModelParams {
   factory ModelParams.fromJson(String source) => ModelParams.fromMap(jsonDecode(source));
 
   llama_model_params toNative() {
-    final llama_model_params modelParams = lib.llama_model_default_params();
+    final llama_model_params modelParams = Llama.lib.llama_model_default_params();
     log("Model params initialized");
 
     if (vocabOnly != null) {

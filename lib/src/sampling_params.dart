@@ -20,7 +20,7 @@ class TopPArguments {
   };
   
   void add(ffi.Pointer<llama_sampler> sampler) {
-    lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_top_p(p, minKeep));
+    Llama.lib.llama_sampler_chain_add(sampler, Llama.lib.llama_sampler_init_top_p(p, minKeep));
   }
 }
 
@@ -44,7 +44,7 @@ class MinPArguments {
   };
   
   void add(ffi.Pointer<llama_sampler> sampler) {
-    lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_min_p(p, minKeep));
+    Llama.lib.llama_sampler_chain_add(sampler, Llama.lib.llama_sampler_init_min_p(p, minKeep));
   }
 }
 
@@ -68,7 +68,7 @@ class TypicalPArguments {
   };
   
   void add(ffi.Pointer<llama_sampler> sampler) {
-    lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_typical(p, minKeep));
+    Llama.lib.llama_sampler_chain_add(sampler, Llama.lib.llama_sampler_init_typical(p, minKeep));
   }
 }
 
@@ -97,10 +97,10 @@ class TemperatureArguments {
 
   void add(ffi.Pointer<llama_sampler> sampler) {
     if (delta == null || exponent == null) {
-      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_temp(temperature));
+      Llama.lib.llama_sampler_chain_add(sampler, Llama.lib.llama_sampler_init_temp(temperature));
     } 
     else {
-      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_temp_ext(temperature, delta!, exponent!));
+      Llama.lib.llama_sampler_chain_add(sampler, Llama.lib.llama_sampler_init_temp_ext(temperature, delta!, exponent!));
     }
   }
 }
@@ -133,7 +133,7 @@ class XtcArguments {
   };
 
   void add(ffi.Pointer<llama_sampler> sampler) {
-    lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_xtc(p, t, minKeep, seed));
+    Llama.lib.llama_sampler_chain_add(sampler, Llama.lib.llama_sampler_init_xtc(p, t, minKeep, seed));
   }
 }
 
@@ -169,7 +169,7 @@ class MirostatArguments {
   };
 
   void add(ffi.Pointer<llama_sampler> sampler) {
-    lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_mirostat(nVocab, seed, tau, eta, m));
+    Llama.lib.llama_sampler_chain_add(sampler, Llama.lib.llama_sampler_init_mirostat(nVocab, seed, tau, eta, m));
   }
 }
 
@@ -197,7 +197,7 @@ class MirostatV2Arguments {
   };
 
   void add(ffi.Pointer<llama_sampler> sampler) {
-    lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_mirostat_v2(seed, tau, eta));
+    Llama.lib.llama_sampler_chain_add(sampler, Llama.lib.llama_sampler_init_mirostat_v2(seed, tau, eta));
   }
 }
 
@@ -221,9 +221,9 @@ class GrammarArguments {
   };
 
   void add(ffi.Pointer<llama_sampler> sampler, ffi.Pointer<llama_vocab> vocab) {
-    lib.llama_sampler_chain_add(
+    Llama.lib.llama_sampler_chain_add(
       sampler, 
-      lib.llama_sampler_init_grammar(
+      Llama.lib.llama_sampler_init_grammar(
         vocab, 
         str.toNativeUtf8().cast<ffi.Char>(), 
         root.toNativeUtf8().cast<ffi.Char>()
@@ -260,7 +260,7 @@ class PenaltiesArguments {
   };
 
   void add(ffi.Pointer<llama_sampler> sampler) {
-    lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_penalties(lastN, repeat, frequency, present));
+    Llama.lib.llama_sampler_chain_add(sampler, Llama.lib.llama_sampler_init_penalties(lastN, repeat, frequency, present));
   }
 }
 
@@ -305,9 +305,9 @@ class DrySamplerArguments {
       sequenceBreakers[i] = this.sequenceBreakers[i].toNativeUtf8().cast<ffi.Char>();
     }
 
-    lib.llama_sampler_chain_add(
+    Llama.lib.llama_sampler_chain_add(
       sampler, 
-      lib.llama_sampler_init_dry(
+      Llama.lib.llama_sampler_init_dry(
         vocab,
         nCtxTrain, 
         multiplier, 
@@ -374,22 +374,22 @@ class SamplingParams {
   factory SamplingParams.fromJson(String source) => SamplingParams.fromMap(jsonDecode(source));
 
   ffi.Pointer<llama_sampler> toNative(ffi.Pointer<llama_vocab> vocab) {
-    final sampler = lib.llama_sampler_chain_init(lib.llama_sampler_chain_default_params());
+    final sampler = Llama.lib.llama_sampler_chain_init(Llama.lib.llama_sampler_chain_default_params());
 
     if (greedy) {
-      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_greedy());
+      Llama.lib.llama_sampler_chain_add(sampler, Llama.lib.llama_sampler_init_greedy());
     }
 
     if (infill) {
-      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_infill(vocab));
+      Llama.lib.llama_sampler_chain_add(sampler, Llama.lib.llama_sampler_init_infill(vocab));
     }
 
     if (seed != null) {
-      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_dist(seed!));
+      Llama.lib.llama_sampler_chain_add(sampler, Llama.lib.llama_sampler_init_dist(seed!));
     }
 
     if (topK != null) {
-      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_top_k(topK!));
+      Llama.lib.llama_sampler_chain_add(sampler, Llama.lib.llama_sampler_init_top_k(topK!));
     }
 
     topP?.add(sampler);
