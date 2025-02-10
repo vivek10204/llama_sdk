@@ -39,4 +39,6 @@ abstract interface class Llama {
   Stream<String> prompt(List<ChatMessage> messages);
 
   void stop();
+
+  void free();
 }

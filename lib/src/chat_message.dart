@@ -77,3 +77,14 @@ extension ChatMessages on List<ChatMessage> {
     return messages;
   }
 }
+
+extension LlamaChatMessagePtrExtension on ffi.Pointer<llama_chat_message> {
+  void free(int length) {
+    for (var i = 0; i < length; i++) {
+      calloc.free(this[i].role);
+      calloc.free(this[i].content);
+    }
+
+    calloc.free(this);
+  }
+}
