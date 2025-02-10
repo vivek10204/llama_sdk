@@ -5,13 +5,54 @@ typedef _ChatMessageRecord = (
   String content
 );
 
+/// An abstract class representing a chat message.
+///
+/// This class provides a base for different types of chat messages, each with
+/// a specific role and content.
+///
+/// Properties:
+/// - `role`: A string representing the role of the message sender.
+/// - `content`: The content of the message.
+///
+/// Constructors:
+/// - `ChatMessage(String content)`: Initializes a chat message with the given content.
+/// - `ChatMessage.withRole({required String role, required String content})`: Factory constructor
+///   that creates a chat message based on the specified role. Throws an `ArgumentError` if the role is invalid.
+/// - `ChatMessage._fromRecord(_ChatMessageRecord record)`: Factory constructor that creates a chat message
+///   from a record.
+/// - `ChatMessage.fromNative(llama_chat_message message)`: Factory constructor that creates a chat message
+///   from a native `llama_chat_message`.
+///
+/// Methods:
+/// - `llama_chat_message toNative()`: Converts the chat message to a native `llama_chat_message`.
+/// - `_ChatMessageRecord _toRecord()`: Converts the chat message to a record.
 abstract class ChatMessage {
+  /// The role of the chat message sender.
+  /// 
+  /// This property represents the role of the entity that sent the chat message,
+  /// such as 'user', 'assistant', or any other defined role.
   String get role;
 
+  /// The content of the chat message.
   String content;
 
+  /// Creates a new instance of [ChatMessage] with the given content.
+  /// 
+  /// The [content] parameter represents the message content.
   ChatMessage(this.content);
 
+  /// Factory constructor to create a `ChatMessage` instance based on the provided role.
+  ///
+  /// The `role` parameter determines the type of `ChatMessage` to create:
+  /// - 'user': Creates a `UserChatMessage`.
+  /// - 'assistant': Creates an `AssistantChatMessage`.
+  /// - 'system': Creates a `SystemChatMessage`.
+  ///
+  /// Throws an [ArgumentError] if the provided role is not one of the expected values.
+  ///
+  /// Parameters:
+  /// - `role`: The role of the chat message (e.g., 'user', 'assistant', 'system').
+  /// - `content`: The content of the chat message.
   factory ChatMessage.withRole({
     required String role,
     required String content,
@@ -33,11 +74,37 @@ abstract class ChatMessage {
     content: record.$2
   );
 
+  /// Creates a [ChatMessage] instance from a native [llama_chat_message].
+  ///
+  /// This factory constructor takes a [llama_chat_message] object and converts
+  /// its `role` and `content` fields from native UTF-8 strings to Dart strings,
+  /// then uses these values to create a new [ChatMessage] with the corresponding role and content.
+  ///
+  /// Example:
+  /// ```dart
+  /// llama_chat_message nativeMessage = getNativeMessage();
+  /// ChatMessage message = ChatMessage.fromNative(nativeMessage);
+  /// ```
+  ///
+  /// - [message]: The native [llama_chat_message] object to be converted.
+  ///
+  /// Returns a new [ChatMessage] instance with the role and content from the native message.
   factory ChatMessage.fromNative(llama_chat_message message) => ChatMessage.withRole(
     role: message.role.cast<Utf8>().toDartString(),
     content: message.content.cast<Utf8>().toDartString()
   );
 
+  /// Converts the current chat message instance to its native representation.
+  ///
+  /// This method allocates memory for a `llama_chat_message` struct and sets its
+  /// `role` and `content` fields to the UTF-8 encoded representations of the
+  /// corresponding fields in the current instance.
+  ///
+  /// Returns:
+  ///   A reference to the allocated `llama_chat_message` struct.
+  ///
+  /// Note:
+  ///   The caller is responsible for freeing the allocated memory to avoid memory leaks.
   llama_chat_message toNative() {
     final message = calloc<llama_chat_message>();
     message.ref.role = role.toNativeUtf8().cast<ffi.Char>();
@@ -52,6 +119,19 @@ abstract class ChatMessage {
   );
 }
 
+/// A class representing a chat message from a user.
+///
+/// This class extends the [ChatMessage] class and overrides the [role] getter
+/// to return 'user', indicating that the message is from a user.
+///
+/// Example usage:
+/// ```dart
+/// var message = UserChatMessage('Hello, world!');
+/// print(message.role); // Output: user
+/// print(message.content); // Output: Hello, world!
+/// ```
+///
+/// The [UserChatMessage] constructor takes the content of the message as a parameter.
 class UserChatMessage extends ChatMessage {
   @override
   String get role => 'user';
@@ -59,6 +139,20 @@ class UserChatMessage extends ChatMessage {
   UserChatMessage(super.content);
 }
 
+/// A class representing a chat message from an assistant.
+///
+/// This class extends the [ChatMessage] class and overrides the [role] getter
+/// to return 'assistant', indicating that the message is from an assistant.
+///
+/// Example usage:
+/// ```dart
+/// var message = AssistantChatMessage('Hello, how can I assist you?');
+/// print(message.role); // Outputs: assistant
+/// print(message.content); // Outputs: Hello, how can I assist you?
+/// ```
+///
+/// See also:
+/// - [ChatMessage], the base class for chat messages.
 class AssistantChatMessage extends ChatMessage {
   @override
   String get role => 'assistant';
@@ -66,6 +160,21 @@ class AssistantChatMessage extends ChatMessage {
   AssistantChatMessage(super.content);
 }
 
+/// A class representing a system-generated chat message.
+/// 
+/// This class extends the [ChatMessage] class and overrides the `role`
+/// property to return 'system', indicating that the message is generated
+/// by the system.
+/// 
+/// Example usage:
+/// ```dart
+/// var systemMessage = SystemChatMessage('System maintenance scheduled.');
+/// print(systemMessage.role); // Outputs: system
+/// print(systemMessage.content); // Outputs: System maintenance scheduled.
+/// ```
+/// 
+/// The [SystemChatMessage] constructor takes a single parameter, `content`,
+/// which represents the content of the chat message.
 class SystemChatMessage extends ChatMessage {
   @override
   String get role => 'system';
