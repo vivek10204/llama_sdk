@@ -1,128 +1,186 @@
 part of '../../lcpp.dart';
 
+/// Arguments for Top-P sampling.
 class TopPArguments {
+  /// The probability threshold for Top-P sampling.
   final double p;
+
+  /// The minimum number of items to keep in the sample.
   final int minKeep;
 
+  /// Creates a new instance of [TopPArguments].
   const TopPArguments({
     required this.p,
-    required this.minKeep
+    required this.minKeep,
   });
 
+  /// Constructs a [TopPArguments] instance from a [Map].
   factory TopPArguments.fromMap(Map<String, dynamic> map) => TopPArguments(
-    p: map['p'],
-    minKeep: map['minKeep']
-  );
+        p: map['p'],
+        minKeep: map['minKeep'],
+      );
 
+  /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
-    'p': p,
-    'minKeep': minKeep
-  };
+        'p': p,
+        'minKeep': minKeep,
+      };
 }
 
+/// Arguments for Minimum Probability sampling.
 class MinPArguments {
+  /// The probability threshold for Minimum Probability sampling.
   final double p;
+
+  /// The minimum number of items to keep in the sample.
   final int minKeep;
 
+  /// Creates a new instance of [MinPArguments].
   const MinPArguments({
     required this.p,
-    required this.minKeep
+    required this.minKeep,
   });
 
+  /// Constructs a [MinPArguments] instance from a [Map].
   factory MinPArguments.fromMap(Map<String, dynamic> map) => MinPArguments(
-    p: map['p'],
-    minKeep: map['minKeep']
-  );
+        p: map['p'],
+        minKeep: map['minKeep'],
+      );
 
+  /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
-    'p': p,
-    'minKeep': minKeep
-  };
+        'p': p,
+        'minKeep': minKeep,
+      };
 }
 
+/// Arguments for Typical-P sampling.
 class TypicalPArguments {
+  /// The probability threshold for Typical-P sampling.
   final double p;
+
+  /// The minimum number of items to keep in the sample.
   final int minKeep;
 
+  /// Creates a new instance of [TypicalPArguments].
   const TypicalPArguments({
     required this.p,
-    required this.minKeep
+    required this.minKeep,
   });
 
-  factory TypicalPArguments.fromMap(Map<String, dynamic> map) => TypicalPArguments(
-    p: map['p'],
-    minKeep: map['minKeep']
-  );
+  /// Constructs a [TypicalPArguments] instance from a [Map].
+  factory TypicalPArguments.fromMap(Map<String, dynamic> map) =>
+      TypicalPArguments(
+        p: map['p'],
+        minKeep: map['minKeep'],
+      );
 
+  /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
-    'p': p,
-    'minKeep': minKeep
-  };
-  
+        'p': p,
+        'minKeep': minKeep,
+      };
+
+  /// Adds this configuration to the sampler.
   void add(ffi.Pointer<llama_sampler> sampler) {
-    Llama.lib.llama_sampler_chain_add(sampler, Llama.lib.llama_sampler_init_typical(p, minKeep));
+    Llama.lib.llama_sampler_chain_add(
+      sampler,
+      Llama.lib.llama_sampler_init_typical(p, minKeep),
+    );
   }
 }
 
+/// Arguments for temperature-based sampling.
 class TemperatureArguments {
+  /// The temperature value for sampling.
   final double temperature;
+
+  /// Optional delta parameter for temperature adjustment.
   final double? delta;
+
+  /// Optional exponent parameter for temperature adjustment.
   final double? exponent;
 
+  /// Creates a new instance of [TemperatureArguments].
   const TemperatureArguments({
     required this.temperature,
     this.delta,
-    this.exponent
+    this.exponent,
   });
 
-  factory TemperatureArguments.fromMap(Map<String, dynamic> map) => TemperatureArguments(
-    temperature: map['temperature'],
-    delta: map['delta'],
-    exponent: map['exponent']
-  );
+  /// Constructs a [TemperatureArguments] instance from a [Map].
+  factory TemperatureArguments.fromMap(Map<String, dynamic> map) =>
+      TemperatureArguments(
+        temperature: map['temperature'],
+        delta: map['delta'],
+        exponent: map['exponent'],
+      );
 
+  /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
-    'temperature': temperature,
-    'delta': delta,
-    'exponent': exponent
-  };
+        'temperature': temperature,
+        'delta': delta,
+        'exponent': exponent,
+      };
 }
 
+/// Arguments for XTC sampling.
 class XtcArguments {
+  /// The probability threshold for XTC sampling.
   final double p;
+
+  /// The temperature value for XTC sampling.
   final double t;
+
+  /// The minimum number of items to keep in the sample.
   final int minKeep;
+
+  /// The random seed value.
   final int seed;
 
+  /// Creates a new instance of [XtcArguments].
   const XtcArguments({
     required this.p,
     required this.t,
     required this.minKeep,
-    required this.seed
+    required this.seed,
   });
 
+  /// Constructs an [XtcArguments] instance from a [Map].
   factory XtcArguments.fromMap(Map<String, dynamic> map) => XtcArguments(
-    p: map['p'],
-    t: map['t'],
-    minKeep: map['minKeep'],
-    seed: map['seed']
-  );
+        p: map['p'],
+        t: map['t'],
+        minKeep: map['minKeep'],
+        seed: map['seed'],
+      );
 
+  /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
-    'p': p,
-    't': t,
-    'minKeep': minKeep,
-    'seed': seed
-  };
+        'p': p,
+        't': t,
+        'minKeep': minKeep,
+        'seed': seed,
+      };
 }
 
+/// Arguments for Mirostat sampling.
 class MirostatArguments {
+  /// The number of vocabulary items.
   final int nVocab;
+
+  /// The random seed value.
   final int seed;
+
+  /// The tau value for Mirostat sampling.
   final double tau;
+
+  /// The eta value for Mirostat sampling.
   final double eta;
+
+  /// The number of items to keep in the sample.
   final int m;
 
+  /// Creates a new instance of [MirostatArguments].
   const MirostatArguments({
     required this.nVocab,
     required this.seed,
@@ -131,6 +189,7 @@ class MirostatArguments {
     required this.m
   });
 
+  /// Constructs a [MirostatArguments] instance from a [Map].
   factory MirostatArguments.fromMap(Map<String, dynamic> map) => MirostatArguments(
     nVocab: map['nVocab'],
     seed: map['seed'],
@@ -139,6 +198,7 @@ class MirostatArguments {
     m: map['m']
   );
 
+  /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
     'nVocab': nVocab,
     'seed': seed,
@@ -148,23 +208,32 @@ class MirostatArguments {
   };
 }
 
+/// Arguments for Mirostat version 2 sampling.
 class MirostatV2Arguments {
+  /// The random seed value.
   final int seed;
+
+  /// The tau value for Mirostat sampling.
   final double tau;
+
+  /// The eta value for Mirostat sampling.
   final double eta;
 
+  /// Creates a new instance of [MirostatV2Arguments].
   const MirostatV2Arguments({
     required this.seed,
     required this.tau,
     required this.eta
   });
 
+  /// Constructs a [MirostatV2Arguments] instance from a [Map].
   factory MirostatV2Arguments.fromMap(Map<String, dynamic> map) => MirostatV2Arguments(
     seed: map['seed'],
     tau: map['tau'],
     eta: map['eta']
   );
 
+  /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
     'seed': seed,
     'tau': tau,
@@ -172,32 +241,48 @@ class MirostatV2Arguments {
   };
 }
 
+/// Arguments for grammar-based sampling.
 class GrammarArguments {
+  /// The grammar rules.
   final String str;
+
+  /// The root node for the grammar.
   final String root;
 
+  /// Creates a new instance of [GrammarArguments].
   const GrammarArguments({
     required this.str,
     required this.root
   });
 
+  /// Constructs a [GrammarArguments] instance from a [Map].
   factory GrammarArguments.fromMap(Map<String, dynamic> map) => GrammarArguments(
     str: map['str'],
     root: map['root']
   );
 
+  /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
     'str': str,
     'root': root
   };
 }
 
+/// Arguments for penalties.
 class PenaltiesArguments {
+  /// The number of items to consider for the penalty.
   final int lastN;
+
+  /// The penalty for repetition.
   final double repeat;
+
+  /// The penalty frequency.
   final double frequency;
+
+  /// The penalty for present items.
   final double present;
 
+  /// Creates a new instance of [PenaltiesArguments].
   const PenaltiesArguments({
     required this.lastN,
     required this.repeat,
@@ -205,6 +290,7 @@ class PenaltiesArguments {
     required this.present
   });
 
+  /// Constructs a [PenaltiesArguments] instance from a [Map].
   factory PenaltiesArguments.fromMap(Map<String, dynamic> map) => PenaltiesArguments(
     lastN: map['lastN'],
     repeat: map['repeat'],
@@ -212,6 +298,7 @@ class PenaltiesArguments {
     present: map['present']
   );
 
+  /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
     'lastN': lastN,
     'repeat': repeat,
@@ -220,14 +307,27 @@ class PenaltiesArguments {
   };
 }
 
+/// Arguments for dry sampling.
 class DrySamplerArguments {
+  /// The number of training contexts.
   final int nCtxTrain;
+
+  /// The multiplier for the penalty.
   final double multiplier;
+
+  /// The base value for the penalty.
   final double dryBase;
+
+  /// The maximum allowed length for the sequence.
   final int allowedLength;
+
+  /// The penalty for the last N items.
   final int penaltyLastN;
+
+  /// The sequence breakers.
   final List<String> sequenceBreakers;
 
+  /// Creates a new instance of [DrySamplerArguments].
   const DrySamplerArguments({
     required this.nCtxTrain,
     required this.multiplier,
@@ -237,6 +337,7 @@ class DrySamplerArguments {
     required this.sequenceBreakers
   });
 
+  /// Constructs a [DrySamplerArguments] instance from a [Map].
   factory DrySamplerArguments.fromMap(Map<String, dynamic> map) => DrySamplerArguments(
     nCtxTrain: map['nCtxTrain'],
     multiplier: map['multiplier'],
@@ -246,6 +347,7 @@ class DrySamplerArguments {
     sequenceBreakers: List<String>.from(map['sequenceBreakers'])
   );
 
+  /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
     'nCtxTrain': nCtxTrain,
     'multiplier': multiplier,
@@ -256,22 +358,51 @@ class DrySamplerArguments {
   };
 }
 
+/// Represents the parameters used for sampling in the model.
 class SamplingParams {
+  /// Enables greedy decoding if set to `true`.
   final bool greedy;
+
+  /// Enables infill sampling if set to `true`.
   final bool infill;
+
+  /// Optional seed for random number generation to ensure reproducibility.
   final int? seed;
+
+  /// Limits the number of top candidates considered during sampling.
   final int? topK;
+
+  /// Arguments for top-p sampling (nucleus sampling).
   final TopPArguments? topP;
+
+  /// Arguments for minimum-p sampling.
   final MinPArguments? minP;
+
+  /// Arguments for typical-p sampling.
   final TypicalPArguments? typicalP;
+
+  /// Arguments for controlling the temperature during sampling.
   final TemperatureArguments? temperature;
+
+  /// Arguments for Xtc sampling.
   final XtcArguments? xtc;
+
+  /// Arguments for Mirostat sampling.
   final MirostatArguments? mirostat;
+
+  /// Arguments for Mirostat version 2 sampling.
   final MirostatV2Arguments? mirostatV2;
+
+  /// Grammar rules and root node for constrained sampling.
   final GrammarArguments? grammar;
+
+  /// Penalty configurations for preventing repetition.
   final PenaltiesArguments? penalties;
+
+  /// Arguments for dry sampling (specific training context).
   final DrySamplerArguments? drySampler;
 
+  /// Creates a new instance of [SamplingParams].
   const SamplingParams({
     this.greedy = false,
     this.infill = false,
@@ -289,6 +420,7 @@ class SamplingParams {
     this.drySampler
   });
 
+  /// Constructs a [SamplingParams] instance from a [Map].
   factory SamplingParams.fromMap(Map<String, dynamic> map) => SamplingParams(
     greedy: map['greedy'],
     infill: map['infill'],
@@ -306,8 +438,10 @@ class SamplingParams {
     drySampler: map['drySampler'] != null ? DrySamplerArguments.fromMap(map['drySampler']) : null
   );
 
+  /// Constructs a [SamplingParams] instance from a JSON string.
   factory SamplingParams.fromJson(String source) => SamplingParams.fromMap(jsonDecode(source));
 
+  /// Converts this instance to a [Pointer<llama_sampler>].
   ffi.Pointer<llama_sampler> toNative(ffi.Pointer<llama_vocab> vocab) {
     final sampler = Llama.lib.llama_sampler_chain_init(Llama.lib.llama_sampler_chain_default_params());
 
@@ -399,6 +533,7 @@ class SamplingParams {
     return sampler;
   }
 
+  /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
     'greedy': greedy,
     'infill': infill,
@@ -416,5 +551,6 @@ class SamplingParams {
     'drySampler': drySampler?.toMap()
   };
 
+  /// Converts this instance to a JSON-encoded string.
   String toJson() => jsonEncode(toMap());
 }
