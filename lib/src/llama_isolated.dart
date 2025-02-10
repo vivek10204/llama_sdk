@@ -76,15 +76,45 @@ void _isolateEntry(_SerializableIsolateArguments args) async {
   }
 }
 
+/// A class that isolates the Llama implementation to run in a separate isolate.
+///
+/// This class implements the [Llama] interface and provides methods to interact
+/// with the Llama model in an isolated environment.
+///
+/// The [LlamaIsolated] constructor initializes the isolate with the provided
+/// model, context, and sampling parameters.
+///
+/// The [_listener] method listens for messages from the isolate and handles
+/// them accordingly. It adds responses to the [_responseController] stream,
+/// sets the [_sendPort] when received, and completes the [_initialized] completer.
+///
+/// The [prompt] method sends a list of [ChatMessage] to the isolate and returns
+/// a stream of responses. It waits for the isolate to be initialized before
+/// sending the messages.
+///
+/// The [stop] method sends a signal to the isolate to stop processing. It waits
+/// for the isolate to be initialized before sending the signal.
+///
+/// The [free] method sends a signal to the isolate to free resources. It waits
+/// for the isolate to be initialized before sending the signal.
 class LlamaIsolated implements Llama {
   final Completer _initialized = Completer();
   StreamController<String> _responseController = StreamController<String>()..close();
   SendPort? _sendPort;
 
+  /// Constructs an instance of [LlamaIsolated].
+  ///
+  /// Initializes the [LlamaIsolated] with the provided parameters and sets up
+  /// the listener.
+  ///
+  /// Parameters:
+  /// - [modelParams]: The parameters required for the model. This parameter is required.
+  /// - [contextParams]: The parameters for the context. This parameter is optional and defaults to an instance of [ContextParams].
+  /// - [samplingParams]: The parameters for sampling. This parameter is optional and defaults to an instance of [SamplingParams] with `greedy` set to `true`.
   LlamaIsolated({
     required ModelParams modelParams, 
     ContextParams contextParams = const ContextParams(),
-    SamplingParams samplingParams = const SamplingParams()
+    SamplingParams samplingParams = const SamplingParams(greedy: true)
   }) {
     _listener(modelParams, contextParams, samplingParams);
   }

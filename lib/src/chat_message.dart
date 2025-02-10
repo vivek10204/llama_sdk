@@ -136,6 +136,18 @@ class UserChatMessage extends ChatMessage {
   @override
   String get role => 'user';
 
+  /// A class representing a user chat message.
+  /// 
+  /// This class extends a base class and takes the content of the message as a parameter.
+  /// 
+  /// Example usage:
+  /// ```dart
+  /// var message = UserChatMessage('Hello, world!');
+  /// print(message.content); // Outputs: Hello, world!
+  /// ```
+  /// 
+  /// Parameters:
+  /// - `content`: The content of the chat message.
   UserChatMessage(super.content);
 }
 
@@ -157,6 +169,19 @@ class AssistantChatMessage extends ChatMessage {
   @override
   String get role => 'assistant';
 
+  /// Represents a chat message from the assistant.
+  /// 
+  /// The [AssistantChatMessage] class extends a base class with the provided 
+  /// content of the message.
+  /// 
+  /// Example usage:
+  /// ```dart
+  /// var message = AssistantChatMessage('Hello, how can I assist you?');
+  /// print(message.content); // Output: Hello, how can I assist you?
+  /// ```
+  /// 
+  /// Parameters:
+  /// - `content`: The content of the chat message.
   AssistantChatMessage(super.content);
 }
 
@@ -179,9 +204,22 @@ class SystemChatMessage extends ChatMessage {
   @override
   String get role => 'system';
 
+  /// Represents a system-generated chat message.
+  /// 
+  /// This class extends the base class and takes the content of the message as a parameter.
+  /// 
+  /// Example usage:
+  /// ```dart
+  /// var message = SystemChatMessage('System maintenance scheduled.');
+  /// print(message.content); // Outputs: System maintenance scheduled.
+  /// ```
+  /// 
+  /// Parameters:
+  /// - `content`: The content of the chat message.
   SystemChatMessage(super.content);
 }
 
+/// An extension on the `List<ChatMessage>` class to provide additional functionality.
 extension ChatMessages on List<ChatMessage> {
   static List<ChatMessage> _fromRecords(List<_ChatMessageRecord> records) {
     final List<ChatMessage> messages = [];
@@ -193,6 +231,15 @@ extension ChatMessages on List<ChatMessage> {
     return messages;
   }
 
+  /// Converts the current list of `llama_chat_message` objects to a native
+  /// representation using FFI.
+  ///
+  /// Allocates memory for the native messages and copies each message
+  /// from the Dart list to the allocated memory.
+  ///
+  /// Returns a pointer to the allocated native messages.
+  ///
+  /// Note: The caller is responsible for freeing the allocated memory.
   ffi.Pointer<llama_chat_message> toNative() {
     final messages = calloc<llama_chat_message>(length);
 
@@ -213,6 +260,14 @@ extension ChatMessages on List<ChatMessage> {
     return records;
   }
 
+  /// Creates a copy of the list of `ChatMessage` objects.
+  /// 
+  /// This method iterates over the current list of `ChatMessage` instances,
+  /// creates a new `ChatMessage` for each one with the same role and content,
+  /// and returns a new list containing these copied messages.
+  /// 
+  /// Returns:
+  ///   A new list of `ChatMessage` objects with the same role and content as the original list.
   List<ChatMessage> copy() {
     final List<ChatMessage> messages = [];
 

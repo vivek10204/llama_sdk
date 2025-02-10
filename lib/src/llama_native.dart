@@ -1,5 +1,37 @@
 part of '../lcpp.dart';
 
+/// A class that implements the Llama interface and provides functionality
+/// for loading and interacting with a Llama model, context, and sampler.
+///
+/// The class initializes the model, context, and sampler based on the provided
+/// parameters and allows for prompting the model with chat messages.
+///
+/// The class also provides methods to stop the current operation and free
+/// the allocated resources.
+///
+/// Example usage:
+/// ```dart
+/// final llamaNative = LlamaNative(
+///   modelParams: ModelParams(...),
+///   contextParams: ContextParams(...),
+///   samplingParams: SamplingParams(...)
+/// );
+///
+/// final responseStream = llamaNative.prompt([...]);
+/// responseStream.listen((response) {
+///   print(response);
+/// });
+/// ```
+///
+/// Properties:
+/// - `modelParams`: Sets the model parameters and initializes the model.
+/// - `contextParams`: Sets the context parameters and initializes the context.
+/// - `samplingParams`: Sets the sampling parameters and initializes the sampler.
+///
+/// Methods:
+/// - `prompt(List<ChatMessage> messages)`: Prompts the model with the given chat messages and returns a stream of responses.
+/// - `stop()`: Stops the current operation.
+/// - `free()`: Frees the allocated resources.
 class LlamaNative implements Llama {
   ffi.Pointer<llama_model> _model = ffi.nullptr;
   ffi.Pointer<llama_context> _context = ffi.nullptr;
@@ -31,6 +63,25 @@ class LlamaNative implements Llama {
     _initSampler();
   }
 
+  /// A class that initializes and manages a native Llama model.
+  ///
+  /// The [LlamaNative] constructor requires [ModelParams] and optionally accepts
+  /// [ContextParams] and [SamplingParams]. It initializes the model by loading
+  /// the necessary backends and calling the `_initModel` method.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// final llamaNative = LlamaNative(
+  ///   modelParams: ModelParams(...),
+  ///   contextParams: ContextParams(...),
+  ///   samplingParams: SamplingParams(...),
+  /// );
+  /// ```
+  ///
+  /// Parameters:
+  /// - [modelParams]: The parameters required to configure the model.
+  /// - [contextParams]: Optional parameters for the context configuration. Defaults to an empty [ContextParams] object.
+  /// - [samplingParams]: Optional parameters for the sampling configuration. Defaults to an empty [SamplingParams] object.
   LlamaNative({
     required ModelParams modelParams,
     ContextParams contextParams = const ContextParams(),
