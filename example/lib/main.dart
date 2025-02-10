@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -42,7 +41,7 @@ class _LlamaAppState extends State<LlamaApp> {
       throw Exception('File does not exist');
     }
 
-    final llamaCpp = LlamaNative(
+    final llamaCpp = LlamaIsolated(
       modelParams: ModelParams(
         path: result.files.single.path!
       ),

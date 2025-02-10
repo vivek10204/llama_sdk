@@ -44,6 +44,7 @@ class LlamaIsolated implements Llama {
         _initialized.complete();
       }
       else if (data == null) {
+        print('LlamaIsolated: stopping');
         _responseController.close();
         break;
       }
@@ -62,13 +63,10 @@ class LlamaIsolated implements Llama {
 
     messages.add(ChatMessage(
       role: 'assistant',
-      content: ''
+      content: await _responseController.stream.first
     ));
 
-    await for (final message in _responseController.stream) {
-      messages.last.content += message;
-      _responseController.close();
-    }
+    _responseController.close();
 
     return messages.last.content;
   }

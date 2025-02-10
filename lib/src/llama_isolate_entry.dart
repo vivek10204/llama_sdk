@@ -66,7 +66,7 @@ class LlamaIsolateEntry {
       }
     }
     catch (e) {
-      sendPort.send((message: e.toString()));
+      log('LlamaIsolateEntry: $e');
     }
   }
 
