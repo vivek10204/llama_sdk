@@ -9,7 +9,7 @@ class LlamaNative implements Llama {
   ContextParams _contextParams; 
   SamplingParams _samplingParams;
 
-  int _prevContextLength = 0;
+  int _contextLength = 0;
 
   Completer? _completer;
 
@@ -85,7 +85,7 @@ class LlamaNative implements Llama {
 
   @override
   Stream<String> prompt(List<ChatMessage> messages) async* {
-    final messageCopy = messages.copy();
+    //final messagesCopy = messages.copy();
 
     assert(_model != ffi.nullptr, 'Model is not loaded');
     assert(_context != ffi.nullptr, 'Context is not initialized');
@@ -99,104 +99,102 @@ class LlamaNative implements Llama {
 
     final template = Llama.lib.llama_model_chat_template(_model, ffi.nullptr);
 
-    int contextLength = Llama.lib.llama_chat_apply_template(
+    int newContextLength = Llama.lib.llama_chat_apply_template(
       template, 
-      messageCopy.toNative(), 
-      messageCopy.length, 
+      messages.toNative(), 
+      messages.length, 
       true, 
       formatted, 
       nCtx
     );
 
-    if (contextLength > nCtx) {
-      formatted = calloc<ffi.Char>(contextLength);
-      contextLength = Llama.lib.llama_chat_apply_template(
+    if (newContextLength > nCtx) {
+      formatted = calloc<ffi.Char>(newContextLength);
+      newContextLength = Llama.lib.llama_chat_apply_template(
         template, 
-        messageCopy.toNative(), 
-        messageCopy.length, 
+        messages.toNative(), 
+        messages.length, 
         true, 
         formatted, 
-        contextLength
+        newContextLength
       );
     }
 
-    if (contextLength < 0) {
-      throw LlamaException('Failed to apply template');
+    if (newContextLength < 0) {
+      throw Exception('Failed to apply template');
     }
 
-    final prompt = formatted.cast<Utf8>().toDartString().substring(_prevContextLength, contextLength);
+    final prompt = formatted.cast<Utf8>().toDartString().substring(_contextLength);
 
+    final generation = _generate(prompt);
+
+    String finalOutput = '';
+
+    await for (final piece in generation) {
+      finalOutput += piece;
+      yield piece;
+    }
+
+    messages.add(ChatMessage(
+      role: 'assistant',
+      content: finalOutput
+    ));
+
+    _contextLength = Llama.lib.llama_chat_apply_template(
+      template, 
+      messages.toNative(), 
+      messages.length, 
+      false, 
+      ffi.nullptr, 
+      0
+    );
+  }
+
+  Stream<String> _generate(String prompt) async* {
     final vocab = Llama.lib.llama_model_get_vocab(_model);
-
     final isFirst = Llama.lib.llama_get_kv_cache_used_cells(_context) == 0;
 
     final nPromptTokens = -Llama.lib.llama_tokenize(vocab, prompt.toNativeUtf8().cast<ffi.Char>(), prompt.length, ffi.nullptr, 0, isFirst, true);
     ffi.Pointer<llama_token> promptTokens = calloc<llama_token>(nPromptTokens);
 
     if (Llama.lib.llama_tokenize(vocab, prompt.toNativeUtf8().cast<ffi.Char>(), prompt.length, promptTokens, nPromptTokens, isFirst, true) < 0) {
-      throw LlamaException('Failed to tokenize');
+      throw Exception('Failed to tokenize');
     }
 
     llama_batch batch = Llama.lib.llama_batch_get_one(promptTokens, nPromptTokens);
-
-    String response = '';
+    int newTokenId;
     
     while (!_completer!.isCompleted) {
+      final nCtx = Llama.lib.llama_n_ctx(_context);
       final nCtxUsed = Llama.lib.llama_get_kv_cache_used_cells(_context);
 
       if (nCtxUsed + batch.n_tokens > nCtx) {
-        throw LlamaException('Context size exceeded');
+        throw Exception('Context size exceeded');
       }
 
       if (Llama.lib.llama_decode(_context, batch) != 0) {
-        throw LlamaException('Failed to decode');
+        throw Exception('Failed to decode');
       }
 
-      final newToken = Llama.lib.llama_sampler_sample(_sampler, _context, -1);
+      newTokenId = Llama.lib.llama_sampler_sample(_sampler, _context, -1);
 
       // is it an end of generation?
-      if (Llama.lib.llama_vocab_is_eog(vocab, newToken)) {
+      if (Llama.lib.llama_vocab_is_eog(vocab, newTokenId)) {
         break;
       }
 
       final buffer = calloc<ffi.Char>(256);
-      if (Llama.lib.llama_token_to_piece(vocab, newToken, buffer, 256, 0, true) < 0) {
-        throw LlamaException('Failed to convert token to piece');
+      final n = Llama.lib.llama_token_to_piece(vocab, newTokenId, buffer, 256, 0, true);
+      if (n < 0) {
+        throw Exception('Failed to convert token to piece');
       }
 
-      try {
-        final piece = buffer.cast<Utf8>().toDartString();
-        response += piece;
-        yield piece;
-      }
-      catch (e) {
-        throw FormatException('Failed to parse UTF-8 string from buffer', e);
-      }
-      finally {
-        calloc.free(buffer);
-      }
+      yield buffer.cast<Utf8>().toDartString();
 
       final newTokenPointer = calloc<llama_token>(1);
-      newTokenPointer.value = newToken;
+      newTokenPointer.value = newTokenId;
 
       batch = Llama.lib.llama_batch_get_one(newTokenPointer, 1);
-      calloc.free(newTokenPointer);
-    }
-
-    Llama.lib.llama_batch_free(batch);
-    calloc.free(promptTokens);
-
-    messageCopy.add(ChatMessage(role: 'assistant', content: response));
-    _prevContextLength = Llama.lib.llama_chat_apply_template(
-      template, 
-      messageCopy.toNative(), 
-      messageCopy.length, 
-      false, 
-      ffi.nullptr, 
-      0
-    );
-    if (_prevContextLength < 0) {
-      throw LlamaException('Failed to apply template');
     }
   }
 
