@@ -19,7 +19,7 @@ dependencies:
 then you can import llama in your Dart code
 
 ```dart
-import 'package:llama/llama.dart';
+import 'package:lcpp/lcpp.dart';
 ```
 
 ## Usage
