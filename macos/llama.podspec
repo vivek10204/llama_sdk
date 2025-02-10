@@ -58,6 +58,7 @@ A new Flutter FFI plugin project.
                    'llama_cpp/ggml/src/ggml-cpu/*.cpp',
                    'llama_cpp/ggml/src/ggml-cpu/**/*.cpp',
                    'llama_cpp/ggml/src/ggml-metal/*.m',
+                   '!llama_cpp/common/build-info.cpp'
   s.frameworks = 'Foundation', 'Metal', 'MetalKit'
   s.platform = :osx, '10.15'
   s.pod_target_xcconfig = {
