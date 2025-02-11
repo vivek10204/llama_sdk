@@ -10,3 +10,7 @@ Small Fixes
 
 Add documentation
 Improve ChatMessage class
+
+## 0.0.4
+
+Change pods to lcpp
