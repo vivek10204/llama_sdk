@@ -3,7 +3,7 @@
 # Run `pod lib lint llama.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'llama'
+  s.name             = 'lcpp'
   s.version          = '0.0.1'
   s.summary          = 'A Flutter FFI plugin for interfacing with llama_cpp.'
   s.description      = <<-DESC

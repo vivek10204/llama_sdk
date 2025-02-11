@@ -40,7 +40,7 @@ abstract interface class Llama {
       } else if (Platform.isLinux || Platform.isAndroid) {
         _lib = llama(ffi.DynamicLibrary.open('libllama.so'));
       } else if (Platform.isMacOS || Platform.isIOS) {
-        _lib = llama(ffi.DynamicLibrary.open('llama.framework/llama'));
+        _lib = llama(ffi.DynamicLibrary.open('lcpp.framework/lcpp'));
       } else {
         throw LlamaException('Unsupported platform');
       }
