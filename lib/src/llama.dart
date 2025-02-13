@@ -1,4 +1,4 @@
-part of '../lcpp.dart';
+part of 'package:lcpp/lcpp.dart';
 
 /// An abstract interface class representing a Llama library.
 ///

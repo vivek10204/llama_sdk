@@ -1,4 +1,4 @@
-part of '../lcpp.dart';
+part of 'package:lcpp/lcpp.dart';
 
 /// A class that implements the Llama interface and provides functionality
 /// for loading and interacting with a Llama model, context, and sampler.

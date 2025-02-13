@@ -1,4 +1,4 @@
-part of '../lcpp.dart';
+part of 'package:lcpp/lcpp.dart';
 
 typedef _IsolateArguments = ({
   ModelParams modelParams,
