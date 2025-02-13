@@ -18,3 +18,7 @@ Change pods to lcpp
 ## 0.0.5
 
 Remove stop method (doesnt work)
+
+## 0.0.6
+
+Fix free

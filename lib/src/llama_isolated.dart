@@ -165,6 +165,6 @@ class LlamaIsolated implements Llama {
       await _initialized.future;
     }
 
-    _sendPort!.send(true);
+    _sendPort!.send(null);
   }
 }
