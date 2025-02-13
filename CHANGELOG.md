@@ -14,3 +14,7 @@ Improve ChatMessage class
 ## 0.0.4
 
 Change pods to lcpp
+
+## 0.0.5
+
+Remove stop method (doesnt work)
