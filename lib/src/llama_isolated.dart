@@ -52,15 +52,10 @@ void _isolateEntry(_SerializableIsolateArguments args) async {
         }
 
         sendPort.send(false);
-      } else if (data is bool) {
-        if (data) {
-          llamaCppNative.free();
-          return;
-        } else {
-          llamaCppNative.stop();
-        }
+      } else if (data == null) {
+        llamaCppNative.free();
 
-        sendPort.send(data);
+        sendPort.send(true);
       }
     }
   } catch (e) {
@@ -95,6 +90,13 @@ class LlamaIsolated implements Llama {
     ..close();
   SendPort? _sendPort;
 
+  /// Indicates whether the resource has been freed.
+  /// 
+  /// This boolean flag is used to track the state of the resource,
+  /// where `true` means the resource has been freed and `false` means
+  /// it is still in use.
+  bool isFreed = false;
+
   /// Constructs an instance of [LlamaIsolated].
   ///
   /// Initializes the [LlamaIsolated] with the provided parameters and sets up
@@ -127,10 +129,12 @@ class LlamaIsolated implements Llama {
     await for (final data in receivePort) {
       if (data is String) {
         _responseController.add(data);
-      } else if (data is SendPort) {
+      } 
+      else if (data is SendPort) {
         _sendPort = data;
         _initialized.complete();
-      } else if (data is bool) {
+      } 
+      else if (data is bool) {
         _responseController.close();
 
         if (data) return;
@@ -140,6 +144,10 @@ class LlamaIsolated implements Llama {
 
   @override
   Stream<String> prompt(List<ChatMessage> messages) async* {
+    if (isFreed) {
+      throw LlamaException('LlamaIsolated has been freed');
+    }
+
     if (!_initialized.isCompleted) {
       await _initialized.future;
     }
@@ -151,15 +159,6 @@ class LlamaIsolated implements Llama {
     await for (final response in _responseController.stream) {
       yield response;
     }
-  }
-
-  @override
-  void stop() async {
-    if (!_initialized.isCompleted) {
-      await _initialized.future;
-    }
-
-    _sendPort!.send(false);
   }
 
   @override

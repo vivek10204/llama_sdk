@@ -90,13 +90,6 @@ abstract interface class Llama {
   /// - Returns: A [Stream] of strings, where each string is a generated response.
   Stream<String> prompt(List<ChatMessage> messages);
 
-  /// Stops the current operation or process.
-  ///
-  /// This method should be called to terminate any ongoing tasks or
-  /// processes that need to be halted. It ensures that resources are
-  /// properly released and the system is left in a stable state.
-  void stop();
-
   /// Frees the resources associated with this object.
   ///
   /// This method should be called when the object is no longer needed

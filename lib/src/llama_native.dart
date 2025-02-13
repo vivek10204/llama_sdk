@@ -43,8 +43,6 @@ class LlamaNative implements Llama {
 
   int _contextLength = 0;
 
-  Completer? _completer;
-
   set modelParams(ModelParams modelParams) {
     _modelParams = modelParams;
 
@@ -144,8 +142,6 @@ class LlamaNative implements Llama {
     assert(_context != ffi.nullptr, 'Context is not initialized');
     assert(_sampler != ffi.nullptr, 'Sampler is not initialized');
 
-    _completer = Completer();
-
     final nCtx = Llama.lib.llama_n_ctx(_context);
 
     ffi.Pointer<ffi.Char> formatted = calloc<ffi.Char>(nCtx);
@@ -197,7 +193,7 @@ class LlamaNative implements Llama {
 
     String response = '';
 
-    while (!_completer!.isCompleted) {
+    while (true) {
       final nCtx = Llama.lib.llama_n_ctx(_context);
       final nCtxUsed = Llama.lib.llama_get_kv_cache_used_cells(_context);
 
@@ -241,11 +237,6 @@ class LlamaNative implements Llama {
     messagesPtr.free(messagesCopy.length);
     calloc.free(promptTokens);
     Llama.lib.llama_batch_free(batch);
-  }
-
-  @override
-  void stop() {
-    _completer?.complete();
   }
 
   @override

@@ -1,21 +1,21 @@
 PODS:
   - FlutterMacOS (1.0.0)
-  - llama (0.0.1):
+  - lcpp (0.0.1):
     - FlutterMacOS
 
 DEPENDENCIES:
   - FlutterMacOS (from `Flutter/ephemeral`)
-  - llama (from `Flutter/ephemeral/.symlinks/plugins/llama/macos`)
+  - lcpp (from `Flutter/ephemeral/.symlinks/plugins/lcpp/macos`)
 
 EXTERNAL SOURCES:
   FlutterMacOS:
     :path: Flutter/ephemeral
-  llama:
-    :path: Flutter/ephemeral/.symlinks/plugins/llama/macos
+  lcpp:
+    :path: Flutter/ephemeral/.symlinks/plugins/lcpp/macos
 
 SPEC CHECKSUMS:
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
-  llama: c81650b42b6d7dc2086fe0c920bd86eb8e74ad67
+  lcpp: debbc7a633b68ea4f0f5c19d84e4d703ef9d3e36
 
 PODFILE CHECKSUM: 9ebaf0ce3d369aaa26a9ea0e159195ed94724cf3
 
