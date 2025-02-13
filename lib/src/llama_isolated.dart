@@ -91,7 +91,7 @@ class LlamaIsolated implements Llama {
   SendPort? _sendPort;
 
   /// Indicates whether the resource has been freed.
-  /// 
+  ///
   /// This boolean flag is used to track the state of the resource,
   /// where `true` means the resource has been freed and `false` means
   /// it is still in use.
@@ -129,12 +129,10 @@ class LlamaIsolated implements Llama {
     await for (final data in receivePort) {
       if (data is String) {
         _responseController.add(data);
-      } 
-      else if (data is SendPort) {
+      } else if (data is SendPort) {
         _sendPort = data;
         _initialized.complete();
-      } 
-      else if (data is bool) {
+      } else if (data is bool) {
         _responseController.close();
 
         if (data) return;
