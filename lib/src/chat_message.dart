@@ -66,6 +66,29 @@ abstract class ChatMessage {
     }
   }
 
+  /// Creates a [ChatMessage] instance from a map.
+  ///
+  /// The map should contain a 'role' key with one of the following values:
+  /// - 'user': to create a [UserChatMessage]
+  /// - 'assistant': to create an [AssistantChatMessage]
+  /// - 'system': to create a [SystemChatMessage]
+  ///
+  /// The map should also contain a 'content' key with the message content.
+  ///
+  /// Throws an [Exception] if the 'role' value is invalid.
+  factory ChatMessage.fromMap(Map<String, dynamic> map) {
+    switch (map['role']) {
+      case 'user':
+        return UserChatMessage(map['content']);
+      case 'assistant':
+        return AssistantChatMessage(map['content']);
+      case 'system':
+        return SystemChatMessage(map['content']);
+      default:
+        throw Exception('Invalid role');
+    }
+  }
+
   factory ChatMessage._fromRecord(_ChatMessageRecord record) =>
       ChatMessage.withRole(role: record.$1, content: record.$2);
 
@@ -109,6 +132,35 @@ abstract class ChatMessage {
   }
 
   _ChatMessageRecord _toRecord() => (role, content);
+
+  /// Converts a [ChatMessage] object to a map representation.
+  ///
+  /// The returned map contains the following key-value pairs:
+  /// - 'role': The role of the message sender.
+  /// - 'content': The content of the message.
+  ///
+  /// Example:
+  /// ```dart
+  /// ChatMessage message = ChatMessage(role: 'user', content: 'Hello');
+  /// Map<String, dynamic> map = messageToMap(message);
+  /// // map = {'role': 'user', 'content': 'Hello'}
+  /// ```
+  ///
+  /// [message]: The [ChatMessage] object to be converted.
+  static Map<String, dynamic> messageToMap(ChatMessage message) => {
+    'role': message.role,
+    'content': message.content,
+  };
+
+  /// Converts the current `ChatMessage` instance to a map.
+  ///
+  /// This method uses the `messageToMap` function to transform the
+  /// `ChatMessage` object into a `Map<String, dynamic>`, which can be
+  /// useful for serialization or other operations that require a map
+  /// representation of the message.
+  ///
+  /// Returns a `Map<String, dynamic>` representation of the `ChatMessage`.
+  Map<String, dynamic> toMap() => messageToMap(this);
 }
 
 /// A class representing a chat message from a user.

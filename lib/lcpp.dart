@@ -9,7 +9,7 @@ import 'dart:isolate';
 
 import 'package:ffi/ffi.dart';
 
-import 'bindings.dart';
+import 'src/bindings.dart';
 
 part 'src/llama_isolated.dart';
 part 'src/llama_exception.dart';

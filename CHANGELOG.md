@@ -22,3 +22,7 @@ Remove stop method (doesnt work)
 ## 0.0.6
 
 Fix free
+
+## 0.0.7
+
+Add fromMap and toMap methods to ChatMessage
