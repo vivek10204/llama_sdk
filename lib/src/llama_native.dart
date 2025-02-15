@@ -33,6 +33,10 @@ part of 'package:lcpp/lcpp.dart';
 /// - `stop()`: Stops the current operation.
 /// - `free()`: Frees the allocated resources.
 class LlamaNative implements Llama {
+  static final _modelFinalizer = Finalizer<ffi.Pointer<llama_model>>(Llama.lib.llama_free_model);
+  static final _contextFinalizer = Finalizer<ffi.Pointer<llama_context>>(Llama.lib.llama_free);
+  static final _samplerFinalizer = Finalizer<ffi.Pointer<llama_sampler>>(Llama.lib.llama_sampler_free);
+
   ffi.Pointer<llama_model> _model = ffi.nullptr;
   ffi.Pointer<llama_context> _context = ffi.nullptr;
   ffi.Pointer<llama_sampler> _sampler = ffi.nullptr;
@@ -101,9 +105,10 @@ class LlamaNative implements Llama {
       Llama.lib.llama_free_model(_model);
     }
 
-    _model = Llama.lib
-        .llama_load_model_from_file(nativeModelPath, nativeModelParams);
+    _model = Llama.lib.llama_load_model_from_file(nativeModelPath, nativeModelParams);
     assert(_model != ffi.nullptr, 'Failed to load model');
+
+    _modelFinalizer.attach(this, _model);
 
     _initContext();
     _initSampler();
@@ -120,6 +125,8 @@ class LlamaNative implements Llama {
 
     _context = Llama.lib.llama_init_from_model(_model, nativeContextParams);
     assert(_context != ffi.nullptr, 'Failed to initialize context');
+
+    _contextFinalizer.attach(this, _context);
   }
 
   void _initSampler() {
@@ -132,6 +139,8 @@ class LlamaNative implements Llama {
     final vocab = Llama.lib.llama_model_get_vocab(_model);
     _sampler = _samplingParams.toNative(vocab);
     assert(_sampler != ffi.nullptr, 'Failed to initialize sampler');
+
+    _samplerFinalizer.attach(this, _sampler);
   }
 
   @override
@@ -241,11 +250,4 @@ class LlamaNative implements Llama {
 
   @override
   void stop() => throw LlamaException('Not implemented');
-
-  @override
-  void free() {
-    Llama.lib.llama_free_model(_model);
-    Llama.lib.llama_sampler_free(_sampler);
-    Llama.lib.llama_free(_context);
-  }
 }

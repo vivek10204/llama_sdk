@@ -96,10 +96,4 @@ abstract interface class Llama {
   /// processes that need to be halted. It ensures that resources are
   /// properly released and the system is left in a stable state.
   void stop();
-
-  /// Frees the resources associated with this object.
-  ///
-  /// This method should be called when the object is no longer needed
-  /// to release any allocated resources and avoid memory leaks.
-  void free();
 }

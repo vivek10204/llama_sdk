@@ -51,11 +51,7 @@ void _isolateEntry(_SerializableIsolateArguments args) async {
           sendPort.send(response);
         }
 
-        sendPort.send(false);
-      } else if (data == null) {
-        llamaCppNative.free();
-
-        sendPort.send(true);
+        sendPort.send(null);
       }
     }
   } catch (e) {
@@ -171,15 +167,13 @@ class LlamaIsolated implements Llama {
     _isolate = await Isolate.spawn(_isolateEntry, isolateParams.toSerializable);
 
     await for (final data in _receivePort!) {
-      if (data is String) {
-        _responseController.add(data);
-      } else if (data is SendPort) {
+      if (data is SendPort) {
         _sendPort = data;
         _initialized.complete();
-      } else if (data is bool) {
+      } else if (data is String) {
+        _responseController.add(data);
+      } else if (data == null) {
         _responseController.close();
-
-        if (data) return;
       }
     }
   }
@@ -209,14 +203,5 @@ class LlamaIsolated implements Llama {
     _isolate?.kill(priority: Isolate.immediate);
     _receivePort?.close();
     _initialized = Completer();
-  }
-
-  @override
-  void free() async {
-    if (!_initialized.isCompleted) {
-      await _initialized.future;
-    }
-
-    _sendPort!.send(null);
   }
 }
