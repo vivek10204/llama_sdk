@@ -149,8 +149,8 @@ class LlamaIsolated implements Llama {
   LlamaIsolated(
       {required ModelParams modelParams,
       ContextParams contextParams = const ContextParams(),
-      SamplingParams samplingParams = const SamplingParams(greedy: true)}) : 
-      _modelParams = modelParams,
+      SamplingParams samplingParams = const SamplingParams(greedy: true)})
+      : _modelParams = modelParams,
         _contextParams = contextParams,
         _samplingParams = samplingParams;
 

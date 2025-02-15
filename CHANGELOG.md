@@ -26,3 +26,7 @@ Fix free
 ## 0.0.7
 
 Add fromMap and toMap methods to ChatMessage
+
+## 0.0.8
+
+Re-Add stop method and improve cleanup logic

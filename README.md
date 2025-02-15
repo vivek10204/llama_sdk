@@ -9,11 +9,11 @@ lcpp is a dart implementation of llama.cpp used by the mobile artificial intelli
 
 ## Getting started
 
-To use this package, add `llama` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
+To use this package, add `lcpp` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 
 ```yaml
 dependencies:
-  lcpp: ^0.0.7
+  lcpp: ^0.0.8
 ```
 
 then you can import llama in your Dart code

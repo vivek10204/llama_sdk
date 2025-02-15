@@ -139,13 +139,15 @@ class LlamaAppState extends State<LlamaApp> {
               ),
             ),
           ),
-          busy ? IconButton(
-            icon: const Icon(Icons.stop),
-            onPressed: () => onStop(),
-          ) : IconButton(
-            icon: const Icon(Icons.send),
-            onPressed: () => onSubmitted(controller.text),
-          ),
+          busy
+              ? IconButton(
+                  icon: const Icon(Icons.stop),
+                  onPressed: () => onStop(),
+                )
+              : IconButton(
+                  icon: const Icon(Icons.send),
+                  onPressed: () => onSubmitted(controller.text),
+                ),
         ],
       ),
     );

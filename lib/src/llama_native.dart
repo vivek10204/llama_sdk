@@ -33,9 +33,12 @@ part of 'package:lcpp/lcpp.dart';
 /// - `stop()`: Stops the current operation.
 /// - `free()`: Frees the allocated resources.
 class LlamaNative implements Llama {
-  static final _modelFinalizer = Finalizer<ffi.Pointer<llama_model>>(Llama.lib.llama_free_model);
-  static final _contextFinalizer = Finalizer<ffi.Pointer<llama_context>>(Llama.lib.llama_free);
-  static final _samplerFinalizer = Finalizer<ffi.Pointer<llama_sampler>>(Llama.lib.llama_sampler_free);
+  static final _modelFinalizer =
+      Finalizer<ffi.Pointer<llama_model>>(Llama.lib.llama_free_model);
+  static final _contextFinalizer =
+      Finalizer<ffi.Pointer<llama_context>>(Llama.lib.llama_free);
+  static final _samplerFinalizer =
+      Finalizer<ffi.Pointer<llama_sampler>>(Llama.lib.llama_sampler_free);
 
   ffi.Pointer<llama_model> _model = ffi.nullptr;
   ffi.Pointer<llama_context> _context = ffi.nullptr;
@@ -105,7 +108,8 @@ class LlamaNative implements Llama {
       Llama.lib.llama_free_model(_model);
     }
 
-    _model = Llama.lib.llama_load_model_from_file(nativeModelPath, nativeModelParams);
+    _model = Llama.lib
+        .llama_load_model_from_file(nativeModelPath, nativeModelParams);
     assert(_model != ffi.nullptr, 'Failed to load model');
 
     _modelFinalizer.attach(this, _model);
