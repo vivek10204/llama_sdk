@@ -13,14 +13,14 @@ class LlamaApp extends StatefulWidget {
   const LlamaApp({super.key});
 
   @override
-  State<LlamaApp> createState() => _LlamaAppState();
+  State<LlamaApp> createState() => LlamaAppState();
 }
 
-class _LlamaAppState extends State<LlamaApp> {
-  final TextEditingController _controller = TextEditingController();
-  final List<ChatMessage> _messages = [];
-  Llama? _model;
-  String? _modelPath;
+class LlamaAppState extends State<LlamaApp> {
+  final TextEditingController controller = TextEditingController();
+  final List<ChatMessage> messages = [];
+  Llama? model;
+  String? modelPath;
 
   void _loadModel() async {
     final result = await FilePicker.platform.pickFiles(
@@ -48,28 +48,28 @@ class _LlamaAppState extends State<LlamaApp> {
         samplingParams: const SamplingParams(greedy: true));
 
     setState(() {
-      _model = llamaCpp;
-      _modelPath = result.files.single.path;
+      model = llamaCpp;
+      modelPath = result.files.single.path;
     });
   }
 
-  void _onSubmitted(String value) async {
-    if (_model == null) {
+  void onSubmitted(String value) async {
+    if (model == null) {
       return;
     }
 
     setState(() {
-      _messages.add(UserChatMessage(value));
-      _controller.clear();
+      messages.add(UserChatMessage(value));
+      controller.clear();
     });
 
-    final stream = _model!.prompt(_messages.copy());
+    final stream = model!.prompt(messages.copy());
 
-    _messages.add(AssistantChatMessage(''));
+    messages.add(AssistantChatMessage(''));
 
     await for (var response in stream) {
       setState(() {
-        _messages.last.content += response;
+        messages.last.content += response;
       });
     }
   }
@@ -88,7 +88,7 @@ class _LlamaAppState extends State<LlamaApp> {
 
   PreferredSizeWidget buildAppBar() {
     return AppBar(
-        title: Text(_modelPath ?? 'No model loaded'),
+        title: Text(modelPath ?? 'No model loaded'),
         leading: IconButton(
           icon: const Icon(Icons.folder_open),
           onPressed: _loadModel,
@@ -100,9 +100,9 @@ class _LlamaAppState extends State<LlamaApp> {
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: _messages.length,
+            itemCount: messages.length,
             itemBuilder: (context, index) {
-              final message = _messages[index];
+              final message = messages[index];
               return ListTile(
                 title: Text(message.role),
                 subtitle: Text(message.content),
@@ -122,8 +122,8 @@ class _LlamaAppState extends State<LlamaApp> {
         children: [
           Expanded(
             child: TextField(
-              controller: _controller,
-              onSubmitted: _onSubmitted,
+              controller: controller,
+              onSubmitted: onSubmitted,
               decoration: const InputDecoration(
                 labelText: 'Enter your message',
                 border: OutlineInputBorder(),
@@ -132,9 +132,7 @@ class _LlamaAppState extends State<LlamaApp> {
           ),
           IconButton(
             icon: const Icon(Icons.send),
-            onPressed: () {
-              _onSubmitted(_controller.text);
-            },
+            onPressed: () => onSubmitted(controller.text),
           ),
         ],
       ),
