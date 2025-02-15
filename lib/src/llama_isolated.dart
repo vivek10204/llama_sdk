@@ -85,10 +85,54 @@ void _isolateEntry(_SerializableIsolateArguments args) async {
 /// The [free] method sends a signal to the isolate to free resources. It waits
 /// for the isolate to be initialized before sending the signal.
 class LlamaIsolated implements Llama {
-  final Completer _initialized = Completer();
+  Completer _initialized = Completer();
   StreamController<String> _responseController = StreamController<String>()
     ..close();
+  Isolate? _isolate;
   SendPort? _sendPort;
+  ReceivePort? _receivePort;
+
+  ModelParams _modelParams;
+
+  /// Gets the model parameters.
+  ///
+  /// This property returns the [_modelParams] which contains the parameters
+  /// for the model.
+  ModelParams get modelParams => _modelParams;
+
+  set modelParams(ModelParams modelParams) {
+    _modelParams = modelParams;
+    stop();
+    _listener();
+  }
+
+  ContextParams _contextParams;
+
+  /// Gets the context parameters.
+  ///
+  /// This property returns the `_contextParams` which contains the parameters
+  /// for the current context.
+  ContextParams get contextParams => _contextParams;
+
+  set contextParams(ContextParams contextParams) {
+    _contextParams = contextParams;
+    stop();
+    _listener();
+  }
+
+  SamplingParams _samplingParams;
+
+  /// Gets the current sampling parameters.
+  ///
+  /// This property returns the [_samplingParams] which contains the
+  /// parameters used for sampling in the llama isolated context.
+  SamplingParams get samplingParams => _samplingParams;
+
+  set samplingParams(SamplingParams samplingParams) {
+    _samplingParams = samplingParams;
+    stop();
+    _listener();
+  }
 
   /// Indicates whether the resource has been freed.
   ///
@@ -109,24 +153,24 @@ class LlamaIsolated implements Llama {
   LlamaIsolated(
       {required ModelParams modelParams,
       ContextParams contextParams = const ContextParams(),
-      SamplingParams samplingParams = const SamplingParams(greedy: true)}) {
-    _listener(modelParams, contextParams, samplingParams);
-  }
+      SamplingParams samplingParams = const SamplingParams(greedy: true)}) : 
+      _modelParams = modelParams,
+        _contextParams = contextParams,
+        _samplingParams = samplingParams;
 
-  void _listener(ModelParams modelParams, ContextParams contextParams,
-      SamplingParams samplingParams) async {
-    final receivePort = ReceivePort();
+  void _listener() async {
+    _receivePort = ReceivePort();
 
     final isolateParams = (
-      modelParams: modelParams,
-      contextParams: contextParams,
-      samplingParams: samplingParams,
-      sendPort: receivePort.sendPort
+      modelParams: _modelParams,
+      contextParams: _contextParams,
+      samplingParams: _samplingParams,
+      sendPort: _receivePort!.sendPort
     );
 
-    await Isolate.spawn(_isolateEntry, isolateParams.toSerializable);
+    _isolate = await Isolate.spawn(_isolateEntry, isolateParams.toSerializable);
 
-    await for (final data in receivePort) {
+    await for (final data in _receivePort!) {
       if (data is String) {
         _responseController.add(data);
       } else if (data is SendPort) {
@@ -147,6 +191,7 @@ class LlamaIsolated implements Llama {
     }
 
     if (!_initialized.isCompleted) {
+      _listener();
       await _initialized.future;
     }
 
@@ -157,6 +202,13 @@ class LlamaIsolated implements Llama {
     await for (final response in _responseController.stream) {
       yield response;
     }
+  }
+
+  @override
+  void stop() async {
+    _isolate?.kill(priority: Isolate.immediate);
+    _receivePort?.close();
+    _initialized = Completer();
   }
 
   @override

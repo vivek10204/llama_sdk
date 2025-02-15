@@ -240,6 +240,9 @@ class LlamaNative implements Llama {
   }
 
   @override
+  void stop() => throw LlamaException('Not implemented');
+
+  @override
   void free() {
     Llama.lib.llama_free_model(_model);
     Llama.lib.llama_sampler_free(_sampler);

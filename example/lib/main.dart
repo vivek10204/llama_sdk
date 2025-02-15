@@ -21,8 +21,9 @@ class LlamaAppState extends State<LlamaApp> {
   final List<ChatMessage> messages = [];
   Llama? model;
   String? modelPath;
+  bool busy = false;
 
-  void _loadModel() async {
+  void loadModel() async {
     final result = await FilePicker.platform.pickFiles(
         dialogTitle: "Load Model File",
         type: FileType.any,
@@ -59,6 +60,7 @@ class LlamaAppState extends State<LlamaApp> {
     }
 
     setState(() {
+      busy = true;
       messages.add(UserChatMessage(value));
       controller.clear();
     });
@@ -72,6 +74,13 @@ class LlamaAppState extends State<LlamaApp> {
         messages.last.content += response;
       });
     }
+
+    setState(() => busy = false);
+  }
+
+  void onStop() {
+    model?.stop();
+    setState(() => busy = false);
   }
 
   @override
@@ -91,7 +100,7 @@ class LlamaAppState extends State<LlamaApp> {
         title: Text(modelPath ?? 'No model loaded'),
         leading: IconButton(
           icon: const Icon(Icons.folder_open),
-          onPressed: _loadModel,
+          onPressed: loadModel,
         ));
   }
 
@@ -130,7 +139,10 @@ class LlamaAppState extends State<LlamaApp> {
               ),
             ),
           ),
-          IconButton(
+          busy ? IconButton(
+            icon: const Icon(Icons.stop),
+            onPressed: () => onStop(),
+          ) : IconButton(
             icon: const Icon(Icons.send),
             onPressed: () => onSubmitted(controller.text),
           ),
