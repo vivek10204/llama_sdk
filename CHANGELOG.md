@@ -9,7 +9,7 @@ Small Fixes
 ## 0.0.3
 
 Add documentation
-Improve ChatMessage class
+Improve `ChatMessage` class
 
 ## 0.0.4
 
@@ -17,16 +17,20 @@ Change pods to lcpp
 
 ## 0.0.5
 
-Remove stop method (doesnt work)
+Remove `stop` method (doesnt work)
 
 ## 0.0.6
 
-Fix free
+Fix `free`
 
 ## 0.0.7
 
-Add fromMap and toMap methods to ChatMessage
+Add `fromMap` and `toMap` methods to `ChatMessage`
 
 ## 0.0.8
 
-Re-Add stop method and improve cleanup logic
+Re-Add `stop` method and improve cleanup logic
+
+## 0.0.9
+
+Add `reload` method to `Llama` and `defaultParams` factory to `ContextParams`

@@ -98,8 +98,7 @@ class LlamaIsolated implements Llama {
 
   set modelParams(ModelParams modelParams) {
     _modelParams = modelParams;
-    stop();
-    _listener();
+    reload();
   }
 
   ContextParams _contextParams;
@@ -112,8 +111,7 @@ class LlamaIsolated implements Llama {
 
   set contextParams(ContextParams contextParams) {
     _contextParams = contextParams;
-    stop();
-    _listener();
+    reload();
   }
 
   SamplingParams _samplingParams;
@@ -126,8 +124,7 @@ class LlamaIsolated implements Llama {
 
   set samplingParams(SamplingParams samplingParams) {
     _samplingParams = samplingParams;
-    stop();
-    _listener();
+    reload();
   }
 
   /// Indicates whether the resource has been freed.
@@ -203,5 +200,11 @@ class LlamaIsolated implements Llama {
     _isolate?.kill(priority: Isolate.immediate);
     _receivePort?.close();
     _initialized = Completer();
+  }
+
+  @override
+  void reload() {
+    stop();
+    _listener();
   }
 }

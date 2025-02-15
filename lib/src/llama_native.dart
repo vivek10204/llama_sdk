@@ -254,4 +254,7 @@ class LlamaNative implements Llama {
 
   @override
   void stop() => throw LlamaException('Not implemented');
+
+  @override
+  void reload() => _initModel();
 }

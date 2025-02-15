@@ -193,6 +193,82 @@ class ContextParams {
   factory ContextParams.fromJson(String source) =>
       ContextParams.fromMap(jsonDecode(source));
 
+  /// Creates a [ContextParams] instance from a native [llama_context_params] object.
+  ///
+  /// The [params] parameter is a native structure containing various context parameters.
+  ///
+  /// The following fields are mapped from the native structure:
+  /// - [nCtx]: Number of contexts.
+  /// - [nBatch]: Number of batches.
+  /// - [nUBatch]: Number of micro-batches.
+  /// - [nSeqMax]: Maximum sequence length.
+  /// - [nThreads]: Number of threads.
+  /// - [nThreadsBatch]: Number of threads per batch.
+  /// - [ropeScalingType]: Type of rope scaling, if applicable.
+  /// - [poolingType]: Type of pooling, if applicable.
+  /// - [attentionType]: Type of attention, if applicable.
+  /// - [ropeFrequencyBase]: Base frequency for rope.
+  /// - [ropeFrequencyScale]: Scaling factor for rope frequency.
+  /// - [yarnExtrapolationFactor]: Extrapolation factor for yarn.
+  /// - [yarnAttenuationFactor]: Attenuation factor for yarn.
+  /// - [yarnBetaFast]: Beta fast parameter for yarn.
+  /// - [yarnBetaSlow]: Beta slow parameter for yarn.
+  /// - [yarnOriginalContext]: Original context for yarn.
+  /// - [defragmentationThreshold]: Threshold for defragmentation.
+  /// - [typeK]: Type K, if applicable.
+  /// - [typeV]: Type V, if applicable.
+  /// - [embeddings]: Embeddings.
+  /// - [offloadKqv]: Offload KQV flag.
+  /// - [flashAttention]: Flash attention flag.
+  /// - [noPerformance]: No performance flag.
+  factory ContextParams.fromNative(llama_context_params params) {
+    return ContextParams(
+      nCtx: params.n_ctx,
+      nBatch: params.n_batch,
+      nUBatch: params.n_ubatch,
+      nSeqMax: params.n_seq_max,
+      nThreads: params.n_threads,
+      nThreadsBatch: params.n_threads_batch,
+      ropeScalingType: params.rope_scaling_typeAsInt != -1
+          ? RopeScalingType.values[params.rope_scaling_typeAsInt + 1]
+          : null,
+      poolingType: params.pooling_typeAsInt != -1
+          ? PoolingType.values[params.pooling_typeAsInt + 1]
+          : null,
+      attentionType: params.attention_typeAsInt != -1
+          ? AttentionType.values[params.attention_typeAsInt + 1]
+          : null,
+      ropeFrequencyBase: params.rope_freq_base,
+      ropeFrequencyScale: params.rope_freq_scale,
+      yarnExtrapolationFactor: params.yarn_ext_factor,
+      yarnAttenuationFactor: params.yarn_attn_factor,
+      yarnBetaFast: params.yarn_beta_fast,
+      yarnBetaSlow: params.yarn_beta_slow,
+      yarnOriginalContext: params.yarn_orig_ctx,
+      defragmentationThreshold: params.defrag_thold,
+      typeK:
+          params.type_kAsInt != -1 ? GgmlType.values[params.type_kAsInt] : null,
+      typeV:
+          params.type_vAsInt != -1 ? GgmlType.values[params.type_vAsInt] : null,
+      embeddings: params.embeddings,
+      offloadKqv: params.offload_kqv,
+      flashAttention: params.flash_attn,
+      noPerformance: params.no_perf,
+    );
+  }
+
+  /// Factory constructor that creates an instance of [ContextParams] with default parameters.
+  ///
+  /// This constructor uses the `llama_context_default_params` function from the
+  /// Llama library to obtain the default context parameters and then converts
+  /// them to a [ContextParams] instance using the [ContextParams.fromNative] method.
+  factory ContextParams.defaultParams() {
+    final llama_context_params contextParams =
+        Llama.lib.llama_context_default_params();
+
+    return ContextParams.fromNative(contextParams);
+  }
+
   /// Converts the current instance to a native `llama_context_params` object.
   ///
   /// This method initializes a `llama_context_params` object with default values
