@@ -199,7 +199,7 @@ class LlamaIsolated implements Llama {
   }
 
   @override
-  void stop() async {
+  void stop() {
     _isolate?.kill(priority: Isolate.immediate);
     _receivePort?.close();
     _initialized = Completer();
