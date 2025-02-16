@@ -115,10 +115,9 @@ packages:
   lcpp:
     dependency: "direct main"
     description:
-      name: lcpp
-      sha256: db87c79f878fd5a8c3bf59dd5150303e5cf695e4b35a6680f9406a1fdb7b636f
-      url: "https://pub.dev"
-    source: hosted
+      path: ".."
+      relative: true
+    source: path
     version: "0.1.3"
   leak_tracker:
     dependency: transitive
