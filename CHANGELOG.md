@@ -46,3 +46,7 @@ Small fix to json
 ## 0.1.2
 
 Small fix to json
+
+## 0.1.3
+
+Fix regen
