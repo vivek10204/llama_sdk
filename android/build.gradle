@@ -42,9 +42,7 @@ android {
     // Invoke the shared CMake build with the Android Gradle Plugin.
     externalNativeBuild {
         cmake {
-            path "../src/llama_cpp/CMakeLists.txt"
-            cFlags "-DBUILD_COMMIT=unknown", "-DBUILD_COMPILER=Clang 14.0.6", "-DBUILD_TARGET=Android"
-            cppFlags "-DBUILD_COMMIT=unknown", "-DBUILD_COMPILER=Clang 14.0.6", "-DBUILD_TARGET=Android"
+            path "./CMakeLists.txt"
         }
     }
 
