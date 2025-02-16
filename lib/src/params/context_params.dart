@@ -153,7 +153,7 @@ class ContextParams {
   /// - `flash_attn`: Whether to use flash attention.
   /// - `no_perf`: Whether to disable performance optimizations.
   factory ContextParams.fromMap(Map<String, dynamic> map) => ContextParams(
-        nCtx: map['n_ctx'],
+        nCtx: map['n_ctx'] ?? 0,
         nBatch: map['n_batch'],
         nUBatch: map['n_ubatch'],
         nSeqMax: map['n_seq_max'],

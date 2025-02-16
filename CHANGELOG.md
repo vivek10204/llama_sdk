@@ -38,3 +38,7 @@ Add `reload` method to `Llama` and `defaultParams` factory to `ContextParams`
 ## 0.1.0
 
 Adjust json serialization
+
+## 0.1.1
+
+Small fix to json
