@@ -50,3 +50,7 @@ Small fix to json
 ## 0.1.3
 
 Fix regen
+
+## 0.1.4
+
+Cmake for android
