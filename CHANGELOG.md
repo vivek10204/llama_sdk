@@ -54,3 +54,7 @@ Fix regen
 ## 0.1.4
 
 Cmake for android
+
+## 0.1.5
+
+Cmake args for android
