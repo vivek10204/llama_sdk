@@ -203,8 +203,5 @@ class LlamaIsolated implements Llama {
   }
 
   @override
-  void reload() {
-    stop();
-    _listener();
-  }
+  void reload() => stop();
 }
