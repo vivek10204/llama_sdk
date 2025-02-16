@@ -4,7 +4,7 @@ part of 'package:lcpp/lcpp.dart';
 /// A class representing the parameters for context configuration.
 class ContextParams {
   /// text context, 0 = from model
-  final int? nCtx;
+  final int nCtx;
 
   /// logical maximum batch size that can be submitted to llama_decode
   final int? nBatch;
@@ -101,7 +101,7 @@ class ContextParams {
   /// - `flashAttention`: Whether to use flash attention.
   /// - `noPerformance`: Whether to disable performance optimizations.
   const ContextParams({
-    this.nCtx,
+    this.nCtx = 0,
     this.nBatch,
     this.nUBatch,
     this.nSeqMax,
@@ -129,59 +129,59 @@ class ContextParams {
   /// Creates a new instance of [ContextParams] from a map.
   ///
   /// The [map] parameter should contain the following keys:
-  /// - `nCtx`: The context size.
-  /// - `nBatch`: The batch size.
-  /// - `nUBatch`: The unrolled batch size.
-  /// - `nSeqMax`: The maximum sequence length.
-  /// - `nThreads`: The number of threads.
-  /// - `nThreadsBatch`: The number of threads for batch processing.
-  /// - `ropeScalingType`: The type of rope scaling, parsed using [RopeScalingType.fromString].
-  /// - `poolingType`: The type of pooling, parsed using [PoolingType.fromString].
-  /// - `attentionType`: The type of attention, parsed using [AttentionType.fromString].
-  /// - `ropeFrequencyBase`: The base frequency for rope.
-  /// - `ropeFrequencyScale`: The scale frequency for rope.
-  /// - `yarnExtrapolationFactor`: The extrapolation factor for yarn.
-  /// - `yarnAttenuationFactor`: The attenuation factor for yarn.
-  /// - `yarnBetaFast`: The beta fast parameter for yarn.
-  /// - `yarnBetaSlow`: The beta slow parameter for yarn.
-  /// - `yarnOriginalContext`: The original context for yarn.
-  /// - `defragmentationThreshold`: The threshold for defragmentation.
-  /// - `typeK`: The type K, parsed using [GgmlType.fromString].
-  /// - `typeV`: The type V, parsed using [GgmlType.fromString].
-  /// - `embeddings`: The embeddings.
-  /// - `offloadKqv`: The offload KQV parameter.
-  /// - `flashAttention`: The flash attention parameter.
-  /// - `noPerformance`: The no performance parameter.
+  /// - `n_ctx`: The context size.
+  /// - `n_batch`: The batch size.
+  /// - `n_ubatch`: The unrolled batch size.
+  /// - `n_seq_max`: The maximum sequence length.
+  /// - `n_threads`: The number of threads.
+  /// - `n_threads_batch`: The number of threads for batch processing.
+  /// - `rope_scaling_type`: The type of scaling for ROPE (Rotary Position Embedding).
+  /// - `pooling_type`: The type of pooling to be used.
+  /// - `attention_type`: The type of attention mechanism to be used.
+  /// - `rope_frequency_base`: The base frequency for ROPE.
+  /// - `rope_frequency_scale`: The scaling factor for ROPE frequency.
+  /// - `yarn_ext_factor`: The extrapolation factor for YARN.
+  /// - `yarn_attn_factor`: The attenuation factor for YARN.
+  /// - `yarn_beta_fast`: The fast beta parameter for YARN.
+  /// - `yarn_beta_slow`: The slow beta parameter for YARN.
+  /// - `yarn_orig_ctx`: The original context for YARN.
+  /// - `defrag_thold`: The threshold for defragmentation.
+  /// - `type_k`: The type of key embeddings.
+  /// - `type_v`: The type of value embeddings.
+  /// - `embeddings`: The embeddings to be used.
+  /// - `offload_kqv`: Whether to offload KQV (Key, Query, Value) computations.
+  /// - `flash_attn`: Whether to use flash attention.
+  /// - `no_perf`: Whether to disable performance optimizations.
   factory ContextParams.fromMap(Map<String, dynamic> map) => ContextParams(
-        nCtx: map['nCtx'],
-        nBatch: map['nBatch'],
-        nUBatch: map['nUBatch'],
-        nSeqMax: map['nSeqMax'],
-        nThreads: map['nThreads'],
-        nThreadsBatch: map['nThreadsBatch'],
-        ropeScalingType: map['ropeScalingType'] != null
-            ? RopeScalingType.fromString(map['ropeScalingType'])
+        nCtx: map['n_ctx'],
+        nBatch: map['n_batch'],
+        nUBatch: map['n_ubatch'],
+        nSeqMax: map['n_seq_max'],
+        nThreads: map['n_threads'],
+        nThreadsBatch: map['n_threads_batch'],
+        ropeScalingType: map['rope_scaling_type'] != null
+            ? RopeScalingType.fromString(map['rope_scaling_type'])
             : null,
-        poolingType: map['poolingType'] != null
-            ? PoolingType.fromString(map['poolingType'])
+        poolingType: map['pooling_type'] != null
+            ? PoolingType.fromString(map['pooling_type'])
             : null,
-        attentionType: map['attentionType'] != null
-            ? AttentionType.fromString(map['attentionType'])
+        attentionType: map['attention_type'] != null
+            ? AttentionType.fromString(map['attention_type'])
             : null,
-        ropeFrequencyBase: map['ropeFrequencyBase'],
-        ropeFrequencyScale: map['ropeFrequencyScale'],
-        yarnExtrapolationFactor: map['yarnExtrapolationFactor'],
-        yarnAttenuationFactor: map['yarnAttenuationFactor'],
-        yarnBetaFast: map['yarnBetaFast'],
-        yarnBetaSlow: map['yarnBetaSlow'],
-        yarnOriginalContext: map['yarnOriginalContext'],
-        defragmentationThreshold: map['defragmentationThreshold'],
-        typeK: map['typeK'] != null ? GgmlType.fromString(map['typeK']) : null,
-        typeV: map['typeV'] != null ? GgmlType.fromString(map['typeV']) : null,
+        ropeFrequencyBase: map['rope_frequency_base'],
+        ropeFrequencyScale: map['rope_frequency_scale'],
+        yarnExtrapolationFactor: map['yarn_ext_factor'],
+        yarnAttenuationFactor: map['yarn_attn_factor'],
+        yarnBetaFast: map['yarn_beta_fast'],
+        yarnBetaSlow: map['yarn_beta_slow'],
+        yarnOriginalContext: map['yarn_orig_ctx'],
+        defragmentationThreshold: map['defrag_thold'],
+        typeK: map['type_k'] != null ? GgmlType.fromString(map['type_k']) : null,
+        typeV: map['type_v'] != null ? GgmlType.fromString(map['type_v']) : null,
         embeddings: map['embeddings'],
-        offloadKqv: map['offloadKqv'],
-        flashAttention: map['flashAttention'],
-        noPerformance: map['noPerformance'],
+        offloadKqv: map['offload_kqv'],
+        flashAttention: map['flash_attn'],
+        noPerformance: map['no_perf'],
       );
 
   /// Creates an instance of [ContextParams] from a JSON string.
@@ -305,9 +305,7 @@ class ContextParams {
     final llama_context_params contextParams =
         Llama.lib.llama_context_default_params();
 
-    if (nCtx != null) {
-      contextParams.n_ctx = nCtx!;
-    }
+    contextParams.n_ctx = nCtx;
 
     if (nBatch != null) {
       contextParams.n_batch = nBatch!;
@@ -408,53 +406,53 @@ class ContextParams {
   /// Converts the context parameters to a map.
   ///
   /// The map contains the following key-value pairs:
-  /// - `nCtx`: The context size.
-  /// - `nBatch`: The batch size.
-  /// - `nUBatch`: The unbatched size.
-  /// - `nSeqMax`: The maximum sequence length.
-  /// - `nThreads`: The number of threads.
-  /// - `nThreadsBatch`: The number of threads for batching.
-  /// - `ropeScalingType`: The type of rope scaling, if any.
-  /// - `poolingType`: The type of pooling, if any.
-  /// - `attentionType`: The type of attention, if any.
-  /// - `ropeFrequencyBase`: The base frequency for rope.
-  /// - `ropeFrequencyScale`: The scale frequency for rope.
-  /// - `yarnExtrapolationFactor`: The extrapolation factor for yarn.
-  /// - `yarnAttenuationFactor`: The attenuation factor for yarn.
-  /// - `yarnBetaFast`: The fast beta value for yarn.
-  /// - `yarnBetaSlow`: The slow beta value for yarn.
-  /// - `yarnOriginalContext`: The original context for yarn.
-  /// - `defragmentationThreshold`: The threshold for defragmentation.
-  /// - `typeK`: The type K, if any.
-  /// - `typeV`: The type V, if any.
-  /// - `embeddings`: The embeddings.
-  /// - `offloadKqv`: Whether to offload KQV.
-  /// - `flashAttention`: Whether flash attention is enabled.
-  /// - `noPerformance`: Whether performance optimizations are disabled.
+  /// - `n_ctx`: The context size.
+  /// - `n_batch`: The batch size.
+  /// - `n_ubatch`: The unrolled batch size.
+  /// - `n_seq_max`: The maximum sequence length.
+  /// - `n_threads`: The number of threads.
+  /// - `n_threads_batch`: The number of threads for batch processing.
+  /// - `rope_scaling_type`: The type of scaling for ROPE (Rotary Position Embedding).
+  /// - `pooling_type`: The type of pooling to be used.
+  /// - `attention_type`: The type of attention mechanism to be used.
+  /// - `rope_frequency_base`: The base frequency for ROPE.
+  /// - `rope_frequency_scale`: The scaling factor for ROPE frequency.
+  /// - `yarn_ext_factor`: The extrapolation factor for YARN.
+  /// - `yarn_attn_factor`: The attenuation factor for YARN.
+  /// - `yarn_beta_fast`: The fast beta parameter for YARN.
+  /// - `yarn_beta_slow`: The slow beta parameter for YARN.
+  /// - `yarn_orig_ctx`: The original context for YARN.
+  /// - `defrag_thold`: The threshold for defragmentation.
+  /// - `type_k`: The type of key embeddings.
+  /// - `type_v`: The type of value embeddings.
+  /// - `embeddings`: The embeddings to be used.
+  /// - `offload_kqv`: Whether to offload KQV (Key, Query, Value) computations.
+  /// - `flash_attn`: Whether to use flash attention.
+  /// - `no_perf`: Whether to disable performance optimizations.
   Map<String, dynamic> toMap() => {
-        'nCtx': nCtx,
-        'nBatch': nBatch,
-        'nUBatch': nUBatch,
-        'nSeqMax': nSeqMax,
-        'nThreads': nThreads,
-        'nThreadsBatch': nThreadsBatch,
-        'ropeScalingType': ropeScalingType?.name,
-        'poolingType': poolingType?.name,
-        'attentionType': attentionType?.name,
-        'ropeFrequencyBase': ropeFrequencyBase,
-        'ropeFrequencyScale': ropeFrequencyScale,
-        'yarnExtrapolationFactor': yarnExtrapolationFactor,
-        'yarnAttenuationFactor': yarnAttenuationFactor,
-        'yarnBetaFast': yarnBetaFast,
-        'yarnBetaSlow': yarnBetaSlow,
-        'yarnOriginalContext': yarnOriginalContext,
-        'defragmentationThreshold': defragmentationThreshold,
-        'typeK': typeK?.name,
-        'typeV': typeV?.name,
+        'n_ctx': nCtx,
+        'n_batch': nBatch,
+        'n_ubatch': nUBatch,
+        'n_seq_max': nSeqMax,
+        'n_threads': nThreads,
+        'n_threads_batch': nThreadsBatch,
+        'rope_scaling_type': ropeScalingType?.toString().split('.').last,
+        'pooling_type': poolingType?.toString().split('.').last,
+        'attention_type': attentionType?.toString().split('.').last,
+        'rope_frequency_base': ropeFrequencyBase,
+        'rope_frequency_scale': ropeFrequencyScale,
+        'yarn_ext_factor': yarnExtrapolationFactor,
+        'yarn_attn_factor': yarnAttenuationFactor,
+        'yarn_beta_fast': yarnBetaFast,
+        'yarn_beta_slow': yarnBetaSlow,
+        'yarn_orig_ctx': yarnOriginalContext,
+        'defrag_thold': defragmentationThreshold,
+        'type_k': typeK?.toString().split('.').last,
+        'type_v': typeV?.toString().split('.').last,
         'embeddings': embeddings,
-        'offloadKqv': offloadKqv,
-        'flashAttention': flashAttention,
-        'noPerformance': noPerformance,
+        'offload_kqv': offloadKqv,
+        'flash_attn': flashAttention,
+        'no_perf': noPerformance,
       };
 
   /// Converts the current object to a JSON string representation.
