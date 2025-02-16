@@ -42,3 +42,7 @@ Adjust json serialization
 ## 0.1.1
 
 Small fix to json
+
+## 0.1.2
+
+Small fix to json

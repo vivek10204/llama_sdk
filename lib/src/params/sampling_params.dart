@@ -395,8 +395,8 @@ class SamplingParams {
 
   /// Constructs a [SamplingParams] instance from a [Map].
   factory SamplingParams.fromMap(Map<String, dynamic> map) => SamplingParams(
-      greedy: map['greedy'],
-      infill: map['infill'],
+      greedy: map['greedy'] ?? false,
+      infill: map['infill'] ?? false,
       seed: map['seed'],
       topK: map['top_k'],
       topP: map['top_p'] != null ? TopPArguments.fromMap(map['top_p']) : null,
