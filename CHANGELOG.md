@@ -34,3 +34,7 @@ Re-Add `stop` method and improve cleanup logic
 ## 0.0.9
 
 Add `reload` method to `Llama` and `defaultParams` factory to `ContextParams`
+
+## 0.1.0
+
+Adjust json serialization
