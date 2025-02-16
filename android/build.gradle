@@ -43,9 +43,7 @@ android {
     externalNativeBuild {
         cmake {
             path "../src/llama_cpp/CMakeLists.txt"
-            arguments "-DBUILD_COMMIT=unknown",
-                  "-DBUILD_COMPILER=Clang 14.0.6",
-                  "-DBUILD_TARGET=Android"
+            arguments "-DBUILD_COMMIT=unknown", "-DBUILD_COMPILER=Clang 14.0.6", "-DBUILD_TARGET=Android"
         }
     }
 
