@@ -17,13 +17,13 @@ class TopPArguments {
   /// Constructs a [TopPArguments] instance from a [Map].
   factory TopPArguments.fromMap(Map<String, dynamic> map) => TopPArguments(
         p: map['p'],
-        minKeep: map['minKeep'],
+        minKeep: map['min_keep'],
       );
 
   /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
         'p': p,
-        'minKeep': minKeep,
+        'min_keep': minKeep,
       };
 }
 
@@ -44,13 +44,13 @@ class MinPArguments {
   /// Constructs a [MinPArguments] instance from a [Map].
   factory MinPArguments.fromMap(Map<String, dynamic> map) => MinPArguments(
         p: map['p'],
-        minKeep: map['minKeep'],
+        minKeep: map['min_keep'],
       );
 
   /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
         'p': p,
-        'minKeep': minKeep,
+        'min_keep': minKeep,
       };
 }
 
@@ -72,13 +72,13 @@ class TypicalPArguments {
   factory TypicalPArguments.fromMap(Map<String, dynamic> map) =>
       TypicalPArguments(
         p: map['p'],
-        minKeep: map['minKeep'],
+        minKeep: map['min_keep'],
       );
 
   /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
         'p': p,
-        'minKeep': minKeep,
+        'min_keep': minKeep,
       };
 
   /// Adds this configuration to the sampler.
@@ -150,7 +150,7 @@ class XtcArguments {
   factory XtcArguments.fromMap(Map<String, dynamic> map) => XtcArguments(
         p: map['p'],
         t: map['t'],
-        minKeep: map['minKeep'],
+        minKeep: map['min_keep'],
         seed: map['seed'],
       );
 
@@ -158,7 +158,7 @@ class XtcArguments {
   Map<String, dynamic> toMap() => {
         'p': p,
         't': t,
-        'minKeep': minKeep,
+        'min_keep': minKeep,
         'seed': seed,
       };
 }
@@ -191,7 +191,7 @@ class MirostatArguments {
   /// Constructs a [MirostatArguments] instance from a [Map].
   factory MirostatArguments.fromMap(Map<String, dynamic> map) =>
       MirostatArguments(
-          nVocab: map['nVocab'],
+          nVocab: map['n_vocab'],
           seed: map['seed'],
           tau: map['tau'],
           eta: map['eta'],
@@ -199,7 +199,7 @@ class MirostatArguments {
 
   /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() =>
-      {'nVocab': nVocab, 'seed': seed, 'tau': tau, 'eta': eta, 'm': m};
+      {'n_vocab': nVocab, 'seed': seed, 'tau': tau, 'eta': eta, 'm': m};
 }
 
 /// Arguments for Mirostat version 2 sampling.
@@ -268,14 +268,14 @@ class PenaltiesArguments {
   /// Constructs a [PenaltiesArguments] instance from a [Map].
   factory PenaltiesArguments.fromMap(Map<String, dynamic> map) =>
       PenaltiesArguments(
-          lastN: map['lastN'],
+          lastN: map['last_n'],
           repeat: map['repeat'],
           frequency: map['frequency'],
           present: map['present']);
 
   /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
-        'lastN': lastN,
+        'last_n': lastN,
         'repeat': repeat,
         'frequency': frequency,
         'present': present
@@ -314,21 +314,21 @@ class DrySamplerArguments {
   /// Constructs a [DrySamplerArguments] instance from a [Map].
   factory DrySamplerArguments.fromMap(Map<String, dynamic> map) =>
       DrySamplerArguments(
-          nCtxTrain: map['nCtxTrain'],
+          nCtxTrain: map['n_ctx_train'],
           multiplier: map['multiplier'],
           dryBase: map['dryBase'],
-          allowedLength: map['allowedLength'],
-          penaltyLastN: map['penaltyLastN'],
-          sequenceBreakers: List<String>.from(map['sequenceBreakers']));
+          allowedLength: map['allowed_length'],
+          penaltyLastN: map['penalty_last_n'],
+          sequenceBreakers: List<String>.from(map['sequence_breakers']));
 
   /// Converts this instance to a [Map].
   Map<String, dynamic> toMap() => {
-        'nCtxTrain': nCtxTrain,
+        'n_ctx_train': nCtxTrain,
         'multiplier': multiplier,
         'dryBase': dryBase,
-        'allowedLength': allowedLength,
-        'penaltyLastN': penaltyLastN,
-        'sequenceBreakers': sequenceBreakers
+        'allowed_length': allowedLength,
+        'penalty_last_n': penaltyLastN,
+        'sequence_breakers': sequenceBreakers
       };
 }
 
@@ -398,11 +398,11 @@ class SamplingParams {
       greedy: map['greedy'],
       infill: map['infill'],
       seed: map['seed'],
-      topK: map['topK'],
-      topP: map['topP'] != null ? TopPArguments.fromMap(map['topP']) : null,
-      minP: map['minP'] != null ? MinPArguments.fromMap(map['minP']) : null,
-      typicalP: map['typicalP'] != null
-          ? TypicalPArguments.fromMap(map['typicalP'])
+      topK: map['top_k'],
+      topP: map['top_p'] != null ? TopPArguments.fromMap(map['top_p']) : null,
+      minP: map['min_p'] != null ? MinPArguments.fromMap(map['min_p']) : null,
+      typicalP: map['typical_p'] != null
+          ? TypicalPArguments.fromMap(map['typical_p'])
           : null,
       temperature: map['temperature'] != null
           ? TemperatureArguments.fromMap(map['temperature'])
@@ -411,8 +411,8 @@ class SamplingParams {
       mirostat: map['mirostat'] != null
           ? MirostatArguments.fromMap(map['mirostat'])
           : null,
-      mirostatV2: map['mirostatV2'] != null
-          ? MirostatV2Arguments.fromMap(map['mirostatV2'])
+      mirostatV2: map['mirostat_v2'] != null
+          ? MirostatV2Arguments.fromMap(map['mirostat_v2'])
           : null,
       grammar: map['grammar'] != null
           ? GrammarArguments.fromMap(map['grammar'])
@@ -420,8 +420,8 @@ class SamplingParams {
       penalties: map['penalties'] != null
           ? PenaltiesArguments.fromMap(map['penalties'])
           : null,
-      drySampler: map['drySampler'] != null
-          ? DrySamplerArguments.fromMap(map['drySampler'])
+      drySampler: map['dry_sampler'] != null
+          ? DrySamplerArguments.fromMap(map['dry_sampler'])
           : null);
 
   /// Constructs a [SamplingParams] instance from a JSON string.
@@ -546,17 +546,17 @@ class SamplingParams {
         'greedy': greedy,
         'infill': infill,
         'seed': seed,
-        'topK': topK,
-        'topP': topP?.toMap(),
-        'minP': minP?.toMap(),
-        'typicalP': typicalP?.toMap(),
+        'top_k': topK,
+        'top_p': topP?.toMap(),
+        'min_p': minP?.toMap(),
+        'typical_p': typicalP?.toMap(),
         'temperature': temperature?.toMap(),
         'xtc': xtc?.toMap(),
         'mirostat': mirostat?.toMap(),
-        'mirostatV2': mirostatV2?.toMap(),
+        'mirostat_v2': mirostatV2?.toMap(),
         'grammar': grammar?.toMap(),
         'penalties': penalties?.toMap(),
-        'drySampler': drySampler?.toMap()
+        'dry_sampler': drySampler?.toMap()
       };
 
   /// Converts this instance to a JSON-encoded string.
