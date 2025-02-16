@@ -75,18 +75,18 @@ class ModelParams {
   ///
   /// The [map] parameter should contain the following keys:
   /// - `path`: The path to the model.
-  /// - `vocabOnly`: A boolean indicating if only the vocabulary should be used.
-  /// - `useMmap`: A boolean indicating if memory-mapped files should be used.
-  /// - `useMlock`: A boolean indicating if memory locking should be used.
-  /// - `checkTensors`: A boolean indicating if tensors should be checked.
+  /// - `vocab_only`: Whether to use only the vocabulary.
+  /// - `use_mmap`: Whether to use memory mapping.
+  /// - `use_mlock`: Whether to use memory locking.
+  /// - `check_tensors`: Whether to check tensors.
   ///
   /// Returns an instance of [ModelParams] with values from the provided map.
   factory ModelParams.fromMap(Map<String, dynamic> map) => ModelParams(
       path: map['path'],
-      vocabOnly: map['vocabOnly'],
-      useMmap: map['useMmap'],
-      useMlock: map['useMlock'],
-      checkTensors: map['checkTensors']);
+      vocabOnly: map['vocab_only'],
+      useMmap: map['use_mmap'],
+      useMlock: map['use_mlock'],
+      checkTensors: map['check_tensors']);
 
   /// Creates a new `ModelParams` instance from a JSON string.
   ///
@@ -132,18 +132,18 @@ class ModelParams {
   ///
   /// The map contains the following keys:
   /// - 'path': The file path of the model.
-  /// - 'vocabOnly': A boolean indicating if only the vocabulary should be used.
-  /// - 'useMmap': A boolean indicating if memory-mapped files should be used.
-  /// - 'useMlock': A boolean indicating if memory locking should be used.
-  /// - 'checkTensors': A boolean indicating if tensors should be checked.
+  /// - 'vocab_only': Whether to use only the vocabulary.
+  /// - 'use_mmap': Whether to use memory mapping.
+  /// - 'use_mlock': Whether to use memory locking.
+  /// - 'check_tensors': Whether to check tensors.
   ///
   /// Returns a map representation of the model parameters.
   Map<String, dynamic> toMap() => {
         'path': path,
-        'vocabOnly': vocabOnly,
-        'useMmap': useMmap,
-        'useMlock': useMlock,
-        'checkTensors': checkTensors,
+        'vocab_only': vocabOnly,
+        'use_mmap': useMmap,
+        'use_mlock': useMlock,
+        'check_tensors': checkTensors,
       };
 
   /// Converts the model parameters to a JSON string.
