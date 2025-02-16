@@ -176,8 +176,10 @@ class ContextParams {
         yarnBetaSlow: map['yarn_beta_slow'],
         yarnOriginalContext: map['yarn_orig_ctx'],
         defragmentationThreshold: map['defrag_thold'],
-        typeK: map['type_k'] != null ? GgmlType.fromString(map['type_k']) : null,
-        typeV: map['type_v'] != null ? GgmlType.fromString(map['type_v']) : null,
+        typeK:
+            map['type_k'] != null ? GgmlType.fromString(map['type_k']) : null,
+        typeV:
+            map['type_v'] != null ? GgmlType.fromString(map['type_v']) : null,
         embeddings: map['embeddings'],
         offloadKqv: map['offload_kqv'],
         flashAttention: map['flash_attn'],
