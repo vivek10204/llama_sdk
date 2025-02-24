@@ -58,3 +58,7 @@ Cmake for android
 ## 0.1.5
 
 Cmake args for android
+
+## 0.1.6
+
+Small fix for F-Droid
