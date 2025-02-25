@@ -2,6 +2,9 @@
 
 lcpp is a dart implementation of llama.cpp used by the mobile artificial intelligence distribution (maid)
 
+[![Build Android](https://github.com/Mobile-Artificial-Intelligence/lcpp/actions/workflows/build-android.yml/badge.svg)](https://github.com/Mobile-Artificial-Intelligence/lcpp/actions/workflows/build-android.yml)
+[![Build MacOS](https://github.com/Mobile-Artificial-Intelligence/lcpp/actions/workflows/build-macos.yml/badge.svg)](https://github.com/Mobile-Artificial-Intelligence/lcpp/actions/workflows/build-macos.yml)
+
 ## Features
 
 - Optional use of isolations for parallel processing
