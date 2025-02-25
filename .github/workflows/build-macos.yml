@@ -49,7 +49,7 @@ jobs:
 
       - name: Sign macOS App
         run: |
-          codesign --deep --force --verbose --options runtime --timestamp --sign "${{ secrets.APPLE_DEVELOPER_ID_APPLICATION }}" build/macos/Build/Products/Release/lcpp_example.app
+          codesign --deep --force --verbose --options runtime --timestamp --sign "${{ secrets.APPLE_DEVELOPER_ID_APPLICATION }}" example/build/macos/Build/Products/Release/lcpp_example.app
 
           find example/build/macos/Build/Products/Release/lcpp_example.app -type d -name "*.framework" -exec codesign --force --verbose --options runtime --timestamp --sign "${{ secrets.APPLE_DEVELOPER_ID_APPLICATION }}" {} \;
           find example/build/macos/Build/Products/Release/lcpp_example.app -type f -exec codesign --force --verbose --options runtime --timestamp --sign "${{ secrets.APPLE_DEVELOPER_ID_APPLICATION }}" {} \;
