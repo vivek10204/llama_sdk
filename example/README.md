@@ -1,4 +1,4 @@
-# llama_example
+# lcpp_example
 
 Demonstrates how to use the llama plugin.
 
