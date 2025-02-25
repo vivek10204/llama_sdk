@@ -62,7 +62,6 @@ A new Flutter FFI plugin project.
                    'llama_cpp/ggml/src/*.cpp',
                    'llama_cpp/ggml/src/ggml-cpu/*.c',
                    'llama_cpp/ggml/src/ggml-cpu/*.cpp',
-                   'llama_cpp/ggml/src/ggml-cpu/**/*.cpp',
                    'llama_cpp/ggml/src/ggml-metal/*.m',
                    '!llama_cpp/common/build-info.cpp'
   s.frameworks = 'Foundation', 'Metal', 'MetalKit'
@@ -75,7 +74,6 @@ A new Flutter FFI plugin project.
       '$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/include',
       '$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/src',
       '$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/src/ggml-cpu',
-      '$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/src/ggml-cpu/**',
       '$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/src/ggml-metal',
     ],
     'HEADER_SEARCH_PATHS' => [
@@ -85,7 +83,6 @@ A new Flutter FFI plugin project.
       '$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/include',
       '$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/src',
       '$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/src/ggml-cpu',
-      '$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/src/ggml-cpu/**',
       '$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/src/ggml-metal',
     ],
     'OTHER_CFLAGS' => ['$(inherited)', '-O3', '-flto', '-fno-objc-arc', '-w', '-I$(PODS_TARGET_SRCROOT)/llama_cpp/include', '-I$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/include', '-I$(PODS_TARGET_SRCROOT)/llama_cpp/common', '-DGGML_LLAMAFILE=OFF', '-DGGML_USE_CPU'],
