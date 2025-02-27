@@ -45,3 +45,6 @@ flutter:
         ffiPlugin: true
       ios:
         ffiPlugin: true
+
+false_secrets:
+  - 'src/llama_cpp/**'
