@@ -62,3 +62,9 @@ Cmake args for android
 ## 0.1.6
 
 Small fix for F-Droid
+
+## 0.1.7
+
+Update Llama.cpp
+Improve CI
+Enable IOS support
