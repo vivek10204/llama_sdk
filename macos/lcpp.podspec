@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'lcpp'
-  s.version          = '0.0.1'
+  s.version          = '0.1.8'
   s.summary          = 'A Flutter FFI plugin for interfacing with llama_cpp.'
   s.description      = <<-DESC
 A new Flutter FFI plugin project.

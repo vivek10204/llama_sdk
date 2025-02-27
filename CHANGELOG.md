@@ -68,3 +68,7 @@ Small fix for F-Droid
 Update Llama.cpp
 Improve CI
 Enable IOS support
+
+## 0.1.8
+
+Small fix for ios
