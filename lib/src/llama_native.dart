@@ -110,7 +110,7 @@ class LlamaNative implements Llama {
 
     _model = Llama.lib
         .llama_load_model_from_file(nativeModelPath, nativeModelParams);
-    assert(_model != ffi.nullptr, 'Failed to load model');
+    assert(_model != ffi.nullptr, LlamaException('Failed to load model'));
 
     _modelFinalizer.attach(this, _model);
 
@@ -119,7 +119,7 @@ class LlamaNative implements Llama {
   }
 
   void _initContext() {
-    assert(_model != ffi.nullptr, 'Model is not loaded');
+    assert(_model != ffi.nullptr, LlamaException('Model is not loaded'));
 
     final nativeContextParams = _contextParams.toNative();
 
@@ -128,13 +128,13 @@ class LlamaNative implements Llama {
     }
 
     _context = Llama.lib.llama_init_from_model(_model, nativeContextParams);
-    assert(_context != ffi.nullptr, 'Failed to initialize context');
+    assert(_context != ffi.nullptr, LlamaException('Failed to initialize context'));
 
     _contextFinalizer.attach(this, _context);
   }
 
   void _initSampler() {
-    assert(_model != ffi.nullptr, 'Model is not loaded');
+    assert(_model != ffi.nullptr, LlamaException('Model is not loaded'));
 
     if (_sampler != ffi.nullptr) {
       Llama.lib.llama_sampler_free(_sampler);
@@ -142,7 +142,7 @@ class LlamaNative implements Llama {
 
     final vocab = Llama.lib.llama_model_get_vocab(_model);
     _sampler = _samplingParams.toNative(vocab);
-    assert(_sampler != ffi.nullptr, 'Failed to initialize sampler');
+    assert(_sampler != ffi.nullptr, LlamaException('Failed to initialize sampler'));
 
     _samplerFinalizer.attach(this, _sampler);
   }
@@ -151,9 +151,9 @@ class LlamaNative implements Llama {
   Stream<String> prompt(List<ChatMessage> messages) async* {
     final messagesCopy = messages.copy();
 
-    assert(_model != ffi.nullptr, 'Model is not loaded');
-    assert(_context != ffi.nullptr, 'Context is not initialized');
-    assert(_sampler != ffi.nullptr, 'Sampler is not initialized');
+    assert(_model != ffi.nullptr, LlamaException('Model is not loaded'));
+    assert(_context != ffi.nullptr, LlamaException('Context is not initialized'));
+    assert(_sampler != ffi.nullptr, LlamaException('Sampler is not initialized'));
 
     final nCtx = Llama.lib.llama_n_ctx(_context);
 
