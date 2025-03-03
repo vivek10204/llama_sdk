@@ -23,7 +23,7 @@ part of 'package:lcpp/lcpp.dart';
 /// - `llama_model_params toNative()`: Converts the instance to native parameters.
 /// - `Map<String, dynamic> toMap()`: Converts the instance to a map.
 /// - `String toJson()`: Converts the instance to a JSON string.
-class ModelParams extends ChangeNotifier{
+class ModelParams extends ChangeNotifier {
   String _path;
 
   /// The file path to the model.
@@ -84,7 +84,7 @@ class ModelParams extends ChangeNotifier{
   ///
   /// If `true`, tensors will be checked. If `false` or `null`, tensors will not be checked.
   bool? get checkTensors => _checkTensors;
-  
+
   set checkTensors(bool? value) {
     _checkTensors = value;
     notifyListeners();
@@ -104,11 +104,11 @@ class ModelParams extends ChangeNotifier{
     bool? useMmap,
     bool? useMlock,
     bool? checkTensors,
-  }) : _path = path,
-       _vocabOnly = vocabOnly,
-       _useMmap = useMmap,
-       _useMlock = useMlock,
-       _checkTensors = checkTensors;
+  })  : _path = path,
+        _vocabOnly = vocabOnly,
+        _useMmap = useMmap,
+        _useMlock = useMlock,
+        _checkTensors = checkTensors;
 
   /// Creates an instance of [ModelParams] from a map.
   ///
