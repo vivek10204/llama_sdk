@@ -72,3 +72,8 @@ Enable IOS support
 ## 0.1.8
 
 Small fix for ios
+
+## 0.1.9
+
+Update llama.cpp
+Small changes to params
