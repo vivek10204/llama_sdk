@@ -45,7 +45,7 @@ class LlamaAppState extends State<LlamaApp> {
 
     final llamaCpp = LlamaIsolated(
         modelParams: ModelParams(path: result.files.single.path!),
-        contextParams: const ContextParams(nCtx: 2048, nBatch: 2048),
+        contextParams: ContextParams(nCtx: 2048, nBatch: 2048),
         samplingParams: const SamplingParams(greedy: true));
 
     setState(() {
