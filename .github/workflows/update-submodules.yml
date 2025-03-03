@@ -18,7 +18,7 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Update Only Top-Level Submodules
+      - name: Update Submodules
         run: |
           git submodule foreach --recursive 'git config submodule.$name.update none'
           git submodule update --remote
@@ -28,7 +28,7 @@ jobs:
             echo "Submodules updated, committing changes..."
             git config --global user.name "github-actions[bot]"
             git config --global user.email "github-actions[bot]@users.noreply.github.com"
-            git commit -m "Update top-level submodules"
+            git commit -m "Update llama.cpp"
             git push origin HEAD
           else
             echo "No updates found."

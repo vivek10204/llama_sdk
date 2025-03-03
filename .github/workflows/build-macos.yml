@@ -8,6 +8,7 @@ on:
       - '.github/workflows/build-macos.yml'
       - 'macos/**'
       - 'lib/**'
+      - 'src/**'
       - 'example/macos/**'
       - 'example/lib/**'
       - 'pubspec.yaml'
@@ -39,7 +40,7 @@ jobs:
       - name: Install the provisioning profile
         run: |
           mkdir -p ~/Library/Developer/Xcode/Provisioning\ Profiles
-          echo "${{ secrets.APPLE_PROVISION_PROFILE }}" | base64 --decode > ~/Library/Developer/Xcode/Provisioning\ Profiles/Github_Actions.provisionprofile
+          echo "${{ secrets.APPLE_MACOS_PROVISION_PROFILE }}" | base64 --decode > ~/Library/Developer/Xcode/Provisioning\ Profiles/Github_Actions.provisionprofile
 
       - name: Build macOS App
         run: |
