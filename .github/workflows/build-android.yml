@@ -13,6 +13,10 @@ on:
       - 'example/android/**'
       - 'example/lib/**'
       - 'pubspec.yaml'
+  workflow_run:
+    workflows: ["Update Submodules Daily"]
+    types:
+      - completed
 
 jobs:
   build:

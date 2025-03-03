@@ -1,6 +1,7 @@
 name: Build Linux
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -12,6 +13,10 @@ on:
       - 'example/linux/**'
       - 'example/lib/**'
       - 'pubspec.yaml'
+  workflow_run:
+    workflows: ["Update Submodules Daily"]
+    types:
+      - completed
 
 jobs:
   build:
