@@ -18,15 +18,19 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Update Submodules
+      - name: Update Only Top-Level Submodules
         run: |
-          git submodule update --remote --recursive
+          git submodule foreach --recursive 'git config submodule.$name.update none'
+          git submodule update --remote
+          git add .
+          
           if [ -n "$(git status --porcelain)" ]; then
             echo "Submodules updated, committing changes..."
             git config --global user.name "github-actions[bot]"
             git config --global user.email "github-actions[bot]@users.noreply.github.com"
-            git commit -am "Update submodules"
+            git commit -m "Update top-level submodules"
             git push origin HEAD
           else
             echo "No updates found."
           fi
+  
