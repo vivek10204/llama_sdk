@@ -83,6 +83,20 @@ class llama {
       int Function(
           int, ffi.Pointer<ffi.Char>, int, ffi.Pointer<ffi.Char>, int)>();
 
+  int printf(
+    ffi.Pointer<ffi.Char> arg0,
+  ) {
+    return _printf(
+      arg0,
+    );
+  }
+
+  late final _printfPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
+          'printf');
+  late final _printf =
+      _printfPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
+
   late final ffi.Pointer<ffi.Pointer<FILE>> ___stdinp =
       _lookup<ffi.Pointer<FILE>>('__stdinp');
 
@@ -457,20 +471,6 @@ class llama {
           'perror');
   late final _perror =
       _perrorPtr.asFunction<void Function(ffi.Pointer<ffi.Char>)>();
-
-  int printf(
-    ffi.Pointer<ffi.Char> arg0,
-  ) {
-    return _printf(
-      arg0,
-    );
-  }
-
-  late final _printfPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
-          'printf');
-  late final _printf =
-      _printfPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
 
   int putc(
     int arg0,
@@ -8152,22 +8152,22 @@ class llama {
   late final _ggml_tallocr_new = _ggml_tallocr_newPtr
       .asFunction<ggml_tallocr Function(ggml_backend_buffer_t)>();
 
-  void ggml_tallocr_alloc(
+  ggml_status ggml_tallocr_alloc(
     ffi.Pointer<ggml_tallocr> talloc,
     ffi.Pointer<ggml_tensor> tensor,
   ) {
-    return _ggml_tallocr_alloc(
+    return ggml_status.fromValue(_ggml_tallocr_alloc(
       talloc,
       tensor,
-    );
+    ));
   }
 
   late final _ggml_tallocr_allocPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<ggml_tallocr>,
+          ffi.Int Function(ffi.Pointer<ggml_tallocr>,
               ffi.Pointer<ggml_tensor>)>>('ggml_tallocr_alloc');
   late final _ggml_tallocr_alloc = _ggml_tallocr_allocPtr.asFunction<
-      void Function(ffi.Pointer<ggml_tallocr>, ffi.Pointer<ggml_tensor>)>();
+      int Function(ffi.Pointer<ggml_tallocr>, ffi.Pointer<ggml_tensor>)>();
 
   ggml_gallocr_t ggml_gallocr_new(
     ggml_backend_buffer_type_t buft,
@@ -8497,23 +8497,23 @@ class llama {
   late final _ggml_backend_buffer_get_size = _ggml_backend_buffer_get_sizePtr
       .asFunction<int Function(ggml_backend_buffer_t)>();
 
-  void ggml_backend_buffer_init_tensor(
+  ggml_status ggml_backend_buffer_init_tensor(
     ggml_backend_buffer_t buffer,
     ffi.Pointer<ggml_tensor> tensor,
   ) {
-    return _ggml_backend_buffer_init_tensor(
+    return ggml_status.fromValue(_ggml_backend_buffer_init_tensor(
       buffer,
       tensor,
-    );
+    ));
   }
 
   late final _ggml_backend_buffer_init_tensorPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Void Function(ggml_backend_buffer_t,
+          ffi.Int Function(ggml_backend_buffer_t,
               ffi.Pointer<ggml_tensor>)>>('ggml_backend_buffer_init_tensor');
   late final _ggml_backend_buffer_init_tensor =
       _ggml_backend_buffer_init_tensorPtr.asFunction<
-          void Function(ggml_backend_buffer_t, ffi.Pointer<ggml_tensor>)>();
+          int Function(ggml_backend_buffer_t, ffi.Pointer<ggml_tensor>)>();
 
   int ggml_backend_buffer_get_alignment(
     ggml_backend_buffer_t buffer,
@@ -10021,40 +10021,40 @@ class llama {
               ggml_backend_eval_callback,
               ffi.Pointer<ffi.Void>)>();
 
-  void ggml_backend_tensor_alloc(
+  ggml_status ggml_backend_tensor_alloc(
     ggml_backend_buffer_t buffer,
     ffi.Pointer<ggml_tensor> tensor,
     ffi.Pointer<ffi.Void> addr,
   ) {
-    return _ggml_backend_tensor_alloc(
+    return ggml_status.fromValue(_ggml_backend_tensor_alloc(
       buffer,
       tensor,
       addr,
-    );
+    ));
   }
 
   late final _ggml_backend_tensor_allocPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Void Function(ggml_backend_buffer_t, ffi.Pointer<ggml_tensor>,
+          ffi.Int Function(ggml_backend_buffer_t, ffi.Pointer<ggml_tensor>,
               ffi.Pointer<ffi.Void>)>>('ggml_backend_tensor_alloc');
   late final _ggml_backend_tensor_alloc =
       _ggml_backend_tensor_allocPtr.asFunction<
-          void Function(ggml_backend_buffer_t, ffi.Pointer<ggml_tensor>,
+          int Function(ggml_backend_buffer_t, ffi.Pointer<ggml_tensor>,
               ffi.Pointer<ffi.Void>)>();
 
-  void ggml_backend_view_init(
+  ggml_status ggml_backend_view_init(
     ffi.Pointer<ggml_tensor> tensor,
   ) {
-    return _ggml_backend_view_init(
+    return ggml_status.fromValue(_ggml_backend_view_init(
       tensor,
-    );
+    ));
   }
 
   late final _ggml_backend_view_initPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ggml_tensor>)>>(
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ggml_tensor>)>>(
           'ggml_backend_view_init');
   late final _ggml_backend_view_init = _ggml_backend_view_initPtr
-      .asFunction<void Function(ffi.Pointer<ggml_tensor>)>();
+      .asFunction<int Function(ffi.Pointer<ggml_tensor>)>();
 
   ggml_backend_buffer_t ggml_backend_cpu_buffer_from_ptr(
     ffi.Pointer<ffi.Void> ptr,
@@ -10647,6 +10647,15 @@ class llama {
   late final _ggml_cpu_get_sve_cnt =
       _ggml_cpu_get_sve_cntPtr.asFunction<int Function()>();
 
+  int ggml_cpu_has_sme() {
+    return _ggml_cpu_has_sme();
+  }
+
+  late final _ggml_cpu_has_smePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('ggml_cpu_has_sme');
+  late final _ggml_cpu_has_sme =
+      _ggml_cpu_has_smePtr.asFunction<int Function()>();
+
   int ggml_cpu_has_riscv_v() {
     return _ggml_cpu_has_riscv_v();
   }
@@ -10664,6 +10673,15 @@ class llama {
       _lookup<ffi.NativeFunction<ffi.Int Function()>>('ggml_cpu_has_vsx');
   late final _ggml_cpu_has_vsx =
       _ggml_cpu_has_vsxPtr.asFunction<int Function()>();
+
+  int ggml_cpu_has_vxe() {
+    return _ggml_cpu_has_vxe();
+  }
+
+  late final _ggml_cpu_has_vxePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('ggml_cpu_has_vxe');
+  late final _ggml_cpu_has_vxe =
+      _ggml_cpu_has_vxePtr.asFunction<int Function()>();
 
   int ggml_cpu_has_wasm_simd() {
     return _ggml_cpu_has_wasm_simd();
@@ -11334,6 +11352,20 @@ class llama {
       _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<llama_model>)>>(
           'llama_model_n_head');
   late final _llama_model_n_head = _llama_model_n_headPtr
+      .asFunction<int Function(ffi.Pointer<llama_model>)>();
+
+  int llama_model_n_head_kv(
+    ffi.Pointer<llama_model> model,
+  ) {
+    return _llama_model_n_head_kv(
+      model,
+    );
+  }
+
+  late final _llama_model_n_head_kvPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<llama_model>)>>(
+          'llama_model_n_head_kv');
+  late final _llama_model_n_head_kv = _llama_model_n_head_kvPtr
       .asFunction<int Function(ffi.Pointer<llama_model>)>();
 
   double llama_model_rope_freq_scale_train(
@@ -13305,7 +13337,7 @@ class llama {
 
   /// Apply chat template. Inspired by hf apply_chat_template() on python.
   /// Both "model" and "custom_template" are optional, but at least one is required. "custom_template" has higher precedence than "model"
-  /// NOTE: This function does not use a jinja parser. It only support a pre-defined list of template. See more: https://github.com/ggerganov/llama.cpp/wiki/Templates-supported-by-llama_chat_apply_template
+  /// NOTE: This function does not use a jinja parser. It only support a pre-defined list of template. See more: https://github.com/ggml-org/llama.cpp/wiki/Templates-supported-by-llama_chat_apply_template
   /// @param tmpl A Jinja template to use for this chat. If this is nullptr, the model’s default chat template will be used instead.
   /// @param chat Pointer to a list of multiple llama_chat_message
   /// @param n_msg Number of llama_chat_message in this chat
@@ -13361,6 +13393,24 @@ class llama {
               ffi.Size)>>('llama_chat_builtin_templates');
   late final _llama_chat_builtin_templates = _llama_chat_builtin_templatesPtr
       .asFunction<int Function(ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+
+  ffi.Pointer<llama_sampler> llama_sampler_init(
+    ffi.Pointer<llama_sampler_i> iface,
+    llama_sampler_context_t ctx,
+  ) {
+    return _llama_sampler_init(
+      iface,
+      ctx,
+    );
+  }
+
+  late final _llama_sampler_initPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<llama_sampler> Function(ffi.Pointer<llama_sampler_i>,
+              llama_sampler_context_t)>>('llama_sampler_init');
+  late final _llama_sampler_init = _llama_sampler_initPtr.asFunction<
+      ffi.Pointer<llama_sampler> Function(
+          ffi.Pointer<llama_sampler_i>, llama_sampler_context_t)>();
 
   ffi.Pointer<ffi.Char> llama_sampler_name(
     ffi.Pointer<llama_sampler> smpl,
@@ -13605,7 +13655,7 @@ class llama {
   late final _llama_sampler_init_top_p = _llama_sampler_init_top_pPtr
       .asFunction<ffi.Pointer<llama_sampler> Function(double, int)>();
 
-  /// @details Minimum P sampling as described in https://github.com/ggerganov/llama.cpp/pull/3841
+  /// @details Minimum P sampling as described in https://github.com/ggml-org/llama.cpp/pull/3841
   ffi.Pointer<llama_sampler> llama_sampler_init_min_p(
     double p,
     int min_keep,
@@ -13699,6 +13749,22 @@ class llama {
   late final _llama_sampler_init_xtc = _llama_sampler_init_xtcPtr.asFunction<
       ffi.Pointer<llama_sampler> Function(double, double, int, int)>();
 
+  /// @details Top n sigma sampling as described in academic paper "Top-nσ: Not All Logits Are You Need" https://arxiv.org/pdf/2411.07641
+  ffi.Pointer<llama_sampler> llama_sampler_init_top_n_sigma(
+    double n,
+  ) {
+    return _llama_sampler_init_top_n_sigma(
+      n,
+    );
+  }
+
+  late final _llama_sampler_init_top_n_sigmaPtr = _lookup<
+          ffi.NativeFunction<ffi.Pointer<llama_sampler> Function(ffi.Float)>>(
+      'llama_sampler_init_top_n_sigma');
+  late final _llama_sampler_init_top_n_sigma =
+      _llama_sampler_init_top_n_sigmaPtr
+          .asFunction<ffi.Pointer<llama_sampler> Function(double)>();
+
   /// @details Mirostat 1.0 algorithm described in the paper https://arxiv.org/abs/2007.14966. Uses tokens instead of words.
   /// @param candidates A vector of `llama_token_data` containing the candidate tokens, their probabilities (p), and log-odds (logit) for the current position in the generated text.
   /// @param tau  The target cross-entropy (or surprise) value you want to achieve for the generated text. A higher value corresponds to more surprising or less predictable text, while a lower value corresponds to less surprising or more predictable text.
@@ -13777,7 +13843,7 @@ class llama {
           ffi.Pointer<llama_sampler> Function(ffi.Pointer<llama_vocab>,
               ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
-  /// @details Lazy grammar sampler, introduced in https://github.com/ggerganov/llama.cpp/pull/9639
+  /// @details Lazy grammar sampler, introduced in https://github.com/ggml-org/llama.cpp/pull/9639
   /// @param trigger_words A list of words that will trigger the grammar sampler. This may be updated to a loose regex syntax (w/ ^) in a near future.
   /// @param trigger_tokens A list of tokens that will trigger the grammar sampler.
   ffi.Pointer<llama_sampler> llama_sampler_init_grammar_lazy(
@@ -14117,6 +14183,2617 @@ class llama {
       'llama_perf_sampler_reset');
   late final _llama_perf_sampler_reset = _llama_perf_sampler_resetPtr
       .asFunction<void Function(ffi.Pointer<llama_sampler>)>();
+
+  ggml_backend_t ggml_backend_vk_init(
+    int dev_num,
+  ) {
+    return _ggml_backend_vk_init(
+      dev_num,
+    );
+  }
+
+  late final _ggml_backend_vk_initPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_t Function(ffi.Size)>>(
+          'ggml_backend_vk_init');
+  late final _ggml_backend_vk_init =
+      _ggml_backend_vk_initPtr.asFunction<ggml_backend_t Function(int)>();
+
+  bool ggml_backend_is_vk(
+    ggml_backend_t backend,
+  ) {
+    return _ggml_backend_is_vk(
+      backend,
+    );
+  }
+
+  late final _ggml_backend_is_vkPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ggml_backend_t)>>(
+          'ggml_backend_is_vk');
+  late final _ggml_backend_is_vk =
+      _ggml_backend_is_vkPtr.asFunction<bool Function(ggml_backend_t)>();
+
+  int ggml_backend_vk_get_device_count() {
+    return _ggml_backend_vk_get_device_count();
+  }
+
+  late final _ggml_backend_vk_get_device_countPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>(
+          'ggml_backend_vk_get_device_count');
+  late final _ggml_backend_vk_get_device_count =
+      _ggml_backend_vk_get_device_countPtr.asFunction<int Function()>();
+
+  void ggml_backend_vk_get_device_description(
+    int device,
+    ffi.Pointer<ffi.Char> description,
+    int description_size,
+  ) {
+    return _ggml_backend_vk_get_device_description(
+      device,
+      description,
+      description_size,
+    );
+  }
+
+  late final _ggml_backend_vk_get_device_descriptionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int, ffi.Pointer<ffi.Char>,
+              ffi.Size)>>('ggml_backend_vk_get_device_description');
+  late final _ggml_backend_vk_get_device_description =
+      _ggml_backend_vk_get_device_descriptionPtr
+          .asFunction<void Function(int, ffi.Pointer<ffi.Char>, int)>();
+
+  void ggml_backend_vk_get_device_memory(
+    int device,
+    ffi.Pointer<ffi.Size> free,
+    ffi.Pointer<ffi.Size> total,
+  ) {
+    return _ggml_backend_vk_get_device_memory(
+      device,
+      free,
+      total,
+    );
+  }
+
+  late final _ggml_backend_vk_get_device_memoryPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int, ffi.Pointer<ffi.Size>,
+              ffi.Pointer<ffi.Size>)>>('ggml_backend_vk_get_device_memory');
+  late final _ggml_backend_vk_get_device_memory =
+      _ggml_backend_vk_get_device_memoryPtr.asFunction<
+          void Function(int, ffi.Pointer<ffi.Size>, ffi.Pointer<ffi.Size>)>();
+
+  ggml_backend_buffer_type_t ggml_backend_vk_buffer_type(
+    int dev_num,
+  ) {
+    return _ggml_backend_vk_buffer_type(
+      dev_num,
+    );
+  }
+
+  late final _ggml_backend_vk_buffer_typePtr = _lookup<
+          ffi.NativeFunction<ggml_backend_buffer_type_t Function(ffi.Size)>>(
+      'ggml_backend_vk_buffer_type');
+  late final _ggml_backend_vk_buffer_type = _ggml_backend_vk_buffer_typePtr
+      .asFunction<ggml_backend_buffer_type_t Function(int)>();
+
+  ggml_backend_buffer_type_t ggml_backend_vk_host_buffer_type() {
+    return _ggml_backend_vk_host_buffer_type();
+  }
+
+  late final _ggml_backend_vk_host_buffer_typePtr =
+      _lookup<ffi.NativeFunction<ggml_backend_buffer_type_t Function()>>(
+          'ggml_backend_vk_host_buffer_type');
+  late final _ggml_backend_vk_host_buffer_type =
+      _ggml_backend_vk_host_buffer_typePtr
+          .asFunction<ggml_backend_buffer_type_t Function()>();
+
+  ggml_backend_reg_t ggml_backend_vk_reg() {
+    return _ggml_backend_vk_reg();
+  }
+
+  late final _ggml_backend_vk_regPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_reg_t Function()>>(
+          'ggml_backend_vk_reg');
+  late final _ggml_backend_vk_reg =
+      _ggml_backend_vk_regPtr.asFunction<ggml_backend_reg_t Function()>();
+
+  ggml_backend_t ggml_backend_opencl_init() {
+    return _ggml_backend_opencl_init();
+  }
+
+  late final _ggml_backend_opencl_initPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_t Function()>>(
+          'ggml_backend_opencl_init');
+  late final _ggml_backend_opencl_init =
+      _ggml_backend_opencl_initPtr.asFunction<ggml_backend_t Function()>();
+
+  bool ggml_backend_is_opencl(
+    ggml_backend_t backend,
+  ) {
+    return _ggml_backend_is_opencl(
+      backend,
+    );
+  }
+
+  late final _ggml_backend_is_openclPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ggml_backend_t)>>(
+          'ggml_backend_is_opencl');
+  late final _ggml_backend_is_opencl =
+      _ggml_backend_is_openclPtr.asFunction<bool Function(ggml_backend_t)>();
+
+  ggml_backend_buffer_type_t ggml_backend_opencl_buffer_type() {
+    return _ggml_backend_opencl_buffer_type();
+  }
+
+  late final _ggml_backend_opencl_buffer_typePtr =
+      _lookup<ffi.NativeFunction<ggml_backend_buffer_type_t Function()>>(
+          'ggml_backend_opencl_buffer_type');
+  late final _ggml_backend_opencl_buffer_type =
+      _ggml_backend_opencl_buffer_typePtr
+          .asFunction<ggml_backend_buffer_type_t Function()>();
+
+  ggml_backend_buffer_type_t ggml_backend_opencl_host_buffer_type() {
+    return _ggml_backend_opencl_host_buffer_type();
+  }
+
+  late final _ggml_backend_opencl_host_buffer_typePtr =
+      _lookup<ffi.NativeFunction<ggml_backend_buffer_type_t Function()>>(
+          'ggml_backend_opencl_host_buffer_type');
+  late final _ggml_backend_opencl_host_buffer_type =
+      _ggml_backend_opencl_host_buffer_typePtr
+          .asFunction<ggml_backend_buffer_type_t Function()>();
+
+  ggml_backend_reg_t ggml_backend_opencl_reg() {
+    return _ggml_backend_opencl_reg();
+  }
+
+  late final _ggml_backend_opencl_regPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_reg_t Function()>>(
+          'ggml_backend_opencl_reg');
+  late final _ggml_backend_opencl_reg =
+      _ggml_backend_opencl_regPtr.asFunction<ggml_backend_reg_t Function()>();
+
+  ggml_backend_reg_t ggml_backend_cann_reg() {
+    return _ggml_backend_cann_reg();
+  }
+
+  late final _ggml_backend_cann_regPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_reg_t Function()>>(
+          'ggml_backend_cann_reg');
+  late final _ggml_backend_cann_reg =
+      _ggml_backend_cann_regPtr.asFunction<ggml_backend_reg_t Function()>();
+
+  /// @brief Initializes the CANN backend for a specified device.
+  ///
+  /// This function initializes the CANN backend for the given device.
+  /// It verifies the device index, allocates a context, and creates a backend
+  /// instance.
+  ///
+  /// @param device The index of the device to initialize.
+  /// @return A pointer to the initialized backend instance, or nullptr on failure.
+  ggml_backend_t ggml_backend_cann_init(
+    int device,
+  ) {
+    return _ggml_backend_cann_init(
+      device,
+    );
+  }
+
+  late final _ggml_backend_cann_initPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_t Function(ffi.Int32)>>(
+          'ggml_backend_cann_init');
+  late final _ggml_backend_cann_init =
+      _ggml_backend_cann_initPtr.asFunction<ggml_backend_t Function(int)>();
+
+  /// @brief Checks if a given backend is a CANN backend.
+  ///
+  /// This function verifies if the provided backend is a CANN backend by comparing
+  /// its GUID with the CANN backend's GUID.
+  ///
+  /// @param backend The backend instance to check.
+  /// @return True if the backend is a CANN backend, false otherwise.
+  bool ggml_backend_is_cann(
+    ggml_backend_t backend,
+  ) {
+    return _ggml_backend_is_cann(
+      backend,
+    );
+  }
+
+  late final _ggml_backend_is_cannPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ggml_backend_t)>>(
+          'ggml_backend_is_cann');
+  late final _ggml_backend_is_cann =
+      _ggml_backend_is_cannPtr.asFunction<bool Function(ggml_backend_t)>();
+
+  /// @brief Retrieves the CANN buffer type for a specified device.
+  ///
+  /// This function initializes and returns the buffer type interface associated
+  /// with the given device. It ensures thread-safe access using a mutex.
+  ///
+  /// @param device The device index for which to retrieve the buffer type.
+  /// @return A pointer to the buffer type interface for the specified device, or
+  /// nullptr if the device index is out of range.
+  ggml_backend_buffer_type_t ggml_backend_cann_buffer_type(
+    int device,
+  ) {
+    return _ggml_backend_cann_buffer_type(
+      device,
+    );
+  }
+
+  late final _ggml_backend_cann_buffer_typePtr = _lookup<
+          ffi.NativeFunction<ggml_backend_buffer_type_t Function(ffi.Int32)>>(
+      'ggml_backend_cann_buffer_type');
+  late final _ggml_backend_cann_buffer_type = _ggml_backend_cann_buffer_typePtr
+      .asFunction<ggml_backend_buffer_type_t Function(int)>();
+
+  /// @brief Retrieves the number of CANN devices available.
+  ///
+  /// This function returns the number of CANN devices available based on
+  /// information obtained from `ggml_cann_info()`.
+  ///
+  /// @return The number of CANN devices available.
+  int ggml_backend_cann_get_device_count() {
+    return _ggml_backend_cann_get_device_count();
+  }
+
+  late final _ggml_backend_cann_get_device_countPtr =
+      _lookup<ffi.NativeFunction<ffi.Int32 Function()>>(
+          'ggml_backend_cann_get_device_count');
+  late final _ggml_backend_cann_get_device_count =
+      _ggml_backend_cann_get_device_countPtr.asFunction<int Function()>();
+
+  /// @brief pinned host buffer for use with the CPU backend for faster copies between CPU and NPU.
+  ///
+  /// @return A pointer to the host buffer type interface.
+  ggml_backend_buffer_type_t ggml_backend_cann_host_buffer_type() {
+    return _ggml_backend_cann_host_buffer_type();
+  }
+
+  late final _ggml_backend_cann_host_buffer_typePtr =
+      _lookup<ffi.NativeFunction<ggml_backend_buffer_type_t Function()>>(
+          'ggml_backend_cann_host_buffer_type');
+  late final _ggml_backend_cann_host_buffer_type =
+      _ggml_backend_cann_host_buffer_typePtr
+          .asFunction<ggml_backend_buffer_type_t Function()>();
+
+  /// @brief Retrieves the description of a specific CANN device.
+  ///
+  /// This function sets the specified device, retrieves the SoC name,
+  /// and writes it into the provided description buffer.
+  ///
+  /// @param device The device index to retrieve the description for.
+  /// @param description Pointer to a buffer where the description will be written.
+  /// @param description_size Size of the description buffer.
+  void ggml_backend_cann_get_device_description(
+    int device,
+    ffi.Pointer<ffi.Char> description,
+    int description_size,
+  ) {
+    return _ggml_backend_cann_get_device_description(
+      device,
+      description,
+      description_size,
+    );
+  }
+
+  late final _ggml_backend_cann_get_device_descriptionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int32, ffi.Pointer<ffi.Char>,
+              ffi.Size)>>('ggml_backend_cann_get_device_description');
+  late final _ggml_backend_cann_get_device_description =
+      _ggml_backend_cann_get_device_descriptionPtr
+          .asFunction<void Function(int, ffi.Pointer<ffi.Char>, int)>();
+
+  /// @brief Retrieves the memory information of a specific CANN device.
+  ///
+  /// This function sets the specified device, retrieves the free and total
+  /// memory information of the specified type (ACL_HBM_MEM), and stores them
+  /// in the provided pointers.
+  ///
+  /// @param device The device index to retrieve memory information for.
+  /// @param free Pointer to a variable where the free memory size will be stored.
+  /// @param total Pointer to a variable where the total memory size will be
+  /// stored.
+  void ggml_backend_cann_get_device_memory(
+    int device,
+    ffi.Pointer<ffi.Size> free,
+    ffi.Pointer<ffi.Size> total,
+  ) {
+    return _ggml_backend_cann_get_device_memory(
+      device,
+      free,
+      total,
+    );
+  }
+
+  late final _ggml_backend_cann_get_device_memoryPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int32, ffi.Pointer<ffi.Size>,
+              ffi.Pointer<ffi.Size>)>>('ggml_backend_cann_get_device_memory');
+  late final _ggml_backend_cann_get_device_memory =
+      _ggml_backend_cann_get_device_memoryPtr.asFunction<
+          void Function(int, ffi.Pointer<ffi.Size>, ffi.Pointer<ffi.Size>)>();
+
+  ffi.Pointer<gguf_context> gguf_init_empty() {
+    return _gguf_init_empty();
+  }
+
+  late final _gguf_init_emptyPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<gguf_context> Function()>>(
+          'gguf_init_empty');
+  late final _gguf_init_empty =
+      _gguf_init_emptyPtr.asFunction<ffi.Pointer<gguf_context> Function()>();
+
+  ffi.Pointer<gguf_context> gguf_init_from_file(
+    ffi.Pointer<ffi.Char> fname,
+    gguf_init_params params,
+  ) {
+    return _gguf_init_from_file(
+      fname,
+      params,
+    );
+  }
+
+  late final _gguf_init_from_filePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<gguf_context> Function(
+              ffi.Pointer<ffi.Char>, gguf_init_params)>>('gguf_init_from_file');
+  late final _gguf_init_from_file = _gguf_init_from_filePtr.asFunction<
+      ffi.Pointer<gguf_context> Function(
+          ffi.Pointer<ffi.Char>, gguf_init_params)>();
+
+  void gguf_free(
+    ffi.Pointer<gguf_context> ctx,
+  ) {
+    return _gguf_free(
+      ctx,
+    );
+  }
+
+  late final _gguf_freePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<gguf_context>)>>(
+          'gguf_free');
+  late final _gguf_free =
+      _gguf_freePtr.asFunction<void Function(ffi.Pointer<gguf_context>)>();
+
+  ffi.Pointer<ffi.Char> gguf_type_name(
+    gguf_type type,
+  ) {
+    return _gguf_type_name(
+      type.value,
+    );
+  }
+
+  late final _gguf_type_namePtr = _lookup<
+          ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.UnsignedInt)>>(
+      'gguf_type_name');
+  late final _gguf_type_name =
+      _gguf_type_namePtr.asFunction<ffi.Pointer<ffi.Char> Function(int)>();
+
+  int gguf_get_version(
+    ffi.Pointer<gguf_context> ctx,
+  ) {
+    return _gguf_get_version(
+      ctx,
+    );
+  }
+
+  late final _gguf_get_versionPtr = _lookup<
+          ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<gguf_context>)>>(
+      'gguf_get_version');
+  late final _gguf_get_version = _gguf_get_versionPtr
+      .asFunction<int Function(ffi.Pointer<gguf_context>)>();
+
+  int gguf_get_alignment(
+    ffi.Pointer<gguf_context> ctx,
+  ) {
+    return _gguf_get_alignment(
+      ctx,
+    );
+  }
+
+  late final _gguf_get_alignmentPtr =
+      _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<gguf_context>)>>(
+          'gguf_get_alignment');
+  late final _gguf_get_alignment = _gguf_get_alignmentPtr
+      .asFunction<int Function(ffi.Pointer<gguf_context>)>();
+
+  int gguf_get_data_offset(
+    ffi.Pointer<gguf_context> ctx,
+  ) {
+    return _gguf_get_data_offset(
+      ctx,
+    );
+  }
+
+  late final _gguf_get_data_offsetPtr =
+      _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<gguf_context>)>>(
+          'gguf_get_data_offset');
+  late final _gguf_get_data_offset = _gguf_get_data_offsetPtr
+      .asFunction<int Function(ffi.Pointer<gguf_context>)>();
+
+  int gguf_get_n_kv(
+    ffi.Pointer<gguf_context> ctx,
+  ) {
+    return _gguf_get_n_kv(
+      ctx,
+    );
+  }
+
+  late final _gguf_get_n_kvPtr = _lookup<
+          ffi.NativeFunction<ffi.Int64 Function(ffi.Pointer<gguf_context>)>>(
+      'gguf_get_n_kv');
+  late final _gguf_get_n_kv =
+      _gguf_get_n_kvPtr.asFunction<int Function(ffi.Pointer<gguf_context>)>();
+
+  int gguf_find_key(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+  ) {
+    return _gguf_find_key(
+      ctx,
+      key,
+    );
+  }
+
+  late final _gguf_find_keyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int64 Function(ffi.Pointer<gguf_context>,
+              ffi.Pointer<ffi.Char>)>>('gguf_find_key');
+  late final _gguf_find_key = _gguf_find_keyPtr.asFunction<
+      int Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Char> gguf_get_key(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_key(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_keyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_key');
+  late final _gguf_get_key = _gguf_get_keyPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<gguf_context>, int)>();
+
+  gguf_type gguf_get_kv_type(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return gguf_type.fromValue(_gguf_get_kv_type(
+      ctx,
+      key_id,
+    ));
+  }
+
+  late final _gguf_get_kv_typePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.UnsignedInt Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_kv_type');
+  late final _gguf_get_kv_type = _gguf_get_kv_typePtr
+      .asFunction<int Function(ffi.Pointer<gguf_context>, int)>();
+
+  gguf_type gguf_get_arr_type(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return gguf_type.fromValue(_gguf_get_arr_type(
+      ctx,
+      key_id,
+    ));
+  }
+
+  late final _gguf_get_arr_typePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.UnsignedInt Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_arr_type');
+  late final _gguf_get_arr_type = _gguf_get_arr_typePtr
+      .asFunction<int Function(ffi.Pointer<gguf_context>, int)>();
+
+  int gguf_get_val_u8(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_val_u8(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_val_u8Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Uint8 Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_val_u8');
+  late final _gguf_get_val_u8 = _gguf_get_val_u8Ptr
+      .asFunction<int Function(ffi.Pointer<gguf_context>, int)>();
+
+  int gguf_get_val_i8(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_val_i8(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_val_i8Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int8 Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_val_i8');
+  late final _gguf_get_val_i8 = _gguf_get_val_i8Ptr
+      .asFunction<int Function(ffi.Pointer<gguf_context>, int)>();
+
+  int gguf_get_val_u16(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_val_u16(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_val_u16Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Uint16 Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_val_u16');
+  late final _gguf_get_val_u16 = _gguf_get_val_u16Ptr
+      .asFunction<int Function(ffi.Pointer<gguf_context>, int)>();
+
+  int gguf_get_val_i16(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_val_i16(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_val_i16Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int16 Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_val_i16');
+  late final _gguf_get_val_i16 = _gguf_get_val_i16Ptr
+      .asFunction<int Function(ffi.Pointer<gguf_context>, int)>();
+
+  int gguf_get_val_u32(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_val_u32(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_val_u32Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Uint32 Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_val_u32');
+  late final _gguf_get_val_u32 = _gguf_get_val_u32Ptr
+      .asFunction<int Function(ffi.Pointer<gguf_context>, int)>();
+
+  int gguf_get_val_i32(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_val_i32(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_val_i32Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_val_i32');
+  late final _gguf_get_val_i32 = _gguf_get_val_i32Ptr
+      .asFunction<int Function(ffi.Pointer<gguf_context>, int)>();
+
+  double gguf_get_val_f32(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_val_f32(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_val_f32Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Float Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_val_f32');
+  late final _gguf_get_val_f32 = _gguf_get_val_f32Ptr
+      .asFunction<double Function(ffi.Pointer<gguf_context>, int)>();
+
+  int gguf_get_val_u64(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_val_u64(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_val_u64Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Uint64 Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_val_u64');
+  late final _gguf_get_val_u64 = _gguf_get_val_u64Ptr
+      .asFunction<int Function(ffi.Pointer<gguf_context>, int)>();
+
+  int gguf_get_val_i64(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_val_i64(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_val_i64Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int64 Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_val_i64');
+  late final _gguf_get_val_i64 = _gguf_get_val_i64Ptr
+      .asFunction<int Function(ffi.Pointer<gguf_context>, int)>();
+
+  double gguf_get_val_f64(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_val_f64(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_val_f64Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Double Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_val_f64');
+  late final _gguf_get_val_f64 = _gguf_get_val_f64Ptr
+      .asFunction<double Function(ffi.Pointer<gguf_context>, int)>();
+
+  bool gguf_get_val_bool(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_val_bool(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_val_boolPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_val_bool');
+  late final _gguf_get_val_bool = _gguf_get_val_boolPtr
+      .asFunction<bool Function(ffi.Pointer<gguf_context>, int)>();
+
+  ffi.Pointer<ffi.Char> gguf_get_val_str(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_val_str(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_val_strPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_val_str');
+  late final _gguf_get_val_str = _gguf_get_val_strPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<gguf_context>, int)>();
+
+  ffi.Pointer<ffi.Void> gguf_get_val_data(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_val_data(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_val_dataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_val_data');
+  late final _gguf_get_val_data = _gguf_get_val_dataPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<gguf_context>, int)>();
+
+  int gguf_get_arr_n(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_arr_n(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_arr_nPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_arr_n');
+  late final _gguf_get_arr_n = _gguf_get_arr_nPtr
+      .asFunction<int Function(ffi.Pointer<gguf_context>, int)>();
+
+  ffi.Pointer<ffi.Void> gguf_get_arr_data(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+  ) {
+    return _gguf_get_arr_data(
+      ctx,
+      key_id,
+    );
+  }
+
+  late final _gguf_get_arr_dataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_arr_data');
+  late final _gguf_get_arr_data = _gguf_get_arr_dataPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<gguf_context>, int)>();
+
+  ffi.Pointer<ffi.Char> gguf_get_arr_str(
+    ffi.Pointer<gguf_context> ctx,
+    int key_id,
+    int i,
+  ) {
+    return _gguf_get_arr_str(
+      ctx,
+      key_id,
+      i,
+    );
+  }
+
+  late final _gguf_get_arr_strPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<gguf_context>, ffi.Int64,
+              ffi.Size)>>('gguf_get_arr_str');
+  late final _gguf_get_arr_str = _gguf_get_arr_strPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<gguf_context>, int, int)>();
+
+  int gguf_get_n_tensors(
+    ffi.Pointer<gguf_context> ctx,
+  ) {
+    return _gguf_get_n_tensors(
+      ctx,
+    );
+  }
+
+  late final _gguf_get_n_tensorsPtr = _lookup<
+          ffi.NativeFunction<ffi.Int64 Function(ffi.Pointer<gguf_context>)>>(
+      'gguf_get_n_tensors');
+  late final _gguf_get_n_tensors = _gguf_get_n_tensorsPtr
+      .asFunction<int Function(ffi.Pointer<gguf_context>)>();
+
+  int gguf_find_tensor(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> name,
+  ) {
+    return _gguf_find_tensor(
+      ctx,
+      name,
+    );
+  }
+
+  late final _gguf_find_tensorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int64 Function(ffi.Pointer<gguf_context>,
+              ffi.Pointer<ffi.Char>)>>('gguf_find_tensor');
+  late final _gguf_find_tensor = _gguf_find_tensorPtr.asFunction<
+      int Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>)>();
+
+  int gguf_get_tensor_offset(
+    ffi.Pointer<gguf_context> ctx,
+    int tensor_id,
+  ) {
+    return _gguf_get_tensor_offset(
+      ctx,
+      tensor_id,
+    );
+  }
+
+  late final _gguf_get_tensor_offsetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_tensor_offset');
+  late final _gguf_get_tensor_offset = _gguf_get_tensor_offsetPtr
+      .asFunction<int Function(ffi.Pointer<gguf_context>, int)>();
+
+  ffi.Pointer<ffi.Char> gguf_get_tensor_name(
+    ffi.Pointer<gguf_context> ctx,
+    int tensor_id,
+  ) {
+    return _gguf_get_tensor_name(
+      ctx,
+      tensor_id,
+    );
+  }
+
+  late final _gguf_get_tensor_namePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_tensor_name');
+  late final _gguf_get_tensor_name = _gguf_get_tensor_namePtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<gguf_context>, int)>();
+
+  ggml_type gguf_get_tensor_type(
+    ffi.Pointer<gguf_context> ctx,
+    int tensor_id,
+  ) {
+    return ggml_type.fromValue(_gguf_get_tensor_type(
+      ctx,
+      tensor_id,
+    ));
+  }
+
+  late final _gguf_get_tensor_typePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.UnsignedInt Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_tensor_type');
+  late final _gguf_get_tensor_type = _gguf_get_tensor_typePtr
+      .asFunction<int Function(ffi.Pointer<gguf_context>, int)>();
+
+  int gguf_get_tensor_size(
+    ffi.Pointer<gguf_context> ctx,
+    int tensor_id,
+  ) {
+    return _gguf_get_tensor_size(
+      ctx,
+      tensor_id,
+    );
+  }
+
+  late final _gguf_get_tensor_sizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Size Function(
+              ffi.Pointer<gguf_context>, ffi.Int64)>>('gguf_get_tensor_size');
+  late final _gguf_get_tensor_size = _gguf_get_tensor_sizePtr
+      .asFunction<int Function(ffi.Pointer<gguf_context>, int)>();
+
+  int gguf_remove_key(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+  ) {
+    return _gguf_remove_key(
+      ctx,
+      key,
+    );
+  }
+
+  late final _gguf_remove_keyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int64 Function(ffi.Pointer<gguf_context>,
+              ffi.Pointer<ffi.Char>)>>('gguf_remove_key');
+  late final _gguf_remove_key = _gguf_remove_keyPtr.asFunction<
+      int Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>)>();
+
+  void gguf_set_val_u8(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+    int val,
+  ) {
+    return _gguf_set_val_u8(
+      ctx,
+      key,
+      val,
+    );
+  }
+
+  late final _gguf_set_val_u8Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.Uint8)>>('gguf_set_val_u8');
+  late final _gguf_set_val_u8 = _gguf_set_val_u8Ptr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>, int)>();
+
+  void gguf_set_val_i8(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+    int val,
+  ) {
+    return _gguf_set_val_i8(
+      ctx,
+      key,
+      val,
+    );
+  }
+
+  late final _gguf_set_val_i8Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.Int8)>>('gguf_set_val_i8');
+  late final _gguf_set_val_i8 = _gguf_set_val_i8Ptr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>, int)>();
+
+  void gguf_set_val_u16(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+    int val,
+  ) {
+    return _gguf_set_val_u16(
+      ctx,
+      key,
+      val,
+    );
+  }
+
+  late final _gguf_set_val_u16Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.Uint16)>>('gguf_set_val_u16');
+  late final _gguf_set_val_u16 = _gguf_set_val_u16Ptr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>, int)>();
+
+  void gguf_set_val_i16(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+    int val,
+  ) {
+    return _gguf_set_val_i16(
+      ctx,
+      key,
+      val,
+    );
+  }
+
+  late final _gguf_set_val_i16Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.Int16)>>('gguf_set_val_i16');
+  late final _gguf_set_val_i16 = _gguf_set_val_i16Ptr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>, int)>();
+
+  void gguf_set_val_u32(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+    int val,
+  ) {
+    return _gguf_set_val_u32(
+      ctx,
+      key,
+      val,
+    );
+  }
+
+  late final _gguf_set_val_u32Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.Uint32)>>('gguf_set_val_u32');
+  late final _gguf_set_val_u32 = _gguf_set_val_u32Ptr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>, int)>();
+
+  void gguf_set_val_i32(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+    int val,
+  ) {
+    return _gguf_set_val_i32(
+      ctx,
+      key,
+      val,
+    );
+  }
+
+  late final _gguf_set_val_i32Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.Int32)>>('gguf_set_val_i32');
+  late final _gguf_set_val_i32 = _gguf_set_val_i32Ptr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>, int)>();
+
+  void gguf_set_val_f32(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+    double val,
+  ) {
+    return _gguf_set_val_f32(
+      ctx,
+      key,
+      val,
+    );
+  }
+
+  late final _gguf_set_val_f32Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.Float)>>('gguf_set_val_f32');
+  late final _gguf_set_val_f32 = _gguf_set_val_f32Ptr.asFunction<
+      void Function(
+          ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>, double)>();
+
+  void gguf_set_val_u64(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+    int val,
+  ) {
+    return _gguf_set_val_u64(
+      ctx,
+      key,
+      val,
+    );
+  }
+
+  late final _gguf_set_val_u64Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.Uint64)>>('gguf_set_val_u64');
+  late final _gguf_set_val_u64 = _gguf_set_val_u64Ptr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>, int)>();
+
+  void gguf_set_val_i64(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+    int val,
+  ) {
+    return _gguf_set_val_i64(
+      ctx,
+      key,
+      val,
+    );
+  }
+
+  late final _gguf_set_val_i64Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.Int64)>>('gguf_set_val_i64');
+  late final _gguf_set_val_i64 = _gguf_set_val_i64Ptr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>, int)>();
+
+  void gguf_set_val_f64(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+    double val,
+  ) {
+    return _gguf_set_val_f64(
+      ctx,
+      key,
+      val,
+    );
+  }
+
+  late final _gguf_set_val_f64Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.Double)>>('gguf_set_val_f64');
+  late final _gguf_set_val_f64 = _gguf_set_val_f64Ptr.asFunction<
+      void Function(
+          ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>, double)>();
+
+  void gguf_set_val_bool(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+    bool val,
+  ) {
+    return _gguf_set_val_bool(
+      ctx,
+      key,
+      val,
+    );
+  }
+
+  late final _gguf_set_val_boolPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.Bool)>>('gguf_set_val_bool');
+  late final _gguf_set_val_bool = _gguf_set_val_boolPtr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>, bool)>();
+
+  void gguf_set_val_str(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+    ffi.Pointer<ffi.Char> val,
+  ) {
+    return _gguf_set_val_str(
+      ctx,
+      key,
+      val,
+    );
+  }
+
+  late final _gguf_set_val_strPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('gguf_set_val_str');
+  late final _gguf_set_val_str = _gguf_set_val_strPtr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>)>();
+
+  void gguf_set_arr_data(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+    gguf_type type,
+    ffi.Pointer<ffi.Void> data,
+    int n,
+  ) {
+    return _gguf_set_arr_data(
+      ctx,
+      key,
+      type.value,
+      data,
+      n,
+    );
+  }
+
+  late final _gguf_set_arr_dataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<gguf_context>,
+              ffi.Pointer<ffi.Char>,
+              ffi.UnsignedInt,
+              ffi.Pointer<ffi.Void>,
+              ffi.Size)>>('gguf_set_arr_data');
+  late final _gguf_set_arr_data = _gguf_set_arr_dataPtr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>, int,
+          ffi.Pointer<ffi.Void>, int)>();
+
+  void gguf_set_arr_str(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> key,
+    ffi.Pointer<ffi.Pointer<ffi.Char>> data,
+    int n,
+  ) {
+    return _gguf_set_arr_str(
+      ctx,
+      key,
+      data,
+      n,
+    );
+  }
+
+  late final _gguf_set_arr_strPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<gguf_context>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+              ffi.Size)>>('gguf_set_arr_str');
+  late final _gguf_set_arr_str = _gguf_set_arr_strPtr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+
+  void gguf_set_kv(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<gguf_context> src,
+  ) {
+    return _gguf_set_kv(
+      ctx,
+      src,
+    );
+  }
+
+  late final _gguf_set_kvPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>,
+              ffi.Pointer<gguf_context>)>>('gguf_set_kv');
+  late final _gguf_set_kv = _gguf_set_kvPtr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<gguf_context>)>();
+
+  void gguf_add_tensor(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ggml_tensor> tensor,
+  ) {
+    return _gguf_add_tensor(
+      ctx,
+      tensor,
+    );
+  }
+
+  late final _gguf_add_tensorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>,
+              ffi.Pointer<ggml_tensor>)>>('gguf_add_tensor');
+  late final _gguf_add_tensor = _gguf_add_tensorPtr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ggml_tensor>)>();
+
+  void gguf_set_tensor_type(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> name,
+    ggml_type type,
+  ) {
+    return _gguf_set_tensor_type(
+      ctx,
+      name,
+      type.value,
+    );
+  }
+
+  late final _gguf_set_tensor_typePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.UnsignedInt)>>('gguf_set_tensor_type');
+  late final _gguf_set_tensor_type = _gguf_set_tensor_typePtr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>, int)>();
+
+  void gguf_set_tensor_data(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> name,
+    ffi.Pointer<ffi.Void> data,
+  ) {
+    return _gguf_set_tensor_data(
+      ctx,
+      name,
+      data,
+    );
+  }
+
+  late final _gguf_set_tensor_dataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Void>)>>('gguf_set_tensor_data');
+  late final _gguf_set_tensor_data = _gguf_set_tensor_dataPtr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Void>)>();
+
+  bool gguf_write_to_file(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Char> fname,
+    bool only_meta,
+  ) {
+    return _gguf_write_to_file(
+      ctx,
+      fname,
+      only_meta,
+    );
+  }
+
+  late final _gguf_write_to_filePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>,
+              ffi.Bool)>>('gguf_write_to_file');
+  late final _gguf_write_to_file = _gguf_write_to_filePtr.asFunction<
+      bool Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Char>, bool)>();
+
+  int gguf_get_meta_size(
+    ffi.Pointer<gguf_context> ctx,
+  ) {
+    return _gguf_get_meta_size(
+      ctx,
+    );
+  }
+
+  late final _gguf_get_meta_sizePtr =
+      _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<gguf_context>)>>(
+          'gguf_get_meta_size');
+  late final _gguf_get_meta_size = _gguf_get_meta_sizePtr
+      .asFunction<int Function(ffi.Pointer<gguf_context>)>();
+
+  void gguf_get_meta_data(
+    ffi.Pointer<gguf_context> ctx,
+    ffi.Pointer<ffi.Void> data,
+  ) {
+    return _gguf_get_meta_data(
+      ctx,
+      data,
+    );
+  }
+
+  late final _gguf_get_meta_dataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<gguf_context>,
+              ffi.Pointer<ffi.Void>)>>('gguf_get_meta_data');
+  late final _gguf_get_meta_data = _gguf_get_meta_dataPtr.asFunction<
+      void Function(ffi.Pointer<gguf_context>, ffi.Pointer<ffi.Void>)>();
+
+  ggml_backend_t ggml_backend_sycl_init(
+    int device,
+  ) {
+    return _ggml_backend_sycl_init(
+      device,
+    );
+  }
+
+  late final _ggml_backend_sycl_initPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_t Function(ffi.Int)>>(
+          'ggml_backend_sycl_init');
+  late final _ggml_backend_sycl_init =
+      _ggml_backend_sycl_initPtr.asFunction<ggml_backend_t Function(int)>();
+
+  bool ggml_backend_is_sycl(
+    ggml_backend_t backend,
+  ) {
+    return _ggml_backend_is_sycl(
+      backend,
+    );
+  }
+
+  late final _ggml_backend_is_syclPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ggml_backend_t)>>(
+          'ggml_backend_is_sycl');
+  late final _ggml_backend_is_sycl =
+      _ggml_backend_is_syclPtr.asFunction<bool Function(ggml_backend_t)>();
+
+  ggml_backend_buffer_type_t ggml_backend_sycl_buffer_type(
+    int device,
+  ) {
+    return _ggml_backend_sycl_buffer_type(
+      device,
+    );
+  }
+
+  late final _ggml_backend_sycl_buffer_typePtr =
+      _lookup<ffi.NativeFunction<ggml_backend_buffer_type_t Function(ffi.Int)>>(
+          'ggml_backend_sycl_buffer_type');
+  late final _ggml_backend_sycl_buffer_type = _ggml_backend_sycl_buffer_typePtr
+      .asFunction<ggml_backend_buffer_type_t Function(int)>();
+
+  ggml_backend_buffer_type_t ggml_backend_sycl_split_buffer_type(
+    ffi.Pointer<ffi.Float> tensor_split,
+  ) {
+    return _ggml_backend_sycl_split_buffer_type(
+      tensor_split,
+    );
+  }
+
+  late final _ggml_backend_sycl_split_buffer_typePtr = _lookup<
+      ffi.NativeFunction<
+          ggml_backend_buffer_type_t Function(
+              ffi.Pointer<ffi.Float>)>>('ggml_backend_sycl_split_buffer_type');
+  late final _ggml_backend_sycl_split_buffer_type =
+      _ggml_backend_sycl_split_buffer_typePtr.asFunction<
+          ggml_backend_buffer_type_t Function(ffi.Pointer<ffi.Float>)>();
+
+  ggml_backend_buffer_type_t ggml_backend_sycl_host_buffer_type() {
+    return _ggml_backend_sycl_host_buffer_type();
+  }
+
+  late final _ggml_backend_sycl_host_buffer_typePtr =
+      _lookup<ffi.NativeFunction<ggml_backend_buffer_type_t Function()>>(
+          'ggml_backend_sycl_host_buffer_type');
+  late final _ggml_backend_sycl_host_buffer_type =
+      _ggml_backend_sycl_host_buffer_typePtr
+          .asFunction<ggml_backend_buffer_type_t Function()>();
+
+  void ggml_backend_sycl_print_sycl_devices() {
+    return _ggml_backend_sycl_print_sycl_devices();
+  }
+
+  late final _ggml_backend_sycl_print_sycl_devicesPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>(
+          'ggml_backend_sycl_print_sycl_devices');
+  late final _ggml_backend_sycl_print_sycl_devices =
+      _ggml_backend_sycl_print_sycl_devicesPtr.asFunction<void Function()>();
+
+  void ggml_backend_sycl_get_gpu_list(
+    ffi.Pointer<ffi.Int> id_list,
+    int max_len,
+  ) {
+    return _ggml_backend_sycl_get_gpu_list(
+      id_list,
+      max_len,
+    );
+  }
+
+  late final _ggml_backend_sycl_get_gpu_listPtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Int>, ffi.Int)>>(
+      'ggml_backend_sycl_get_gpu_list');
+  late final _ggml_backend_sycl_get_gpu_list =
+      _ggml_backend_sycl_get_gpu_listPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Int>, int)>();
+
+  void ggml_backend_sycl_get_device_description(
+    int device,
+    ffi.Pointer<ffi.Char> description,
+    int description_size,
+  ) {
+    return _ggml_backend_sycl_get_device_description(
+      device,
+      description,
+      description_size,
+    );
+  }
+
+  late final _ggml_backend_sycl_get_device_descriptionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int, ffi.Pointer<ffi.Char>,
+              ffi.Size)>>('ggml_backend_sycl_get_device_description');
+  late final _ggml_backend_sycl_get_device_description =
+      _ggml_backend_sycl_get_device_descriptionPtr
+          .asFunction<void Function(int, ffi.Pointer<ffi.Char>, int)>();
+
+  int ggml_backend_sycl_get_device_count() {
+    return _ggml_backend_sycl_get_device_count();
+  }
+
+  late final _ggml_backend_sycl_get_device_countPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>(
+          'ggml_backend_sycl_get_device_count');
+  late final _ggml_backend_sycl_get_device_count =
+      _ggml_backend_sycl_get_device_countPtr.asFunction<int Function()>();
+
+  void ggml_backend_sycl_get_device_memory(
+    int device,
+    ffi.Pointer<ffi.Size> free,
+    ffi.Pointer<ffi.Size> total,
+  ) {
+    return _ggml_backend_sycl_get_device_memory(
+      device,
+      free,
+      total,
+    );
+  }
+
+  late final _ggml_backend_sycl_get_device_memoryPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int, ffi.Pointer<ffi.Size>,
+              ffi.Pointer<ffi.Size>)>>('ggml_backend_sycl_get_device_memory');
+  late final _ggml_backend_sycl_get_device_memory =
+      _ggml_backend_sycl_get_device_memoryPtr.asFunction<
+          void Function(int, ffi.Pointer<ffi.Size>, ffi.Pointer<ffi.Size>)>();
+
+  ggml_backend_reg_t ggml_backend_sycl_reg() {
+    return _ggml_backend_sycl_reg();
+  }
+
+  late final _ggml_backend_sycl_regPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_reg_t Function()>>(
+          'ggml_backend_sycl_reg');
+  late final _ggml_backend_sycl_reg =
+      _ggml_backend_sycl_regPtr.asFunction<ggml_backend_reg_t Function()>();
+
+  ffi.Pointer<ggml_vk_device> ggml_vk_available_devices(
+    int memoryRequired,
+    ffi.Pointer<ffi.Size> count,
+  ) {
+    return _ggml_vk_available_devices(
+      memoryRequired,
+      count,
+    );
+  }
+
+  late final _ggml_vk_available_devicesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ggml_vk_device> Function(
+              ffi.Size, ffi.Pointer<ffi.Size>)>>('ggml_vk_available_devices');
+  late final _ggml_vk_available_devices =
+      _ggml_vk_available_devicesPtr.asFunction<
+          ffi.Pointer<ggml_vk_device> Function(int, ffi.Pointer<ffi.Size>)>();
+
+  bool ggml_vk_get_device(
+    ffi.Pointer<ggml_vk_device> device,
+    int memoryRequired,
+    ffi.Pointer<ffi.Char> name,
+  ) {
+    return _ggml_vk_get_device(
+      device,
+      memoryRequired,
+      name,
+    );
+  }
+
+  late final _ggml_vk_get_devicePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Bool Function(ffi.Pointer<ggml_vk_device>, ffi.Size,
+              ffi.Pointer<ffi.Char>)>>('ggml_vk_get_device');
+  late final _ggml_vk_get_device = _ggml_vk_get_devicePtr.asFunction<
+      bool Function(ffi.Pointer<ggml_vk_device>, int, ffi.Pointer<ffi.Char>)>();
+
+  bool ggml_vk_has_vulkan() {
+    return _ggml_vk_has_vulkan();
+  }
+
+  late final _ggml_vk_has_vulkanPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function()>>('ggml_vk_has_vulkan');
+  late final _ggml_vk_has_vulkan =
+      _ggml_vk_has_vulkanPtr.asFunction<bool Function()>();
+
+  bool ggml_vk_has_device() {
+    return _ggml_vk_has_device();
+  }
+
+  late final _ggml_vk_has_devicePtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function()>>('ggml_vk_has_device');
+  late final _ggml_vk_has_device =
+      _ggml_vk_has_devicePtr.asFunction<bool Function()>();
+
+  ggml_vk_device ggml_vk_current_device() {
+    return _ggml_vk_current_device();
+  }
+
+  late final _ggml_vk_current_devicePtr =
+      _lookup<ffi.NativeFunction<ggml_vk_device Function()>>(
+          'ggml_vk_current_device');
+  late final _ggml_vk_current_device =
+      _ggml_vk_current_devicePtr.asFunction<ggml_vk_device Function()>();
+
+  ggml_backend_t ggml_backend_kompute_init(
+    int device,
+  ) {
+    return _ggml_backend_kompute_init(
+      device,
+    );
+  }
+
+  late final _ggml_backend_kompute_initPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_t Function(ffi.Int)>>(
+          'ggml_backend_kompute_init');
+  late final _ggml_backend_kompute_init =
+      _ggml_backend_kompute_initPtr.asFunction<ggml_backend_t Function(int)>();
+
+  bool ggml_backend_is_kompute(
+    ggml_backend_t backend,
+  ) {
+    return _ggml_backend_is_kompute(
+      backend,
+    );
+  }
+
+  late final _ggml_backend_is_komputePtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ggml_backend_t)>>(
+          'ggml_backend_is_kompute');
+  late final _ggml_backend_is_kompute =
+      _ggml_backend_is_komputePtr.asFunction<bool Function(ggml_backend_t)>();
+
+  ggml_backend_buffer_type_t ggml_backend_kompute_buffer_type(
+    int device,
+  ) {
+    return _ggml_backend_kompute_buffer_type(
+      device,
+    );
+  }
+
+  late final _ggml_backend_kompute_buffer_typePtr =
+      _lookup<ffi.NativeFunction<ggml_backend_buffer_type_t Function(ffi.Int)>>(
+          'ggml_backend_kompute_buffer_type');
+  late final _ggml_backend_kompute_buffer_type =
+      _ggml_backend_kompute_buffer_typePtr
+          .asFunction<ggml_backend_buffer_type_t Function(int)>();
+
+  ggml_backend_reg_t ggml_backend_kompute_reg() {
+    return _ggml_backend_kompute_reg();
+  }
+
+  late final _ggml_backend_kompute_regPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_reg_t Function()>>(
+          'ggml_backend_kompute_reg');
+  late final _ggml_backend_kompute_reg =
+      _ggml_backend_kompute_regPtr.asFunction<ggml_backend_reg_t Function()>();
+
+  ggml_backend_t ggml_backend_blas_init() {
+    return _ggml_backend_blas_init();
+  }
+
+  late final _ggml_backend_blas_initPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_t Function()>>(
+          'ggml_backend_blas_init');
+  late final _ggml_backend_blas_init =
+      _ggml_backend_blas_initPtr.asFunction<ggml_backend_t Function()>();
+
+  bool ggml_backend_is_blas(
+    ggml_backend_t backend,
+  ) {
+    return _ggml_backend_is_blas(
+      backend,
+    );
+  }
+
+  late final _ggml_backend_is_blasPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ggml_backend_t)>>(
+          'ggml_backend_is_blas');
+  late final _ggml_backend_is_blas =
+      _ggml_backend_is_blasPtr.asFunction<bool Function(ggml_backend_t)>();
+
+  void ggml_backend_blas_set_n_threads(
+    ggml_backend_t backend_blas,
+    int n_threads,
+  ) {
+    return _ggml_backend_blas_set_n_threads(
+      backend_blas,
+      n_threads,
+    );
+  }
+
+  late final _ggml_backend_blas_set_n_threadsPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ggml_backend_t, ffi.Int)>>(
+          'ggml_backend_blas_set_n_threads');
+  late final _ggml_backend_blas_set_n_threads =
+      _ggml_backend_blas_set_n_threadsPtr
+          .asFunction<void Function(ggml_backend_t, int)>();
+
+  ggml_backend_reg_t ggml_backend_blas_reg() {
+    return _ggml_backend_blas_reg();
+  }
+
+  late final _ggml_backend_blas_regPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_reg_t Function()>>(
+          'ggml_backend_blas_reg');
+  late final _ggml_backend_blas_reg =
+      _ggml_backend_blas_regPtr.asFunction<ggml_backend_reg_t Function()>();
+
+  ggml_backend_t ggml_backend_cuda_init(
+    int device,
+  ) {
+    return _ggml_backend_cuda_init(
+      device,
+    );
+  }
+
+  late final _ggml_backend_cuda_initPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_t Function(ffi.Int)>>(
+          'ggml_backend_cuda_init');
+  late final _ggml_backend_cuda_init =
+      _ggml_backend_cuda_initPtr.asFunction<ggml_backend_t Function(int)>();
+
+  bool ggml_backend_is_cuda(
+    ggml_backend_t backend,
+  ) {
+    return _ggml_backend_is_cuda(
+      backend,
+    );
+  }
+
+  late final _ggml_backend_is_cudaPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ggml_backend_t)>>(
+          'ggml_backend_is_cuda');
+  late final _ggml_backend_is_cuda =
+      _ggml_backend_is_cudaPtr.asFunction<bool Function(ggml_backend_t)>();
+
+  ggml_backend_buffer_type_t ggml_backend_cuda_buffer_type(
+    int device,
+  ) {
+    return _ggml_backend_cuda_buffer_type(
+      device,
+    );
+  }
+
+  late final _ggml_backend_cuda_buffer_typePtr =
+      _lookup<ffi.NativeFunction<ggml_backend_buffer_type_t Function(ffi.Int)>>(
+          'ggml_backend_cuda_buffer_type');
+  late final _ggml_backend_cuda_buffer_type = _ggml_backend_cuda_buffer_typePtr
+      .asFunction<ggml_backend_buffer_type_t Function(int)>();
+
+  ggml_backend_buffer_type_t ggml_backend_cuda_split_buffer_type(
+    int main_device,
+    ffi.Pointer<ffi.Float> tensor_split,
+  ) {
+    return _ggml_backend_cuda_split_buffer_type(
+      main_device,
+      tensor_split,
+    );
+  }
+
+  late final _ggml_backend_cuda_split_buffer_typePtr = _lookup<
+      ffi.NativeFunction<
+          ggml_backend_buffer_type_t Function(ffi.Int,
+              ffi.Pointer<ffi.Float>)>>('ggml_backend_cuda_split_buffer_type');
+  late final _ggml_backend_cuda_split_buffer_type =
+      _ggml_backend_cuda_split_buffer_typePtr.asFunction<
+          ggml_backend_buffer_type_t Function(int, ffi.Pointer<ffi.Float>)>();
+
+  ggml_backend_buffer_type_t ggml_backend_cuda_host_buffer_type() {
+    return _ggml_backend_cuda_host_buffer_type();
+  }
+
+  late final _ggml_backend_cuda_host_buffer_typePtr =
+      _lookup<ffi.NativeFunction<ggml_backend_buffer_type_t Function()>>(
+          'ggml_backend_cuda_host_buffer_type');
+  late final _ggml_backend_cuda_host_buffer_type =
+      _ggml_backend_cuda_host_buffer_typePtr
+          .asFunction<ggml_backend_buffer_type_t Function()>();
+
+  int ggml_backend_cuda_get_device_count() {
+    return _ggml_backend_cuda_get_device_count();
+  }
+
+  late final _ggml_backend_cuda_get_device_countPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>(
+          'ggml_backend_cuda_get_device_count');
+  late final _ggml_backend_cuda_get_device_count =
+      _ggml_backend_cuda_get_device_countPtr.asFunction<int Function()>();
+
+  void ggml_backend_cuda_get_device_description(
+    int device,
+    ffi.Pointer<ffi.Char> description,
+    int description_size,
+  ) {
+    return _ggml_backend_cuda_get_device_description(
+      device,
+      description,
+      description_size,
+    );
+  }
+
+  late final _ggml_backend_cuda_get_device_descriptionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int, ffi.Pointer<ffi.Char>,
+              ffi.Size)>>('ggml_backend_cuda_get_device_description');
+  late final _ggml_backend_cuda_get_device_description =
+      _ggml_backend_cuda_get_device_descriptionPtr
+          .asFunction<void Function(int, ffi.Pointer<ffi.Char>, int)>();
+
+  void ggml_backend_cuda_get_device_memory(
+    int device,
+    ffi.Pointer<ffi.Size> free,
+    ffi.Pointer<ffi.Size> total,
+  ) {
+    return _ggml_backend_cuda_get_device_memory(
+      device,
+      free,
+      total,
+    );
+  }
+
+  late final _ggml_backend_cuda_get_device_memoryPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int, ffi.Pointer<ffi.Size>,
+              ffi.Pointer<ffi.Size>)>>('ggml_backend_cuda_get_device_memory');
+  late final _ggml_backend_cuda_get_device_memory =
+      _ggml_backend_cuda_get_device_memoryPtr.asFunction<
+          void Function(int, ffi.Pointer<ffi.Size>, ffi.Pointer<ffi.Size>)>();
+
+  bool ggml_backend_cuda_register_host_buffer(
+    ffi.Pointer<ffi.Void> buffer,
+    int size,
+  ) {
+    return _ggml_backend_cuda_register_host_buffer(
+      buffer,
+      size,
+    );
+  }
+
+  late final _ggml_backend_cuda_register_host_bufferPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Bool Function(ffi.Pointer<ffi.Void>, ffi.Size)>>(
+      'ggml_backend_cuda_register_host_buffer');
+  late final _ggml_backend_cuda_register_host_buffer =
+      _ggml_backend_cuda_register_host_bufferPtr
+          .asFunction<bool Function(ffi.Pointer<ffi.Void>, int)>();
+
+  void ggml_backend_cuda_unregister_host_buffer(
+    ffi.Pointer<ffi.Void> buffer,
+  ) {
+    return _ggml_backend_cuda_unregister_host_buffer(
+      buffer,
+    );
+  }
+
+  late final _ggml_backend_cuda_unregister_host_bufferPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'ggml_backend_cuda_unregister_host_buffer');
+  late final _ggml_backend_cuda_unregister_host_buffer =
+      _ggml_backend_cuda_unregister_host_bufferPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  ggml_backend_reg_t ggml_backend_cuda_reg() {
+    return _ggml_backend_cuda_reg();
+  }
+
+  late final _ggml_backend_cuda_regPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_reg_t Function()>>(
+          'ggml_backend_cuda_reg');
+  late final _ggml_backend_cuda_reg =
+      _ggml_backend_cuda_regPtr.asFunction<ggml_backend_reg_t Function()>();
+
+  ggml_opt_dataset_t ggml_opt_dataset_init(
+    int ne_datapoint,
+    int ne_label,
+    int ndata,
+    int ndata_shard,
+  ) {
+    return _ggml_opt_dataset_init(
+      ne_datapoint,
+      ne_label,
+      ndata,
+      ndata_shard,
+    );
+  }
+
+  late final _ggml_opt_dataset_initPtr = _lookup<
+      ffi.NativeFunction<
+          ggml_opt_dataset_t Function(ffi.Int64, ffi.Int64, ffi.Int64,
+              ffi.Int64)>>('ggml_opt_dataset_init');
+  late final _ggml_opt_dataset_init = _ggml_opt_dataset_initPtr
+      .asFunction<ggml_opt_dataset_t Function(int, int, int, int)>();
+
+  void ggml_opt_dataset_free(
+    ggml_opt_dataset_t dataset,
+  ) {
+    return _ggml_opt_dataset_free(
+      dataset,
+    );
+  }
+
+  late final _ggml_opt_dataset_freePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ggml_opt_dataset_t)>>(
+          'ggml_opt_dataset_free');
+  late final _ggml_opt_dataset_free =
+      _ggml_opt_dataset_freePtr.asFunction<void Function(ggml_opt_dataset_t)>();
+
+  ffi.Pointer<ggml_tensor> ggml_opt_dataset_data(
+    ggml_opt_dataset_t dataset,
+  ) {
+    return _ggml_opt_dataset_data(
+      dataset,
+    );
+  }
+
+  late final _ggml_opt_dataset_dataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ggml_tensor> Function(
+              ggml_opt_dataset_t)>>('ggml_opt_dataset_data');
+  late final _ggml_opt_dataset_data = _ggml_opt_dataset_dataPtr
+      .asFunction<ffi.Pointer<ggml_tensor> Function(ggml_opt_dataset_t)>();
+
+  ffi.Pointer<ggml_tensor> ggml_opt_dataset_labels(
+    ggml_opt_dataset_t dataset,
+  ) {
+    return _ggml_opt_dataset_labels(
+      dataset,
+    );
+  }
+
+  late final _ggml_opt_dataset_labelsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ggml_tensor> Function(
+              ggml_opt_dataset_t)>>('ggml_opt_dataset_labels');
+  late final _ggml_opt_dataset_labels = _ggml_opt_dataset_labelsPtr
+      .asFunction<ffi.Pointer<ggml_tensor> Function(ggml_opt_dataset_t)>();
+
+  void ggml_opt_dataset_shuffle(
+    ggml_opt_context_t opt_ctx,
+    ggml_opt_dataset_t dataset,
+    int idata,
+  ) {
+    return _ggml_opt_dataset_shuffle(
+      opt_ctx,
+      dataset,
+      idata,
+    );
+  }
+
+  late final _ggml_opt_dataset_shufflePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ggml_opt_context_t, ggml_opt_dataset_t,
+              ffi.Int64)>>('ggml_opt_dataset_shuffle');
+  late final _ggml_opt_dataset_shuffle = _ggml_opt_dataset_shufflePtr
+      .asFunction<void Function(ggml_opt_context_t, ggml_opt_dataset_t, int)>();
+
+  void ggml_opt_dataset_get_batch(
+    ggml_opt_dataset_t dataset,
+    ffi.Pointer<ggml_tensor> data_batch,
+    ffi.Pointer<ggml_tensor> labels_batch,
+    int ibatch,
+  ) {
+    return _ggml_opt_dataset_get_batch(
+      dataset,
+      data_batch,
+      labels_batch,
+      ibatch,
+    );
+  }
+
+  late final _ggml_opt_dataset_get_batchPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ggml_opt_dataset_t,
+              ffi.Pointer<ggml_tensor>,
+              ffi.Pointer<ggml_tensor>,
+              ffi.Int64)>>('ggml_opt_dataset_get_batch');
+  late final _ggml_opt_dataset_get_batch =
+      _ggml_opt_dataset_get_batchPtr.asFunction<
+          void Function(ggml_opt_dataset_t, ffi.Pointer<ggml_tensor>,
+              ffi.Pointer<ggml_tensor>, int)>();
+
+  ggml_opt_optimizer_params ggml_opt_get_default_optimizer_params(
+    ffi.Pointer<ffi.Void> userdata,
+  ) {
+    return _ggml_opt_get_default_optimizer_params(
+      userdata,
+    );
+  }
+
+  late final _ggml_opt_get_default_optimizer_paramsPtr = _lookup<
+      ffi.NativeFunction<
+          ggml_opt_optimizer_params Function(
+              ffi.Pointer<ffi.Void>)>>('ggml_opt_get_default_optimizer_params');
+  late final _ggml_opt_get_default_optimizer_params =
+      _ggml_opt_get_default_optimizer_paramsPtr.asFunction<
+          ggml_opt_optimizer_params Function(ffi.Pointer<ffi.Void>)>();
+
+  ggml_opt_params ggml_opt_default_params(
+    ggml_backend_sched_t backend_sched,
+    ffi.Pointer<ggml_context> ctx_compute,
+    ffi.Pointer<ggml_tensor> inputs,
+    ffi.Pointer<ggml_tensor> outputs,
+    ggml_opt_loss_type loss_type,
+  ) {
+    return _ggml_opt_default_params(
+      backend_sched,
+      ctx_compute,
+      inputs,
+      outputs,
+      loss_type.value,
+    );
+  }
+
+  late final _ggml_opt_default_paramsPtr = _lookup<
+      ffi.NativeFunction<
+          ggml_opt_params Function(
+              ggml_backend_sched_t,
+              ffi.Pointer<ggml_context>,
+              ffi.Pointer<ggml_tensor>,
+              ffi.Pointer<ggml_tensor>,
+              ffi.UnsignedInt)>>('ggml_opt_default_params');
+  late final _ggml_opt_default_params = _ggml_opt_default_paramsPtr.asFunction<
+      ggml_opt_params Function(ggml_backend_sched_t, ffi.Pointer<ggml_context>,
+          ffi.Pointer<ggml_tensor>, ffi.Pointer<ggml_tensor>, int)>();
+
+  ggml_opt_context_t ggml_opt_init(
+    ggml_opt_params params,
+  ) {
+    return _ggml_opt_init(
+      params,
+    );
+  }
+
+  late final _ggml_opt_initPtr =
+      _lookup<ffi.NativeFunction<ggml_opt_context_t Function(ggml_opt_params)>>(
+          'ggml_opt_init');
+  late final _ggml_opt_init = _ggml_opt_initPtr
+      .asFunction<ggml_opt_context_t Function(ggml_opt_params)>();
+
+  void ggml_opt_free(
+    ggml_opt_context_t opt_ctx,
+  ) {
+    return _ggml_opt_free(
+      opt_ctx,
+    );
+  }
+
+  late final _ggml_opt_freePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ggml_opt_context_t)>>(
+          'ggml_opt_free');
+  late final _ggml_opt_free =
+      _ggml_opt_freePtr.asFunction<void Function(ggml_opt_context_t)>();
+
+  void ggml_opt_reset(
+    ggml_opt_context_t opt_ctx,
+    bool optimizer,
+  ) {
+    return _ggml_opt_reset(
+      opt_ctx,
+      optimizer,
+    );
+  }
+
+  late final _ggml_opt_resetPtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ggml_opt_context_t, ffi.Bool)>>(
+      'ggml_opt_reset');
+  late final _ggml_opt_reset =
+      _ggml_opt_resetPtr.asFunction<void Function(ggml_opt_context_t, bool)>();
+
+  ffi.Pointer<ggml_tensor> ggml_opt_inputs(
+    ggml_opt_context_t opt_ctx,
+  ) {
+    return _ggml_opt_inputs(
+      opt_ctx,
+    );
+  }
+
+  late final _ggml_opt_inputsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ggml_tensor> Function(
+              ggml_opt_context_t)>>('ggml_opt_inputs');
+  late final _ggml_opt_inputs = _ggml_opt_inputsPtr
+      .asFunction<ffi.Pointer<ggml_tensor> Function(ggml_opt_context_t)>();
+
+  ffi.Pointer<ggml_tensor> ggml_opt_outputs(
+    ggml_opt_context_t opt_ctx,
+  ) {
+    return _ggml_opt_outputs(
+      opt_ctx,
+    );
+  }
+
+  late final _ggml_opt_outputsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ggml_tensor> Function(
+              ggml_opt_context_t)>>('ggml_opt_outputs');
+  late final _ggml_opt_outputs = _ggml_opt_outputsPtr
+      .asFunction<ffi.Pointer<ggml_tensor> Function(ggml_opt_context_t)>();
+
+  ffi.Pointer<ggml_tensor> ggml_opt_labels(
+    ggml_opt_context_t opt_ctx,
+  ) {
+    return _ggml_opt_labels(
+      opt_ctx,
+    );
+  }
+
+  late final _ggml_opt_labelsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ggml_tensor> Function(
+              ggml_opt_context_t)>>('ggml_opt_labels');
+  late final _ggml_opt_labels = _ggml_opt_labelsPtr
+      .asFunction<ffi.Pointer<ggml_tensor> Function(ggml_opt_context_t)>();
+
+  ffi.Pointer<ggml_tensor> ggml_opt_loss(
+    ggml_opt_context_t opt_ctx,
+  ) {
+    return _ggml_opt_loss(
+      opt_ctx,
+    );
+  }
+
+  late final _ggml_opt_lossPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ggml_tensor> Function(
+              ggml_opt_context_t)>>('ggml_opt_loss');
+  late final _ggml_opt_loss = _ggml_opt_lossPtr
+      .asFunction<ffi.Pointer<ggml_tensor> Function(ggml_opt_context_t)>();
+
+  ffi.Pointer<ggml_tensor> ggml_opt_pred(
+    ggml_opt_context_t opt_ctx,
+  ) {
+    return _ggml_opt_pred(
+      opt_ctx,
+    );
+  }
+
+  late final _ggml_opt_predPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ggml_tensor> Function(
+              ggml_opt_context_t)>>('ggml_opt_pred');
+  late final _ggml_opt_pred = _ggml_opt_predPtr
+      .asFunction<ffi.Pointer<ggml_tensor> Function(ggml_opt_context_t)>();
+
+  ffi.Pointer<ggml_tensor> ggml_opt_ncorrect(
+    ggml_opt_context_t opt_ctx,
+  ) {
+    return _ggml_opt_ncorrect(
+      opt_ctx,
+    );
+  }
+
+  late final _ggml_opt_ncorrectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ggml_tensor> Function(
+              ggml_opt_context_t)>>('ggml_opt_ncorrect');
+  late final _ggml_opt_ncorrect = _ggml_opt_ncorrectPtr
+      .asFunction<ffi.Pointer<ggml_tensor> Function(ggml_opt_context_t)>();
+
+  ffi.Pointer<ggml_tensor> ggml_opt_grad_acc(
+    ggml_opt_context_t opt_ctx,
+    ffi.Pointer<ggml_tensor> node,
+  ) {
+    return _ggml_opt_grad_acc(
+      opt_ctx,
+      node,
+    );
+  }
+
+  late final _ggml_opt_grad_accPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ggml_tensor> Function(ggml_opt_context_t,
+              ffi.Pointer<ggml_tensor>)>>('ggml_opt_grad_acc');
+  late final _ggml_opt_grad_acc = _ggml_opt_grad_accPtr.asFunction<
+      ffi.Pointer<ggml_tensor> Function(
+          ggml_opt_context_t, ffi.Pointer<ggml_tensor>)>();
+
+  ggml_opt_result_t ggml_opt_result_init() {
+    return _ggml_opt_result_init();
+  }
+
+  late final _ggml_opt_result_initPtr =
+      _lookup<ffi.NativeFunction<ggml_opt_result_t Function()>>(
+          'ggml_opt_result_init');
+  late final _ggml_opt_result_init =
+      _ggml_opt_result_initPtr.asFunction<ggml_opt_result_t Function()>();
+
+  void ggml_opt_result_free(
+    ggml_opt_result_t result,
+  ) {
+    return _ggml_opt_result_free(
+      result,
+    );
+  }
+
+  late final _ggml_opt_result_freePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ggml_opt_result_t)>>(
+          'ggml_opt_result_free');
+  late final _ggml_opt_result_free =
+      _ggml_opt_result_freePtr.asFunction<void Function(ggml_opt_result_t)>();
+
+  void ggml_opt_result_reset(
+    ggml_opt_result_t result,
+  ) {
+    return _ggml_opt_result_reset(
+      result,
+    );
+  }
+
+  late final _ggml_opt_result_resetPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ggml_opt_result_t)>>(
+          'ggml_opt_result_reset');
+  late final _ggml_opt_result_reset =
+      _ggml_opt_result_resetPtr.asFunction<void Function(ggml_opt_result_t)>();
+
+  void ggml_opt_result_ndata(
+    ggml_opt_result_t result,
+    ffi.Pointer<ffi.Int64> ndata,
+  ) {
+    return _ggml_opt_result_ndata(
+      result,
+      ndata,
+    );
+  }
+
+  late final _ggml_opt_result_ndataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ggml_opt_result_t,
+              ffi.Pointer<ffi.Int64>)>>('ggml_opt_result_ndata');
+  late final _ggml_opt_result_ndata = _ggml_opt_result_ndataPtr
+      .asFunction<void Function(ggml_opt_result_t, ffi.Pointer<ffi.Int64>)>();
+
+  void ggml_opt_result_loss(
+    ggml_opt_result_t result,
+    ffi.Pointer<ffi.Double> loss,
+    ffi.Pointer<ffi.Double> unc,
+  ) {
+    return _ggml_opt_result_loss(
+      result,
+      loss,
+      unc,
+    );
+  }
+
+  late final _ggml_opt_result_lossPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ggml_opt_result_t, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>)>>('ggml_opt_result_loss');
+  late final _ggml_opt_result_loss = _ggml_opt_result_lossPtr.asFunction<
+      void Function(ggml_opt_result_t, ffi.Pointer<ffi.Double>,
+          ffi.Pointer<ffi.Double>)>();
+
+  void ggml_opt_result_pred(
+    ggml_opt_result_t result,
+    ffi.Pointer<ffi.Int32> pred,
+  ) {
+    return _ggml_opt_result_pred(
+      result,
+      pred,
+    );
+  }
+
+  late final _ggml_opt_result_predPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ggml_opt_result_t,
+              ffi.Pointer<ffi.Int32>)>>('ggml_opt_result_pred');
+  late final _ggml_opt_result_pred = _ggml_opt_result_predPtr
+      .asFunction<void Function(ggml_opt_result_t, ffi.Pointer<ffi.Int32>)>();
+
+  void ggml_opt_result_accuracy(
+    ggml_opt_result_t result,
+    ffi.Pointer<ffi.Double> accuracy,
+    ffi.Pointer<ffi.Double> unc,
+  ) {
+    return _ggml_opt_result_accuracy(
+      result,
+      accuracy,
+      unc,
+    );
+  }
+
+  late final _ggml_opt_result_accuracyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ggml_opt_result_t, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>)>>('ggml_opt_result_accuracy');
+  late final _ggml_opt_result_accuracy =
+      _ggml_opt_result_accuracyPtr.asFunction<
+          void Function(ggml_opt_result_t, ffi.Pointer<ffi.Double>,
+              ffi.Pointer<ffi.Double>)>();
+
+  void ggml_opt_forward(
+    ggml_opt_context_t opt_ctx,
+    ggml_opt_result_t result,
+  ) {
+    return _ggml_opt_forward(
+      opt_ctx,
+      result,
+    );
+  }
+
+  late final _ggml_opt_forwardPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ggml_opt_context_t, ggml_opt_result_t)>>('ggml_opt_forward');
+  late final _ggml_opt_forward = _ggml_opt_forwardPtr
+      .asFunction<void Function(ggml_opt_context_t, ggml_opt_result_t)>();
+
+  void ggml_opt_forward_backward(
+    ggml_opt_context_t opt_ctx,
+    ggml_opt_result_t result,
+  ) {
+    return _ggml_opt_forward_backward(
+      opt_ctx,
+      result,
+    );
+  }
+
+  late final _ggml_opt_forward_backwardPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ggml_opt_context_t,
+              ggml_opt_result_t)>>('ggml_opt_forward_backward');
+  late final _ggml_opt_forward_backward = _ggml_opt_forward_backwardPtr
+      .asFunction<void Function(ggml_opt_context_t, ggml_opt_result_t)>();
+
+  void ggml_opt_epoch(
+    ggml_opt_context_t opt_ctx,
+    ggml_opt_dataset_t dataset,
+    ggml_opt_result_t result_train,
+    ggml_opt_result_t result_eval,
+    int idata_split,
+    ggml_opt_epoch_callback callback_train,
+    ggml_opt_epoch_callback callback_eval,
+  ) {
+    return _ggml_opt_epoch(
+      opt_ctx,
+      dataset,
+      result_train,
+      result_eval,
+      idata_split,
+      callback_train,
+      callback_eval,
+    );
+  }
+
+  late final _ggml_opt_epochPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ggml_opt_context_t,
+              ggml_opt_dataset_t,
+              ggml_opt_result_t,
+              ggml_opt_result_t,
+              ffi.Int64,
+              ggml_opt_epoch_callback,
+              ggml_opt_epoch_callback)>>('ggml_opt_epoch');
+  late final _ggml_opt_epoch = _ggml_opt_epochPtr.asFunction<
+      void Function(
+          ggml_opt_context_t,
+          ggml_opt_dataset_t,
+          ggml_opt_result_t,
+          ggml_opt_result_t,
+          int,
+          ggml_opt_epoch_callback,
+          ggml_opt_epoch_callback)>();
+
+  void ggml_opt_epoch_callback_progress_bar(
+    bool train,
+    ggml_opt_context_t opt_ctx,
+    ggml_opt_dataset_t dataset,
+    ggml_opt_result_t result,
+    int ibatch,
+    int ibatch_max,
+    int t_start_us,
+  ) {
+    return _ggml_opt_epoch_callback_progress_bar(
+      train,
+      opt_ctx,
+      dataset,
+      result,
+      ibatch,
+      ibatch_max,
+      t_start_us,
+    );
+  }
+
+  late final _ggml_opt_epoch_callback_progress_barPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Bool,
+              ggml_opt_context_t,
+              ggml_opt_dataset_t,
+              ggml_opt_result_t,
+              ffi.Int64,
+              ffi.Int64,
+              ffi.Int64)>>('ggml_opt_epoch_callback_progress_bar');
+  late final _ggml_opt_epoch_callback_progress_bar =
+      _ggml_opt_epoch_callback_progress_barPtr.asFunction<
+          void Function(bool, ggml_opt_context_t, ggml_opt_dataset_t,
+              ggml_opt_result_t, int, int, int)>();
+
+  void ggml_opt_fit(
+    ggml_backend_sched_t backend_sched,
+    ffi.Pointer<ggml_context> ctx_compute,
+    ffi.Pointer<ggml_tensor> inputs,
+    ffi.Pointer<ggml_tensor> outputs,
+    ggml_opt_dataset_t dataset,
+    ggml_opt_loss_type loss_type,
+    ggml_opt_get_optimizer_params get_opt_pars,
+    int nepoch,
+    int nbatch_logical,
+    double val_split,
+    bool silent,
+  ) {
+    return _ggml_opt_fit(
+      backend_sched,
+      ctx_compute,
+      inputs,
+      outputs,
+      dataset,
+      loss_type.value,
+      get_opt_pars,
+      nepoch,
+      nbatch_logical,
+      val_split,
+      silent,
+    );
+  }
+
+  late final _ggml_opt_fitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ggml_backend_sched_t,
+              ffi.Pointer<ggml_context>,
+              ffi.Pointer<ggml_tensor>,
+              ffi.Pointer<ggml_tensor>,
+              ggml_opt_dataset_t,
+              ffi.UnsignedInt,
+              ggml_opt_get_optimizer_params,
+              ffi.Int64,
+              ffi.Int64,
+              ffi.Float,
+              ffi.Bool)>>('ggml_opt_fit');
+  late final _ggml_opt_fit = _ggml_opt_fitPtr.asFunction<
+      void Function(
+          ggml_backend_sched_t,
+          ffi.Pointer<ggml_context>,
+          ffi.Pointer<ggml_tensor>,
+          ffi.Pointer<ggml_tensor>,
+          ggml_opt_dataset_t,
+          int,
+          ggml_opt_get_optimizer_params,
+          int,
+          int,
+          double,
+          bool)>();
+
+  ggml_backend_t ggml_backend_metal_init() {
+    return _ggml_backend_metal_init();
+  }
+
+  late final _ggml_backend_metal_initPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_t Function()>>(
+          'ggml_backend_metal_init');
+  late final _ggml_backend_metal_init =
+      _ggml_backend_metal_initPtr.asFunction<ggml_backend_t Function()>();
+
+  bool ggml_backend_is_metal(
+    ggml_backend_t backend,
+  ) {
+    return _ggml_backend_is_metal(
+      backend,
+    );
+  }
+
+  late final _ggml_backend_is_metalPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ggml_backend_t)>>(
+          'ggml_backend_is_metal');
+  late final _ggml_backend_is_metal =
+      _ggml_backend_is_metalPtr.asFunction<bool Function(ggml_backend_t)>();
+
+  ggml_backend_buffer_t ggml_backend_metal_buffer_from_ptr(
+    ffi.Pointer<ffi.Void> data,
+    int size,
+    int max_size,
+  ) {
+    return _ggml_backend_metal_buffer_from_ptr(
+      data,
+      size,
+      max_size,
+    );
+  }
+
+  late final _ggml_backend_metal_buffer_from_ptrPtr = _lookup<
+      ffi.NativeFunction<
+          ggml_backend_buffer_t Function(ffi.Pointer<ffi.Void>, ffi.Size,
+              ffi.Size)>>('ggml_backend_metal_buffer_from_ptr');
+  late final _ggml_backend_metal_buffer_from_ptr =
+      _ggml_backend_metal_buffer_from_ptrPtr.asFunction<
+          ggml_backend_buffer_t Function(ffi.Pointer<ffi.Void>, int, int)>();
+
+  void ggml_backend_metal_set_abort_callback(
+    ggml_backend_t backend,
+    ggml_abort_callback abort_callback,
+    ffi.Pointer<ffi.Void> user_data,
+  ) {
+    return _ggml_backend_metal_set_abort_callback(
+      backend,
+      abort_callback,
+      user_data,
+    );
+  }
+
+  late final _ggml_backend_metal_set_abort_callbackPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ggml_backend_t, ggml_abort_callback,
+              ffi.Pointer<ffi.Void>)>>('ggml_backend_metal_set_abort_callback');
+  late final _ggml_backend_metal_set_abort_callback =
+      _ggml_backend_metal_set_abort_callbackPtr.asFunction<
+          void Function(
+              ggml_backend_t, ggml_abort_callback, ffi.Pointer<ffi.Void>)>();
+
+  ggml_backend_buffer_type_t ggml_backend_metal_buffer_type() {
+    return _ggml_backend_metal_buffer_type();
+  }
+
+  late final _ggml_backend_metal_buffer_typePtr =
+      _lookup<ffi.NativeFunction<ggml_backend_buffer_type_t Function()>>(
+          'ggml_backend_metal_buffer_type');
+  late final _ggml_backend_metal_buffer_type =
+      _ggml_backend_metal_buffer_typePtr
+          .asFunction<ggml_backend_buffer_type_t Function()>();
+
+  bool ggml_backend_metal_supports_family(
+    ggml_backend_t backend,
+    int family,
+  ) {
+    return _ggml_backend_metal_supports_family(
+      backend,
+      family,
+    );
+  }
+
+  late final _ggml_backend_metal_supports_familyPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ggml_backend_t, ffi.Int)>>(
+          'ggml_backend_metal_supports_family');
+  late final _ggml_backend_metal_supports_family =
+      _ggml_backend_metal_supports_familyPtr
+          .asFunction<bool Function(ggml_backend_t, int)>();
+
+  void ggml_backend_metal_capture_next_compute(
+    ggml_backend_t backend,
+  ) {
+    return _ggml_backend_metal_capture_next_compute(
+      backend,
+    );
+  }
+
+  late final _ggml_backend_metal_capture_next_computePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ggml_backend_t)>>(
+          'ggml_backend_metal_capture_next_compute');
+  late final _ggml_backend_metal_capture_next_compute =
+      _ggml_backend_metal_capture_next_computePtr
+          .asFunction<void Function(ggml_backend_t)>();
+
+  ggml_backend_reg_t ggml_backend_metal_reg() {
+    return _ggml_backend_metal_reg();
+  }
+
+  late final _ggml_backend_metal_regPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_reg_t Function()>>(
+          'ggml_backend_metal_reg');
+  late final _ggml_backend_metal_reg =
+      _ggml_backend_metal_regPtr.asFunction<ggml_backend_reg_t Function()>();
+
+  ggml_backend_t ggml_backend_rpc_init(
+    ffi.Pointer<ffi.Char> endpoint,
+  ) {
+    return _ggml_backend_rpc_init(
+      endpoint,
+    );
+  }
+
+  late final _ggml_backend_rpc_initPtr = _lookup<
+          ffi.NativeFunction<ggml_backend_t Function(ffi.Pointer<ffi.Char>)>>(
+      'ggml_backend_rpc_init');
+  late final _ggml_backend_rpc_init = _ggml_backend_rpc_initPtr
+      .asFunction<ggml_backend_t Function(ffi.Pointer<ffi.Char>)>();
+
+  bool ggml_backend_is_rpc(
+    ggml_backend_t backend,
+  ) {
+    return _ggml_backend_is_rpc(
+      backend,
+    );
+  }
+
+  late final _ggml_backend_is_rpcPtr =
+      _lookup<ffi.NativeFunction<ffi.Bool Function(ggml_backend_t)>>(
+          'ggml_backend_is_rpc');
+  late final _ggml_backend_is_rpc =
+      _ggml_backend_is_rpcPtr.asFunction<bool Function(ggml_backend_t)>();
+
+  ggml_backend_buffer_type_t ggml_backend_rpc_buffer_type(
+    ffi.Pointer<ffi.Char> endpoint,
+  ) {
+    return _ggml_backend_rpc_buffer_type(
+      endpoint,
+    );
+  }
+
+  late final _ggml_backend_rpc_buffer_typePtr = _lookup<
+      ffi.NativeFunction<
+          ggml_backend_buffer_type_t Function(
+              ffi.Pointer<ffi.Char>)>>('ggml_backend_rpc_buffer_type');
+  late final _ggml_backend_rpc_buffer_type = _ggml_backend_rpc_buffer_typePtr
+      .asFunction<ggml_backend_buffer_type_t Function(ffi.Pointer<ffi.Char>)>();
+
+  void ggml_backend_rpc_get_device_memory(
+    ffi.Pointer<ffi.Char> endpoint,
+    ffi.Pointer<ffi.Size> free,
+    ffi.Pointer<ffi.Size> total,
+  ) {
+    return _ggml_backend_rpc_get_device_memory(
+      endpoint,
+      free,
+      total,
+    );
+  }
+
+  late final _ggml_backend_rpc_get_device_memoryPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>,
+              ffi.Pointer<ffi.Size>)>>('ggml_backend_rpc_get_device_memory');
+  late final _ggml_backend_rpc_get_device_memory =
+      _ggml_backend_rpc_get_device_memoryPtr.asFunction<
+          void Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Size>,
+              ffi.Pointer<ffi.Size>)>();
+
+  void ggml_backend_rpc_start_server(
+    ggml_backend_t backend,
+    ffi.Pointer<ffi.Char> endpoint,
+    int free_mem,
+    int total_mem,
+  ) {
+    return _ggml_backend_rpc_start_server(
+      backend,
+      endpoint,
+      free_mem,
+      total_mem,
+    );
+  }
+
+  late final _ggml_backend_rpc_start_serverPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ggml_backend_t, ffi.Pointer<ffi.Char>, ffi.Size,
+              ffi.Size)>>('ggml_backend_rpc_start_server');
+  late final _ggml_backend_rpc_start_server =
+      _ggml_backend_rpc_start_serverPtr.asFunction<
+          void Function(ggml_backend_t, ffi.Pointer<ffi.Char>, int, int)>();
+
+  ggml_backend_reg_t ggml_backend_rpc_reg() {
+    return _ggml_backend_rpc_reg();
+  }
+
+  late final _ggml_backend_rpc_regPtr =
+      _lookup<ffi.NativeFunction<ggml_backend_reg_t Function()>>(
+          'ggml_backend_rpc_reg');
+  late final _ggml_backend_rpc_reg =
+      _ggml_backend_rpc_regPtr.asFunction<ggml_backend_reg_t Function()>();
+
+  ggml_backend_dev_t ggml_backend_rpc_add_device(
+    ffi.Pointer<ffi.Char> endpoint,
+  ) {
+    return _ggml_backend_rpc_add_device(
+      endpoint,
+    );
+  }
+
+  late final _ggml_backend_rpc_add_devicePtr = _lookup<
+          ffi
+          .NativeFunction<ggml_backend_dev_t Function(ffi.Pointer<ffi.Char>)>>(
+      'ggml_backend_rpc_add_device');
+  late final _ggml_backend_rpc_add_device = _ggml_backend_rpc_add_devicePtr
+      .asFunction<ggml_backend_dev_t Function(ffi.Pointer<ffi.Char>)>();
 }
 
 typedef __int8_t = ffi.SignedChar;
@@ -15527,7 +18204,8 @@ enum llama_vocab_pre_type {
   LLAMA_VOCAB_PRE_TYPE_EXAONE(25),
   LLAMA_VOCAB_PRE_TYPE_CHAMELEON(26),
   LLAMA_VOCAB_PRE_TYPE_MINERVA(27),
-  LLAMA_VOCAB_PRE_TYPE_DEEPSEEK3_LLM(28);
+  LLAMA_VOCAB_PRE_TYPE_DEEPSEEK3_LLM(28),
+  LLAMA_VOCAB_PRE_TYPE_GPT4O(29);
 
   final int value;
   const llama_vocab_pre_type(this.value);
@@ -15562,6 +18240,7 @@ enum llama_vocab_pre_type {
         26 => LLAMA_VOCAB_PRE_TYPE_CHAMELEON,
         27 => LLAMA_VOCAB_PRE_TYPE_MINERVA,
         28 => LLAMA_VOCAB_PRE_TYPE_DEEPSEEK3_LLM,
+        29 => LLAMA_VOCAB_PRE_TYPE_GPT4O,
         _ =>
           throw ArgumentError("Unknown value for llama_vocab_pre_type: $value"),
       };
@@ -16126,6 +18805,225 @@ final class llama_perf_sampler_data extends ffi.Struct {
   external int n_sample;
 }
 
+enum gguf_type {
+  GGUF_TYPE_UINT8(0),
+  GGUF_TYPE_INT8(1),
+  GGUF_TYPE_UINT16(2),
+  GGUF_TYPE_INT16(3),
+  GGUF_TYPE_UINT32(4),
+  GGUF_TYPE_INT32(5),
+  GGUF_TYPE_FLOAT32(6),
+  GGUF_TYPE_BOOL(7),
+  GGUF_TYPE_STRING(8),
+  GGUF_TYPE_ARRAY(9),
+  GGUF_TYPE_UINT64(10),
+  GGUF_TYPE_INT64(11),
+  GGUF_TYPE_FLOAT64(12),
+  GGUF_TYPE_COUNT(13);
+
+  final int value;
+  const gguf_type(this.value);
+
+  static gguf_type fromValue(int value) => switch (value) {
+        0 => GGUF_TYPE_UINT8,
+        1 => GGUF_TYPE_INT8,
+        2 => GGUF_TYPE_UINT16,
+        3 => GGUF_TYPE_INT16,
+        4 => GGUF_TYPE_UINT32,
+        5 => GGUF_TYPE_INT32,
+        6 => GGUF_TYPE_FLOAT32,
+        7 => GGUF_TYPE_BOOL,
+        8 => GGUF_TYPE_STRING,
+        9 => GGUF_TYPE_ARRAY,
+        10 => GGUF_TYPE_UINT64,
+        11 => GGUF_TYPE_INT64,
+        12 => GGUF_TYPE_FLOAT64,
+        13 => GGUF_TYPE_COUNT,
+        _ => throw ArgumentError("Unknown value for gguf_type: $value"),
+      };
+}
+
+final class gguf_context extends ffi.Opaque {}
+
+final class gguf_init_params extends ffi.Struct {
+  @ffi.Bool()
+  external bool no_alloc;
+
+  external ffi.Pointer<ffi.Pointer<ggml_context>> ctx;
+}
+
+final class ggml_context_deleter extends ffi.Struct {
+  external ffi.NativeFunction<ffi.Int Function()> operator1;
+}
+
+final class gguf_context_deleter extends ffi.Struct {
+  external ffi.NativeFunction<ffi.Int Function()> operator1;
+}
+
+final class ggml_gallocr_deleter extends ffi.Struct {
+  external ffi.NativeFunction<ffi.Int Function()> operator1;
+}
+
+final class ggml_backend_deleter extends ffi.Struct {
+  external ffi.NativeFunction<ffi.Int Function()> operator1;
+}
+
+final class ggml_backend_buffer_deleter extends ffi.Struct {
+  external ffi.NativeFunction<ffi.Int Function()> operator1;
+}
+
+final class ggml_backend_event_deleter extends ffi.Struct {
+  external ffi.NativeFunction<ffi.Int Function()> operator1;
+}
+
+final class ggml_backend_sched_deleter extends ffi.Struct {
+  external ffi.NativeFunction<ffi.Int Function()> operator1;
+}
+
+final class ggml_vk_device extends ffi.Struct {
+  @ffi.Int()
+  external int index;
+
+  @ffi.Int()
+  external int type;
+
+  @ffi.Size()
+  external int heapSize;
+
+  external ffi.Pointer<ffi.Char> name;
+
+  external ffi.Pointer<ffi.Char> vendor;
+
+  @ffi.Int()
+  external int subgroupSize;
+
+  @ffi.Uint64()
+  external int bufferAlignment;
+
+  @ffi.Uint64()
+  external int maxAlloc;
+}
+
+final class ggml_opt_dataset extends ffi.Opaque {}
+
+final class ggml_opt_context extends ffi.Opaque {}
+
+final class ggml_opt_result extends ffi.Opaque {}
+
+typedef ggml_opt_dataset_t = ffi.Pointer<ggml_opt_dataset>;
+typedef ggml_opt_context_t = ffi.Pointer<ggml_opt_context>;
+typedef ggml_opt_result_t = ffi.Pointer<ggml_opt_result>;
+
+enum ggml_opt_loss_type {
+  GGML_OPT_LOSS_TYPE_MEAN(0),
+  GGML_OPT_LOSS_TYPE_SUM(1),
+  GGML_OPT_LOSS_TYPE_CROSS_ENTROPY(2),
+  GGML_OPT_LOSS_TYPE_MEAN_SQUARED_ERROR(3);
+
+  final int value;
+  const ggml_opt_loss_type(this.value);
+
+  static ggml_opt_loss_type fromValue(int value) => switch (value) {
+        0 => GGML_OPT_LOSS_TYPE_MEAN,
+        1 => GGML_OPT_LOSS_TYPE_SUM,
+        2 => GGML_OPT_LOSS_TYPE_CROSS_ENTROPY,
+        3 => GGML_OPT_LOSS_TYPE_MEAN_SQUARED_ERROR,
+        _ =>
+          throw ArgumentError("Unknown value for ggml_opt_loss_type: $value"),
+      };
+}
+
+enum ggml_opt_build_type {
+  GGML_OPT_BUILD_TYPE_FORWARD(0),
+  GGML_OPT_BUILD_TYPE_GRAD(1),
+  GGML_OPT_BUILD_TYPE_OPT(2);
+
+  final int value;
+  const ggml_opt_build_type(this.value);
+
+  static ggml_opt_build_type fromValue(int value) => switch (value) {
+        0 => GGML_OPT_BUILD_TYPE_FORWARD,
+        1 => GGML_OPT_BUILD_TYPE_GRAD,
+        2 => GGML_OPT_BUILD_TYPE_OPT,
+        _ =>
+          throw ArgumentError("Unknown value for ggml_opt_build_type: $value"),
+      };
+}
+
+final class UnnamedStruct1 extends ffi.Struct {
+  @ffi.Float()
+  external double alpha;
+
+  @ffi.Float()
+  external double beta1;
+
+  @ffi.Float()
+  external double beta2;
+
+  @ffi.Float()
+  external double eps;
+
+  @ffi.Float()
+  external double wd;
+}
+
+final class ggml_opt_optimizer_params extends ffi.Struct {
+  external UnnamedStruct1 adamw;
+}
+
+typedef ggml_opt_get_optimizer_paramsFunction = ggml_opt_optimizer_params
+    Function(ffi.Pointer<ffi.Void> userdata);
+typedef ggml_opt_get_optimizer_params
+    = ffi.Pointer<ffi.NativeFunction<ggml_opt_get_optimizer_paramsFunction>>;
+
+final class ggml_opt_params extends ffi.Struct {
+  external ggml_backend_sched_t backend_sched;
+
+  external ffi.Pointer<ggml_context> ctx_compute;
+
+  external ffi.Pointer<ggml_tensor> inputs;
+
+  external ffi.Pointer<ggml_tensor> outputs;
+
+  @ffi.UnsignedInt()
+  external int loss_typeAsInt;
+
+  ggml_opt_loss_type get loss_type =>
+      ggml_opt_loss_type.fromValue(loss_typeAsInt);
+
+  @ffi.UnsignedInt()
+  external int build_typeAsInt;
+
+  ggml_opt_build_type get build_type =>
+      ggml_opt_build_type.fromValue(build_typeAsInt);
+
+  @ffi.Int32()
+  external int opt_period;
+
+  external ggml_opt_get_optimizer_params get_opt_pars;
+
+  external ffi.Pointer<ffi.Void> get_opt_pars_ud;
+}
+
+typedef ggml_opt_epoch_callbackFunction = ffi.Void Function(
+    ffi.Bool train,
+    ggml_opt_context_t opt_ctx,
+    ggml_opt_dataset_t dataset,
+    ggml_opt_result_t result,
+    ffi.Int64 ibatch,
+    ffi.Int64 ibatch_max,
+    ffi.Int64 t_start_us);
+typedef Dartggml_opt_epoch_callbackFunction = void Function(
+    bool train,
+    ggml_opt_context_t opt_ctx,
+    ggml_opt_dataset_t dataset,
+    ggml_opt_result_t result,
+    int ibatch,
+    int ibatch_max,
+    int t_start_us);
+typedef ggml_opt_epoch_callback
+    = ffi.Pointer<ffi.NativeFunction<ggml_opt_epoch_callbackFunction>>;
+
 const int __bool_true_false_are_defined = 1;
 
 const int true1 = 1;
@@ -16448,6 +19346,12 @@ const int __MAC_14_4 = 140400;
 
 const int __MAC_14_5 = 140500;
 
+const int __MAC_15_0 = 150000;
+
+const int __MAC_15_1 = 150100;
+
+const int __MAC_15_2 = 150200;
+
 const int __IPHONE_2_0 = 20000;
 
 const int __IPHONE_2_1 = 20100;
@@ -16606,6 +19510,12 @@ const int __IPHONE_17_4 = 170400;
 
 const int __IPHONE_17_5 = 170500;
 
+const int __IPHONE_18_0 = 180000;
+
+const int __IPHONE_18_1 = 180100;
+
+const int __IPHONE_18_2 = 180200;
+
 const int __WATCHOS_1_0 = 10000;
 
 const int __WATCHOS_2_0 = 20000;
@@ -16699,6 +19609,12 @@ const int __WATCHOS_10_3 = 100300;
 const int __WATCHOS_10_4 = 100400;
 
 const int __WATCHOS_10_5 = 100500;
+
+const int __WATCHOS_11_0 = 110000;
+
+const int __WATCHOS_11_1 = 110100;
+
+const int __WATCHOS_11_2 = 110200;
 
 const int __TVOS_9_0 = 90000;
 
@@ -16796,6 +19712,12 @@ const int __TVOS_17_4 = 170400;
 
 const int __TVOS_17_5 = 170500;
 
+const int __TVOS_18_0 = 180000;
+
+const int __TVOS_18_1 = 180100;
+
+const int __TVOS_18_2 = 180200;
+
 const int __BRIDGEOS_2_0 = 20000;
 
 const int __BRIDGEOS_3_0 = 30000;
@@ -16848,6 +19770,12 @@ const int __BRIDGEOS_8_4 = 80400;
 
 const int __BRIDGEOS_8_5 = 80500;
 
+const int __BRIDGEOS_9_0 = 90000;
+
+const int __BRIDGEOS_9_1 = 90100;
+
+const int __BRIDGEOS_9_2 = 90200;
+
 const int __DRIVERKIT_19_0 = 190000;
 
 const int __DRIVERKIT_20_0 = 200000;
@@ -16874,11 +19802,23 @@ const int __DRIVERKIT_23_4 = 230400;
 
 const int __DRIVERKIT_23_5 = 230500;
 
+const int __DRIVERKIT_24_0 = 240000;
+
+const int __DRIVERKIT_24_1 = 240100;
+
+const int __DRIVERKIT_24_2 = 240200;
+
 const int __VISIONOS_1_0 = 10000;
 
 const int __VISIONOS_1_1 = 10100;
 
 const int __VISIONOS_1_2 = 10200;
+
+const int __VISIONOS_2_0 = 20000;
+
+const int __VISIONOS_2_1 = 20100;
+
+const int __VISIONOS_2_2 = 20200;
 
 const int MAC_OS_X_VERSION_10_0 = 1000;
 
@@ -17002,9 +19942,15 @@ const int MAC_OS_VERSION_14_4 = 140400;
 
 const int MAC_OS_VERSION_14_5 = 140500;
 
+const int MAC_OS_VERSION_15_0 = 150000;
+
+const int MAC_OS_VERSION_15_1 = 150100;
+
+const int MAC_OS_VERSION_15_2 = 150200;
+
 const int __MAC_OS_X_VERSION_MIN_REQUIRED = 150000;
 
-const int __MAC_OS_X_VERSION_MAX_ALLOWED = 140500;
+const int __MAC_OS_X_VERSION_MAX_ALLOWED = 150200;
 
 const int __ENABLE_LEGACY_MAC_AVAILABILITY = 1;
 
@@ -17139,3 +20085,31 @@ const int LLAMA_SESSION_VERSION = 9;
 const int LLAMA_STATE_SEQ_MAGIC = 1734833009;
 
 const int LLAMA_STATE_SEQ_VERSION = 2;
+
+const String GGML_VK_NAME = 'Vulkan';
+
+const int GGML_VK_MAX_DEVICES = 16;
+
+const int GGML_CANN_MAX_DEVICES = 16;
+
+const String GGUF_MAGIC = 'GGUF';
+
+const int GGUF_VERSION = 3;
+
+const String GGUF_KEY_GENERAL_ALIGNMENT = 'general.alignment';
+
+const int GGUF_DEFAULT_ALIGNMENT = 32;
+
+const String GGML_SYCL_NAME = 'SYCL';
+
+const int GGML_SYCL_MAX_DEVICES = 48;
+
+const int GGML_KOMPUTE_MAX_DEVICES = 16;
+
+const String GGML_CUDA_NAME = 'CUDA';
+
+const String GGML_CUBLAS_NAME = 'cuBLAS';
+
+const int GGML_CUDA_MAX_DEVICES = 16;
+
+const int GGML_RPC_MAX_SERVERS = 16;
