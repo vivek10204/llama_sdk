@@ -145,10 +145,10 @@ class LlamaIsolated implements Llama {
   /// - [samplingParams]: The parameters for sampling. This parameter is optional and defaults to an instance of [SamplingParams] with `greedy` set to `true`.
   LlamaIsolated(
       {required ModelParams modelParams,
-      ContextParams contextParams = const ContextParams(),
+      ContextParams? contextParams,
       SamplingParams samplingParams = const SamplingParams(greedy: true)})
       : _modelParams = modelParams,
-        _contextParams = contextParams,
+        _contextParams = contextParams ?? ContextParams(),
         _samplingParams = samplingParams;
 
   void _listener() async {

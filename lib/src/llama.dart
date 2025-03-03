@@ -62,7 +62,7 @@ abstract interface class Llama {
   ///   creates an instance of [LlamaNative].
   factory Llama({
     required ModelParams modelParams,
-    ContextParams contextParams = const ContextParams(),
+    ContextParams? contextParams,
     SamplingParams samplingParams = const SamplingParams(),
     bool isolate = false,
   }) =>

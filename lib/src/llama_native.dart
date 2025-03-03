@@ -58,7 +58,7 @@ class LlamaNative implements Llama {
 
   set contextParams(ContextParams contextParams) {
     _contextParams = contextParams;
-
+    _contextParams.addListener(_initContext);
     _initContext();
   }
 
@@ -89,10 +89,10 @@ class LlamaNative implements Llama {
   /// - [samplingParams]: Optional parameters for the sampling configuration. Defaults to an empty [SamplingParams] object.
   LlamaNative(
       {required ModelParams modelParams,
-      ContextParams contextParams = const ContextParams(),
+      ContextParams? contextParams,
       SamplingParams samplingParams = const SamplingParams()})
       : _modelParams = modelParams,
-        _contextParams = contextParams,
+        _contextParams = contextParams ?? ContextParams(),
         _samplingParams = samplingParams {
     Llama.lib.ggml_backend_load_all();
     Llama.lib.llama_backend_init();

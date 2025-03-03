@@ -2,75 +2,236 @@
 part of 'package:lcpp/lcpp.dart';
 
 /// A class representing the parameters for context configuration.
-class ContextParams {
+class ContextParams extends ChangeNotifier {
+  int _nCtx;
+
   /// text context, 0 = from model
-  final int nCtx;
+  int get nCtx => _nCtx;
+
+  set nCtx(int value) {
+    _nCtx = value;
+    notifyListeners();
+  }
+
+  int? _nBatch;
 
   /// logical maximum batch size that can be submitted to llama_decode
-  final int? nBatch;
+  int? get nBatch => _nBatch;
+
+  set nBatch(int? value) {
+    _nBatch = value;
+    notifyListeners();
+  }
+
+  int? _nUBatch;
 
   /// physical maximum batch size
-  final int? nUBatch;
+  int? get nUBatch => _nUBatch;
+
+  set nUBatch(int? value) {
+    _nUBatch = value;
+    notifyListeners();
+  }
+
+  int? _nSeqMax;
 
   /// max number of sequences (i.e. distinct states for recurrent models)
-  final int? nSeqMax;
+  int? get nSeqMax => _nSeqMax;
+
+  set nSeqMax(int? value) {
+    _nSeqMax = value;
+    notifyListeners();
+  }
+
+  int? _nThreads;
 
   /// number of threads to use for generation
-  final int? nThreads;
+  int? get nThreads => _nThreads;
+
+  set nThreads(int? value) {
+    _nThreads = value;
+    notifyListeners();
+  }
+
+  int? _nThreadsBatch;
 
   /// number of threads to use for batch processing
-  final int? nThreadsBatch;
+  int? get nThreadsBatch => _nThreadsBatch;
+
+  set nThreadsBatch(int? value) {
+    _nThreadsBatch = value;
+    notifyListeners();
+  }
+
+  RopeScalingType? _ropeScalingType;
 
   /// RoPE scaling type, from `enum llama_rope_scaling_type`
-  final RopeScalingType? ropeScalingType;
+  RopeScalingType? get ropeScalingType => _ropeScalingType;
+
+  set ropeScalingType(RopeScalingType? value) {
+    _ropeScalingType = value;
+    notifyListeners();
+  }
+
+  PoolingType? _poolingType;
 
   /// whether to pool (sum) embedding results by sequence id
-  final PoolingType? poolingType;
+  PoolingType? get poolingType => _poolingType;
+
+  set poolingType(PoolingType? value) {
+    _poolingType = value;
+    notifyListeners();
+  }
+
+  AttentionType? _attentionType;
 
   /// attention type to use for embeddings
-  final AttentionType? attentionType;
+  AttentionType? get attentionType => _attentionType;
+
+  set attentionType(AttentionType? value) {
+    _attentionType = value;
+    notifyListeners();
+  }
+
+  double? _ropeFrequencyBase;
 
   /// RoPE base frequency, 0 = from model
-  final double? ropeFrequencyBase;
+  double? get ropeFrequencyBase => _ropeFrequencyBase;
+
+  set ropeFrequencyBase(double? value) {
+    _ropeFrequencyBase = value;
+    notifyListeners();
+  }
+
+  double? _ropeFrequencyScale;
 
   /// RoPE frequency scaling factor, 0 = from model
-  final double? ropeFrequencyScale;
+  double? get ropeFrequencyScale => _ropeFrequencyScale;
+
+  set ropeFrequencyScale(double? value) {
+    _ropeFrequencyScale = value;
+    notifyListeners();
+  }
+
+  double? _yarnExtrapolationFactor;
 
   /// YaRN extrapolation mix factor, negative = from model
-  final double? yarnExtrapolationFactor;
+  double? get yarnExtrapolationFactor => _yarnExtrapolationFactor;
+
+  set yarnExtrapolationFactor(double? value) {
+    _yarnExtrapolationFactor = value;
+    notifyListeners();
+  }
+
+  double? _yarnAttenuationFactor;
 
   /// YaRN magnitude scaling factor
-  final double? yarnAttenuationFactor;
+  double? get yarnAttenuationFactor => _yarnAttenuationFactor;
+
+  set yarnAttenuationFactor(double? value) {
+    _yarnAttenuationFactor = value;
+    notifyListeners();
+  }
+
+  double? _yarnBetaFast;
 
   /// YaRN low correction dim
-  final double? yarnBetaFast;
+  double? get yarnBetaFast => _yarnBetaFast;
+
+  set yarnBetaFast(double? value) {
+    _yarnBetaFast = value;
+    notifyListeners();
+  }
+
+  double? _yarnBetaSlow;
 
   /// YaRN high correction dim
-  final double? yarnBetaSlow;
+  double? get yarnBetaSlow => _yarnBetaSlow;
+
+  set yarnBetaSlow(double? value) {
+    _yarnBetaSlow = value;
+    notifyListeners();
+  }
+
+  int? _yarnOriginalContext;
 
   /// YaRN original context size
-  final int? yarnOriginalContext;
+  int? get yarnOriginalContext => _yarnOriginalContext;
+
+  set yarnOriginalContext(int? value) {
+    _yarnOriginalContext = value;
+    notifyListeners();
+  }
+
+  double? _defragmentationThreshold;
 
   /// defragment the KV cache if holes/size > thold, < 0 disabled (default)
-  final double? defragmentationThreshold;
+  double? get defragmentationThreshold => _defragmentationThreshold;
+
+  set defragmentationThreshold(double? value) {
+    _defragmentationThreshold = value;
+    notifyListeners();
+  }
+
+  GgmlType? _typeK;
 
   /// data type for K cache
-  final GgmlType? typeK;
+  GgmlType? get typeK => _typeK;
+
+  set typeK(GgmlType? value) {
+    _typeK = value;
+    notifyListeners();
+  }
+
+  GgmlType? _typeV;
 
   /// data type for V cache
-  final GgmlType? typeV;
+  GgmlType? get typeV => _typeV;
+
+  set typeV(GgmlType? value) {
+    _typeV = value;
+    notifyListeners();
+  }
+
+  bool? _embeddings;
 
   /// if true, extract embeddings (together with logits)
-  final bool? embeddings;
+  bool? get embeddings => _embeddings;
+
+  set embeddings(bool? value) {
+    _embeddings = value;
+    notifyListeners();
+  }
+
+  bool? _offloadKqv;
 
   /// whether to offload the KQV ops (including the KV cache) to GPU
-  final bool? offloadKqv;
+  bool? get offloadKqv => _offloadKqv;
+
+  set offloadKqv(bool? value) {
+    _offloadKqv = value;
+    notifyListeners();
+  }
+
+  bool? _flashAttention;
 
   /// whether to use flash attention
-  final bool? flashAttention;
+  bool? get flashAttention => _flashAttention;
+
+  set flashAttention(bool? value) {
+    _flashAttention = value;
+    notifyListeners();
+  }
+
+  bool? _noPerformance;
 
   /// whether to measure performance timings
-  final bool? noPerformance;
+  bool? get noPerformance => _noPerformance;
+
+  set noPerformance(bool? value) {
+    _noPerformance = value;
+    notifyListeners();
+  }
 
   /// A class representing the parameters for context configuration.
   ///
@@ -100,31 +261,53 @@ class ContextParams {
   /// - `offloadKqv`: Whether to offload KQV (Key, Query, Value) computations.
   /// - `flashAttention`: Whether to use flash attention.
   /// - `noPerformance`: Whether to disable performance optimizations.
-  const ContextParams({
-    this.nCtx = 0,
-    this.nBatch,
-    this.nUBatch,
-    this.nSeqMax,
-    this.nThreads,
-    this.nThreadsBatch,
-    this.ropeScalingType,
-    this.poolingType,
-    this.attentionType,
-    this.ropeFrequencyBase,
-    this.ropeFrequencyScale,
-    this.yarnExtrapolationFactor,
-    this.yarnAttenuationFactor,
-    this.yarnBetaFast,
-    this.yarnBetaSlow,
-    this.yarnOriginalContext,
-    this.defragmentationThreshold,
-    this.typeK,
-    this.typeV,
-    this.embeddings,
-    this.offloadKqv,
-    this.flashAttention,
-    this.noPerformance,
-  });
+  ContextParams({
+    int nCtx = 0,
+    int? nBatch,
+    int? nUBatch,
+    int? nSeqMax,
+    int? nThreads,
+    int? nThreadsBatch,
+    RopeScalingType? ropeScalingType,
+    PoolingType? poolingType,
+    AttentionType? attentionType,
+    double? ropeFrequencyBase,
+    double? ropeFrequencyScale,
+    double? yarnExtrapolationFactor,
+    double? yarnAttenuationFactor,
+    double? yarnBetaFast,
+    double? yarnBetaSlow,
+    int? yarnOriginalContext,
+    double? defragmentationThreshold,
+    GgmlType? typeK,
+    GgmlType? typeV,
+    bool? embeddings,
+    bool? offloadKqv,
+    bool? flashAttention,
+    bool? noPerformance,
+  })  : _nCtx = nCtx,
+        _nBatch = nBatch,
+        _nUBatch = nUBatch,
+        _nSeqMax = nSeqMax,
+        _nThreads = nThreads,
+        _nThreadsBatch = nThreadsBatch,
+        _ropeScalingType = ropeScalingType,
+        _poolingType = poolingType,
+        _attentionType = attentionType,
+        _ropeFrequencyBase = ropeFrequencyBase,
+        _ropeFrequencyScale = ropeFrequencyScale,
+        _yarnExtrapolationFactor = yarnExtrapolationFactor,
+        _yarnAttenuationFactor = yarnAttenuationFactor,
+        _yarnBetaFast = yarnBetaFast,
+        _yarnBetaSlow = yarnBetaSlow,
+        _yarnOriginalContext = yarnOriginalContext,
+        _defragmentationThreshold = defragmentationThreshold,
+        _typeK = typeK,
+        _typeV = typeV,
+        _embeddings = embeddings,
+        _offloadKqv = offloadKqv,
+        _flashAttention = flashAttention,
+        _noPerformance = noPerformance;
 
   /// Creates a new instance of [ContextParams] from a map.
   ///
