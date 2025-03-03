@@ -23,23 +23,46 @@ part of 'package:lcpp/lcpp.dart';
 /// - `llama_model_params toNative()`: Converts the instance to native parameters.
 /// - `Map<String, dynamic> toMap()`: Converts the instance to a map.
 /// - `String toJson()`: Converts the instance to a JSON string.
-class ModelParams {
+class ModelParams extends ChangeNotifier{
+  String _path;
+
   /// The file path to the model.
-  final String path;
+  String get path => _path;
+
+  set path(String value) {
+    _path = value;
+    notifyListeners();
+  }
+
+  bool? _vocabOnly;
 
   /// Indicates whether only the vocabulary should be loaded.
   ///
   /// If `true`, only the vocabulary is loaded, which can be useful for
   /// certain operations where the full model is not required. If `false`
   /// or `null`, the full model is loaded.
-  final bool? vocabOnly;
+  bool? get vocabOnly => _vocabOnly;
+
+  set vocabOnly(bool? value) {
+    _vocabOnly = value;
+    notifyListeners();
+  }
+
+  bool? _useMmap;
 
   /// Indicates whether memory-mapped files should be used.
   ///
   /// If `true`, memory-mapped files will be used, which can improve performance
   /// by allowing the operating system to manage memory more efficiently.
   /// If `false` or `null`, memory-mapped files will not be used.
-  final bool? useMmap;
+  bool? get useMmap => _useMmap;
+
+  set useMmap(bool? value) {
+    _useMmap = value;
+    notifyListeners();
+  }
+
+  bool? _useMlock;
 
   /// Indicates whether memory locking (mlock) should be used.
   ///
@@ -48,12 +71,24 @@ class ModelParams {
   /// performance by ensuring that the memory remains in RAM.
   ///
   /// When `false` or `null`, memory locking is not used.
-  final bool? useMlock;
+  bool? get useMlock => _useMlock;
+
+  set useMlock(bool? value) {
+    _useMlock = value;
+    notifyListeners();
+  }
+
+  bool? _checkTensors;
 
   /// A flag indicating whether to check tensors.
   ///
   /// If `true`, tensors will be checked. If `false` or `null`, tensors will not be checked.
-  final bool? checkTensors;
+  bool? get checkTensors => _checkTensors;
+  
+  set checkTensors(bool? value) {
+    _checkTensors = value;
+    notifyListeners();
+  }
 
   /// Creates a new instance of the [ModelParams] class.
   ///
@@ -63,13 +98,17 @@ class ModelParams {
   /// - `useMmap` (optional): A flag indicating whether to use memory-mapped files.
   /// - `useMlock` (optional): A flag indicating whether to lock the model in memory.
   /// - `checkTensors` (optional): A flag indicating whether to check the tensors.
-  const ModelParams({
-    required this.path,
-    this.vocabOnly,
-    this.useMmap,
-    this.useMlock,
-    this.checkTensors,
-  });
+  ModelParams({
+    required String path,
+    bool? vocabOnly,
+    bool? useMmap,
+    bool? useMlock,
+    bool? checkTensors,
+  }) : _path = path,
+       _vocabOnly = vocabOnly,
+       _useMmap = useMmap,
+       _useMlock = useMlock,
+       _checkTensors = checkTensors;
 
   /// Creates an instance of [ModelParams] from a map.
   ///

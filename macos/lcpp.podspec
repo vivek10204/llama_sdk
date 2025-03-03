@@ -5,9 +5,9 @@
 Pod::Spec.new do |s|
   s.name             = 'lcpp'
   s.version          = '0.1.8'
-  s.summary          = 'A Flutter FFI plugin for interfacing with llama_cpp.'
+  s.summary          = 'lcpp is a dart implementation of llama.cpp used by the mobile artificial intelligence distribution (maid)'
   s.description      = <<-DESC
-A new Flutter FFI plugin project.
+lcpp is a dart implementation of llama.cpp used by the mobile artificial intelligence distribution (maid)
                        DESC
   s.homepage         = 'https://github.com/Mobile-Artificial-Intelligence/lcpp'
   s.license          = { :file => '../LICENSE' }

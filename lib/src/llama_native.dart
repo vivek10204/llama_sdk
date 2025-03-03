@@ -52,7 +52,7 @@ class LlamaNative implements Llama {
 
   set modelParams(ModelParams modelParams) {
     _modelParams = modelParams;
-
+    _modelParams.addListener(_initModel);
     _initModel();
   }
 
