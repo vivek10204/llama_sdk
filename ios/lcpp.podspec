@@ -64,7 +64,7 @@ lcpp is a dart implementation of llama.cpp used by the mobile artificial intelli
                    'llama_cpp/ggml/src/ggml-cpu/*.cpp',
                    'llama_cpp/ggml/src/ggml-metal/*.m',
                    '!llama_cpp/common/build-info.cpp'
-  s.frameworks = 'Foundation', 'Metal', 'MetalKit'
+  s.frameworks = 'Accelerate', 'Foundation', 'Metal', 'MetalKit'
   s.pod_target_xcconfig = {
     'DEFINES_MODULE' => 'YES',
     'USER_HEADER_SEARCH_PATHS' => [
@@ -85,9 +85,45 @@ lcpp is a dart implementation of llama.cpp used by the mobile artificial intelli
       '$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/src/ggml-cpu',
       '$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/src/ggml-metal',
     ],
-    'OTHER_CFLAGS' => ['$(inherited)', '-O3', '-flto', '-fno-objc-arc', '-w', '-I$(PODS_TARGET_SRCROOT)/llama_cpp/include', '-I$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/include', '-I$(PODS_TARGET_SRCROOT)/llama_cpp/common', '-DGGML_LLAMAFILE=OFF', '-DGGML_USE_CPU'],
-    'OTHER_CPLUSPLUSFLAGS' => ['$(inherited)', '-O3', '-flto', '-fno-objc-arc', '-w', '-std=c++17', '-fpermissive', '-I$(PODS_TARGET_SRCROOT)/llama_cpp/include', '-I$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/include', '-I$(PODS_TARGET_SRCROOT)/llama_cpp/common', '-DGGML_LLAMAFILE=OFF', '-DGGML_USE_CPU'],
-    'GCC_PREPROCESSOR_DEFINITIONS' => ['$(inherited)', 'GGML_USE_METAL=1'],
+    'OTHER_CFLAGS' => [
+      '$(inherited)', 
+      '-O3', 
+      '-flto', 
+      '-fno-objc-arc', 
+      '-w', 
+      '-I$(PODS_TARGET_SRCROOT)/llama_cpp/include', 
+      '-I$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/include', 
+      '-I$(PODS_TARGET_SRCROOT)/llama_cpp/common', 
+      '-DGGML_LLAMAFILE=OFF', 
+      '-DGGML_USE_CPU',
+      '-DGGML_USE_ACCELERATE',
+      '-DGGML_USE_METAL',
+      '-DGGML_METAL_USE_BF16',
+    ],
+    'OTHER_CPLUSPLUSFLAGS' => [
+      '$(inherited)', 
+      '-O3', 
+      '-flto', 
+      '-fno-objc-arc', 
+      '-w', 
+      '-std=c++17', 
+      '-fpermissive', 
+      '-I$(PODS_TARGET_SRCROOT)/llama_cpp/include', 
+      '-I$(PODS_TARGET_SRCROOT)/llama_cpp/ggml/include', 
+      '-I$(PODS_TARGET_SRCROOT)/llama_cpp/common', 
+      '-DGGML_LLAMAFILE=OFF', 
+      '-DGGML_USE_CPU',
+      '-DGGML_USE_ACCELERATE',
+      '-DGGML_USE_METAL',
+      '-DGGML_METAL_USE_BF16'
+    ],
+    'GCC_PREPROCESSOR_DEFINITIONS' => [
+      '$(inherited)', 
+      'GGML_USE_CPU=1',
+      'GGML_USE_ACCELERATE=1',
+      'GGML_USE_METAL=1',
+      'GGML_METAL_USE_BF16=1',
+    ],
   }
   s.script_phases = [
     {
