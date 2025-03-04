@@ -1,6 +1,6 @@
 PODS:
   - FlutterMacOS (1.0.0)
-  - lcpp (0.0.1):
+  - lcpp (0.1.8):
     - FlutterMacOS
 
 DEPENDENCIES:
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
-  lcpp: 0252e547c591460c64417178fd8d9015839ab088
+  lcpp: 4ed60aac2f944fe3e79b1e4eceaabfcec5c8d24a
 
 PODFILE CHECKSUM: 9ebaf0ce3d369aaa26a9ea0e159195ed94724cf3
 
