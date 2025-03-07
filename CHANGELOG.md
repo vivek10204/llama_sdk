@@ -77,3 +77,9 @@ Small fix for ios
 
 Update llama.cpp
 Small changes to params
+
+## 0.2.0
+
+Refactor
+update llama.cpp
+Add IOS action

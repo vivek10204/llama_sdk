@@ -9,7 +9,6 @@ on:
       - '.github/workflows/build-windows.yml'
       - 'windows/**'
       - 'lib/**'
-      - 'src/**'
       - 'example/windows/**'
       - 'example/lib/**'
       - 'pubspec.yaml'

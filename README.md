@@ -1,6 +1,7 @@
 # lcpp
 
 [![Build Android](https://github.com/Mobile-Artificial-Intelligence/lcpp/actions/workflows/build-android.yml/badge.svg)](https://github.com/Mobile-Artificial-Intelligence/lcpp/actions/workflows/build-android.yml)
+[![Build iOS](https://github.com/Mobile-Artificial-Intelligence/lcpp/actions/workflows/build-ios.yml/badge.svg)](https://github.com/Mobile-Artificial-Intelligence/lcpp/actions/workflows/build-ios.yml)
 [![Build Linux](https://github.com/Mobile-Artificial-Intelligence/lcpp/actions/workflows/build-linux.yml/badge.svg)](https://github.com/Mobile-Artificial-Intelligence/lcpp/actions/workflows/build-linux.yml)
 [![Build MacOS](https://github.com/Mobile-Artificial-Intelligence/lcpp/actions/workflows/build-macos.yml/badge.svg)](https://github.com/Mobile-Artificial-Intelligence/lcpp/actions/workflows/build-macos.yml)
 [![Build Windows](https://github.com/Mobile-Artificial-Intelligence/lcpp/actions/workflows/build-windows.yml/badge.svg)](https://github.com/Mobile-Artificial-Intelligence/lcpp/actions/workflows/build-windows.yml)
@@ -18,7 +19,7 @@ To use this package, add `lcpp` as a [dependency in your pubspec.yaml file](http
 
 ```yaml
 dependencies:
-  lcpp: ^0.1.9
+  lcpp: ^0.2.0
 ```
 
 then you can import llama in your Dart code
@@ -32,19 +33,12 @@ import 'package:lcpp/lcpp.dart';
 Below is a simple example of how to use llama
 
 ```dart
-final llama = Llama(
-  modelParams: ModelParams(
-    path: 'path/to/model',
-  ),
-  contextParams: const ContextParams(
-    nCtx: 2048,
-    nBatch: 2048
-  ),
-  samplingParams: const SamplingParams(
-    greedy: true
-  ),
-  isolate: true
-);
+final llama = LlamaIsolated(LlamaParams(
+  modelFile: File('path/to/model'),
+  nCtx: 2048, 
+  nBatch: 2048,
+  greedy: true
+));
 
 final messages = [
   ChatMessage.withRole(role: 'user', content: 'Hello World'),
