@@ -1,5 +1,8 @@
-# lcpp
+<div align="center" id = "top">
+  <img alt="logo" height="200px" src="https://raw.githubusercontent.com/Mobile-Artificial-Intelligence/maid/refs/heads/main/images/logo.png">
+</div>
 
+# lcpp
 
 <div align="center">
 
