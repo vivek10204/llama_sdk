@@ -1,16 +1,17 @@
 name: Build iOS
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/build-ios.yml'
-      - 'ios/**'
-      - 'lib/**'
-      - 'example/ios/**'
-      - 'example/lib/**'
-      - 'pubspec.yaml'
+  workflow_dispatch:
+  #push:
+  #  branches:
+  #    - main
+  #  paths:
+  #    - '.github/workflows/build-ios.yml'
+  #    - 'ios/**'
+  #    - 'lib/**'
+  #    - 'example/ios/**'
+  #    - 'example/lib/**'
+  #    - 'pubspec.yaml'
 
 jobs:
   build:
