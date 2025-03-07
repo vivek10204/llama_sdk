@@ -53,30 +53,16 @@ abstract interface class Llama {
   /// Depending on the value of [isolate], this constructor will either create
   /// an instance of [LlamaIsolated] or [LlamaNative].
   ///
-  /// - [modelParams]: Required parameters for the model.
-  /// - [contextParams]: Optional parameters for the context, defaults to an
-  ///   instance of [ContextParams].
-  /// - [samplingParams]: Optional parameters for sampling, defaults to an
-  ///   instance of [SamplingParams].
+  /// - [llamaParams]: The parameters required for the Llama model.
   /// - [isolate]: If true, creates an instance of [LlamaIsolated], otherwise
   ///   creates an instance of [LlamaNative].
   factory Llama({
-    required ModelParams modelParams,
-    ContextParams? contextParams,
-    SamplingParams samplingParams = const SamplingParams(),
+    required LlamaParams llamaParams,
     bool isolate = false,
   }) =>
       isolate
-          ? LlamaIsolated(
-              modelParams: modelParams,
-              contextParams: contextParams,
-              samplingParams: samplingParams,
-            )
-          : LlamaNative(
-              modelParams: modelParams,
-              contextParams: contextParams,
-              samplingParams: samplingParams,
-            );
+          ? LlamaIsolated(llamaParams)
+          : LlamaNative(llamaParams);
 
   /// Generates a stream of responses based on the provided list of chat messages.
   ///
@@ -89,13 +75,6 @@ abstract interface class Llama {
   /// - Parameter messages: A list of [ChatMessage] objects that represent the chat history.
   /// - Returns: A [Stream] of strings, where each string is a generated response.
   Stream<String> prompt(List<ChatMessage> messages);
-
-  /// Stops the current operation or process.
-  ///
-  /// This method should be called to terminate any ongoing tasks or
-  /// processes that need to be halted. It ensures that resources are
-  /// properly released and the system is left in a stable state.
-  void stop();
 
   /// Reloads the current state or configuration.
   ///

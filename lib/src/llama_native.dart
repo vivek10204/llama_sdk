@@ -9,29 +9,6 @@ part of 'package:lcpp/lcpp.dart';
 /// The class also provides methods to stop the current operation and free
 /// the allocated resources.
 ///
-/// Example usage:
-/// ```dart
-/// final llamaNative = LlamaNative(
-///   modelParams: ModelParams(...),
-///   contextParams: ContextParams(...),
-///   samplingParams: SamplingParams(...)
-/// );
-///
-/// final responseStream = llamaNative.prompt([...]);
-/// responseStream.listen((response) {
-///   print(response);
-/// });
-/// ```
-///
-/// Properties:
-/// - `modelParams`: Sets the model parameters and initializes the model.
-/// - `contextParams`: Sets the context parameters and initializes the context.
-/// - `samplingParams`: Sets the sampling parameters and initializes the sampler.
-///
-/// Methods:
-/// - `prompt(List<ChatMessage> messages)`: Prompts the model with the given chat messages and returns a stream of responses.
-/// - `stop()`: Stops the current operation.
-/// - `free()`: Frees the allocated resources.
 class LlamaNative implements Llama {
   static final _modelFinalizer =
       Finalizer<ffi.Pointer<llama_model>>(Llama.lib.llama_free_model);
@@ -44,65 +21,37 @@ class LlamaNative implements Llama {
   ffi.Pointer<llama_context> _context = ffi.nullptr;
   ffi.Pointer<llama_sampler> _sampler = ffi.nullptr;
 
-  ModelParams _modelParams;
-  ContextParams _contextParams;
-  SamplingParams _samplingParams;
+  LlamaParams _llamaParams;
 
   int _contextLength = 0;
 
-  set modelParams(ModelParams modelParams) {
-    _modelParams = modelParams;
-    _modelParams.addListener(_initModel);
-    _initModel();
-  }
-
-  set contextParams(ContextParams contextParams) {
-    _contextParams = contextParams;
-    _contextParams.addListener(_initContext);
-    _initContext();
-  }
-
-  set samplingParams(SamplingParams samplingParams) {
-    _samplingParams = samplingParams;
-
-    _initSampler();
+  /// Sets the current LlamaParams instance.
+  /// 
+  /// The [LlamaParams] instance contains the parameters used by llama.
+  set llamaParams(LlamaParams value) {
+    _llamaParams = value;
+    _llamaParams.addListener(_init);
+    _init();
   }
 
   /// A class that initializes and manages a native Llama model.
   ///
-  /// The [LlamaNative] constructor requires [ModelParams] and optionally accepts
-  /// [ContextParams] and [SamplingParams]. It initializes the model by loading
-  /// the necessary backends and calling the `_initModel` method.
-  ///
-  /// Example usage:
-  /// ```dart
-  /// final llamaNative = LlamaNative(
-  ///   modelParams: ModelParams(...),
-  ///   contextParams: ContextParams(...),
-  ///   samplingParams: SamplingParams(...),
-  /// );
-  /// ```
+  /// The [LlamaNative] constructor requires [llamaParams] to initialize the
+  /// Llama model, context, and sampler.
   ///
   /// Parameters:
-  /// - [modelParams]: The parameters required to configure the model.
-  /// - [contextParams]: Optional parameters for the context configuration. Defaults to an empty [ContextParams] object.
-  /// - [samplingParams]: Optional parameters for the sampling configuration. Defaults to an empty [SamplingParams] object.
-  LlamaNative(
-      {required ModelParams modelParams,
-      ContextParams? contextParams,
-      SamplingParams samplingParams = const SamplingParams()})
-      : _modelParams = modelParams,
-        _contextParams = contextParams ?? ContextParams(),
-        _samplingParams = samplingParams {
+  /// - [llamaParams]: The parameters required for the Llama model.
+  LlamaNative(LlamaParams llamaParams)
+      : _llamaParams = llamaParams {
     Llama.lib.ggml_backend_load_all();
     Llama.lib.llama_backend_init();
 
-    _initModel();
+    _init();
   }
 
-  void _initModel() {
-    final nativeModelParams = _modelParams.toNative();
-    final nativeModelPath = _modelParams.path.toNativeUtf8().cast<ffi.Char>();
+  void _init() {
+    final nativeModelParams = _llamaParams.getModelParams();
+    final nativeModelPath = _llamaParams.modelFile.path.toNativeUtf8().cast<ffi.Char>();
 
     if (_model != ffi.nullptr) {
       Llama.lib.llama_free_model(_model);
@@ -114,14 +63,9 @@ class LlamaNative implements Llama {
 
     _modelFinalizer.attach(this, _model);
 
-    _initContext();
-    _initSampler();
-  }
-
-  void _initContext() {
     assert(_model != ffi.nullptr, LlamaException('Model is not loaded'));
 
-    final nativeContextParams = _contextParams.toNative();
+    final nativeContextParams = _llamaParams.getContextParams();
 
     if (_context != ffi.nullptr) {
       Llama.lib.llama_free(_context);
@@ -131,17 +75,13 @@ class LlamaNative implements Llama {
     assert(_context != ffi.nullptr, LlamaException('Failed to initialize context'));
 
     _contextFinalizer.attach(this, _context);
-  }
-
-  void _initSampler() {
-    assert(_model != ffi.nullptr, LlamaException('Model is not loaded'));
 
     if (_sampler != ffi.nullptr) {
       Llama.lib.llama_sampler_free(_sampler);
     }
 
     final vocab = Llama.lib.llama_model_get_vocab(_model);
-    _sampler = _samplingParams.toNative(vocab);
+    _sampler = _llamaParams.getSampler(vocab);
     assert(_sampler != ffi.nullptr, LlamaException('Failed to initialize sampler'));
 
     _samplerFinalizer.attach(this, _sampler);
@@ -253,8 +193,5 @@ class LlamaNative implements Llama {
   }
 
   @override
-  void stop() => throw LlamaException('Not implemented');
-
-  @override
-  void reload() => _initModel();
+  void reload() => _init();
 }
