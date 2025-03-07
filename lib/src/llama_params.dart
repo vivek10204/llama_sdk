@@ -2,16 +2,11 @@
 
 part of 'package:lcpp/lcpp.dart';
 
+/// A class that represents the parameters for the Llama model.
 class LlamaParams extends ChangeNotifier {
   File _modelFile;
 
-  /// Gets the model file.
-  ///
-  /// Returns the current model file.
-  /// 
-  /// Sets the model file.
-  ///
-  /// Updates the model file and notifies listeners of the change.
+  /// The path to the model file.
   File get modelFile => _modelFile;
 
   set modelFile(File value) {
@@ -803,6 +798,7 @@ class LlamaParams extends ChangeNotifier {
         _drySamplerDryBase = drySamplerDryBase,
         _drySamplerAllowedLength = drySamplerAllowedLength;
 
+  /// Creates a new instance from a map.
   factory LlamaParams.fromMap(Map<String, dynamic> map) => LlamaParams(
     modelFile: File(map['model_path']),
     vocabOnly: map['vocab_only'],
@@ -869,8 +865,10 @@ class LlamaParams extends ChangeNotifier {
     drySamplerAllowedLength: map['dry_sampler_allowed_length'],
   );
 
+  /// Creates a new instance from a JSON string.
   factory LlamaParams.fromJson(String source) => LlamaParams.fromMap(jsonDecode(source));
 
+  /// Converts the current instance to a map.
   Map<String, dynamic> toMap() => {
     'model_path': modelFile.path,
     'vocab_only': vocabOnly,
@@ -937,8 +935,19 @@ class LlamaParams extends ChangeNotifier {
     'dry_sampler_allowed_length': _drySamplerAllowedLength,
   };
 
+  /// Converts the current instance to a JSON string.
   String toJson() => jsonEncode(toMap());
 
+  /// Retrieves and initializes the model parameters for the llama model.
+  ///
+  /// This function initializes the model parameters using the default values
+  /// provided by the llama library. It then updates the parameters based on
+  /// the optional properties `vocabOnly`, `useMmap`, `useMlock`, and `checkTensors`
+  /// if they are not null.
+  ///
+  /// Returns:
+  ///   A `llama_model_params` object containing the initialized and updated
+  ///   model parameters.
   llama_model_params getModelParams() {
     final llama_model_params modelParams =
         Llama.lib.llama_model_default_params();
@@ -963,6 +972,39 @@ class LlamaParams extends ChangeNotifier {
     return modelParams;
   }
 
+  /// Returns a configured `llama_context_params` object based on the current instance's properties.
+  /// 
+  /// This method initializes a `llama_context_params` object with default values and then overrides
+  /// those values with the properties of the current instance if they are not null.
+  /// 
+  /// The following properties are set:
+  /// 
+  /// - `n_ctx`: The context size.
+  /// - `n_batch`: The batch size.
+  /// - `n_ubatch`: The unrolled batch size.
+  /// - `n_seq_max`: The maximum sequence length.
+  /// - `n_threads`: The number of threads.
+  /// - `n_threads_batch`: The number of threads for batch processing.
+  /// - `rope_scaling_type`: The type of rope scaling, adjusted by subtracting 1 from the enum index.
+  /// - `pooling_type`: The type of pooling, adjusted by subtracting 1 from the enum index.
+  /// - `attention_type`: The type of attention, adjusted by subtracting 1 from the enum index.
+  /// - `rope_freq_base`: The base frequency for rope.
+  /// - `rope_freq_scale`: The scaling factor for rope frequency.
+  /// - `yarn_ext_factor`: The extrapolation factor for yarn.
+  /// - `yarn_attn_factor`: The attenuation factor for yarn.
+  /// - `yarn_beta_fast`: The fast beta value for yarn.
+  /// - `yarn_beta_slow`: The slow beta value for yarn.
+  /// - `yarn_orig_ctx`: The original context for yarn.
+  /// - `defrag_thold`: The defragmentation threshold.
+  /// - `type_k`: The type K, converted to a C int.
+  /// - `type_v`: The type V, converted to a C int.
+  /// - `embeddings`: The embeddings.
+  /// - `offload_kqv`: The offload KQV flag.
+  /// - `flash_attn`: The flash attention flag.
+  /// - `no_perf`: The no performance flag.
+  /// 
+  /// Returns:
+  /// - A `llama_context_params` object with the configured properties.
   llama_context_params getContextParams() {
     final llama_context_params contextParams =
         Llama.lib.llama_context_default_params();
@@ -1065,6 +1107,34 @@ class LlamaParams extends ChangeNotifier {
     return contextParams;
   }
 
+  /// Initializes and returns a pointer to a `llama_sampler` with the specified parameters.
+  ///
+  /// This method creates a sampler chain and adds various samplers to it based on the provided
+  /// parameters. The samplers are added in the following order:
+  ///
+  /// 1. Greedy sampler (if `greedy` is true).
+  /// 2. Infill sampler (if `_infill` is true, requires `vocab` to be non-null).
+  /// 3. Distribution sampler (if `_seed` is not null).
+  /// 4. Top-K sampler (if `_topK` is not null).
+  /// 5. Top-P sampler (if both `_topP` and `_minKeepTopP` are not null).
+  /// 6. Min-P sampler (if both `_minP` and `_minKeepMinP` are not null).
+  /// 7. Typical sampler (if both `_typicalP` and `_minKeepTypicalP` are not null).
+  /// 8. Temperature sampler (if `_temperature` is not null, with optional delta and exponent).
+  /// 9. XTC sampler (if `_xtcP`, `_xtcT`, `_minKeepXtc`, and `_xtcSeed` are all not null).
+  /// 10. Mirostat sampler (if `_mirostatNVocab`, `_mirostatSeed`, `_mirostatTau`, `_mirostatEta`, and `_mirostatM` are all not null).
+  /// 11. Mirostat V2 sampler (if `_mirostatV2Seed`, `_mirostatV2Tau`, and `_mirostatV2Eta` are all not null).
+  /// 12. Grammar sampler (if `_grammarStr` and `_grammarRoot` are not null, requires `vocab` to be non-null).
+  /// 13. Penalties sampler (if `_penaltiesLastN`, `_penaltiesRepeat`, `_penaltiesFrequency`, and `_penaltiesPresent` are all not null).
+  /// 14. Dry sampler (if `_drySamplerSequenceBreakers`, `_drySamplerNCtxTrain`, `_drySamplerMultiplier`, `_drySamplerDryBase`, and `_drySamplerAllowedLength` are all not null, requires `vocab` to be non-null).
+  ///
+  /// Parameters:
+  /// - [vocab] (optional): A pointer to a `llama_vocab` required for certain samplers.
+  ///
+  /// Returns:
+  /// - A pointer to the initialized `llama_sampler`.
+  ///
+  /// Throws:
+  /// - `LlamaException` if `vocab` is required but not provided.
   ffi.Pointer<llama_sampler> getSampler([ffi.Pointer<llama_vocab>? vocab]) {
     final sampler = Llama.lib.llama_sampler_chain_init(
         Llama.lib.llama_sampler_chain_default_params());
