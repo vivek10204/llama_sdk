@@ -83,3 +83,7 @@ Small changes to params
 Refactor
 update llama.cpp
 Add IOS action
+
+## 0.2.1
+
+Update llama.cpp
