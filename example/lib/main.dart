@@ -44,11 +44,7 @@ class LlamaAppState extends State<LlamaApp> {
     }
 
     final llamaCpp = LlamaIsolated(LlamaParams(
-      modelFile: resultFile,
-      nCtx: 2048, 
-      nBatch: 2048,
-      greedy: true
-    ));
+        modelFile: resultFile, nCtx: 2048, nBatch: 2048, greedy: true));
 
     setState(() {
       model = llamaCpp;

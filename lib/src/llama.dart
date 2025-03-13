@@ -60,9 +60,7 @@ abstract interface class Llama {
     required LlamaParams llamaParams,
     bool isolate = false,
   }) =>
-      isolate
-          ? LlamaIsolated(llamaParams)
-          : LlamaNative(llamaParams);
+      isolate ? LlamaIsolated(llamaParams) : LlamaNative(llamaParams);
 
   /// Generates a stream of responses based on the provided list of chat messages.
   ///

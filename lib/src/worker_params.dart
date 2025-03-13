@@ -6,10 +6,7 @@ class _LlamaWorkerParams {
   final SendPort sendPort;
   final LlamaParams llamaParams;
 
-  _LlamaWorkerParams({
-    required this.sendPort,
-    required this.llamaParams
-  });
+  _LlamaWorkerParams({required this.sendPort, required this.llamaParams});
 
   _LlamaWorkerRecord toRecord() {
     return (sendPort, llamaParams.toJson());

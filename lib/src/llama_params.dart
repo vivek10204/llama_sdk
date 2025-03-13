@@ -614,7 +614,7 @@ class LlamaParams extends ChangeNotifier {
 
   /// Dry sampler n ctx train
   int? get drySamplerNCtxTrain => _drySamplerNCtxTrain;
-  
+
   set drySamplerNCtxTrain(int? value) {
     _drySamplerNCtxTrain = value;
     notifyListeners();
@@ -800,140 +800,149 @@ class LlamaParams extends ChangeNotifier {
 
   /// Creates a new instance from a map.
   factory LlamaParams.fromMap(Map<String, dynamic> map) => LlamaParams(
-    modelFile: File(map['model_path']),
-    vocabOnly: map['vocab_only'],
-    useMmap: map['use_mmap'],
-    useMlock: map['use_mlock'],
-    checkTensors: map['check_tensors'],
-    nCtx: map['n_ctx'],
-    nBatch: map['n_batch'],
-    nUBatch: map['n_ubatch'],
-    nSeqMax: map['n_seq_max'],
-    nThreads: map['n_threads'],
-    nThreadsBatch: map['n_threads_batch'],
-    ropeScalingType: map['rope_scaling_type'] != null ? RopeScalingType.fromString(map['rope_scaling_type']) : null,
-    poolingType: map['pooling_type'] != null ? PoolingType.fromString(map['pooling_type']) : null,
-    attentionType: map['attention_type'] != null ? AttentionType.fromString(map['attention_type']) : null,
-    ropeFrequencyBase: map['rope_frequency_base'],
-    ropeFrequencyScale: map['rope_frequency_scale'],
-    yarnExtrapolationFactor: map['yarn_extrapolation_factor'],
-    yarnAttenuationFactor: map['yarn_attenuation_factor'],
-    yarnBetaFast: map['yarn_beta_fast'],
-    yarnBetaSlow: map['yarn_beta_slow'],
-    yarnOriginalContext: map['yarn_original_context'],
-    defragmentationThreshold: map['defragmentation_threshold'],
-    typeK: map['type_k'] != null ? GgmlType.fromString(map['type_k']) : null,
-    typeV: map['type_v'] != null ? GgmlType.fromString(map['type_v']) : null,
-    embeddings: map['embeddings'],
-    offloadKqv: map['offload_kqv'],
-    flashAttention: map['flash_attention'],
-    noPerformance: map['no_perf'],
-    greedy: map['greedy'],
-    infill: map['infill'],
-    seed: map['seed'],
-    topK: map['top_k'],
-    topP: map['top_p'],
-    minKeepTopP: map['min_keep_top_p'],
-    minP: map['min_p'],
-    minKeepMinP: map['min_keep_min_p'],
-    typicalP: map['typical_p'],
-    minKeepTypicalP: map['min_keep_typical_p'],
-    temperature: map['temperature'],
-    temperatureDelta: map['temperature_delta'],
-    temperatureExponent: map['temperature_exponent'],
-    xtcP: map['xtc_p'],
-    xtcT: map['xtc_t'],
-    minKeepXtc: map['min_keep_xtc'],
-    xtcSeed: map['xtc_seed'],
-    mirostatNVocab: map['mirostat_n_vocab'],
-    mirostatSeed: map['mirostat_seed'],
-    mirostatTau: map['mirostat_tau'],
-    mirostatEta: map['mirostat_eta'],
-    mirostatM: map['mirostat_m'],
-    mirostatV2Seed: map['mirostat_v2_seed'],
-    mirostatV2Tau: map['mirostat_v2_tau'],
-    mirostatV2Eta: map['mirostat_v2_eta'],
-    grammarStr: map['grammar_str'],
-    grammarRoot: map['grammar_root'],
-    penaltiesLastN: map['penalties_last_n'],
-    penaltiesRepeat: map['penalties_repeat'],
-    penaltiesFrequency: map['penalties_frequency'],
-    penaltiesPresent: map['penalties_present'],
-    drySamplerNCtxTrain: map['dry_sampler_n_ctx_train'],
-    drySamplerMultiplier: map['dry_sampler_multiplier'],
-    drySamplerDryBase: map['dry_sampler_dry_base'],
-    drySamplerAllowedLength: map['dry_sampler_allowed_length'],
-  );
+        modelFile: File(map['model_path']),
+        vocabOnly: map['vocab_only'],
+        useMmap: map['use_mmap'],
+        useMlock: map['use_mlock'],
+        checkTensors: map['check_tensors'],
+        nCtx: map['n_ctx'],
+        nBatch: map['n_batch'],
+        nUBatch: map['n_ubatch'],
+        nSeqMax: map['n_seq_max'],
+        nThreads: map['n_threads'],
+        nThreadsBatch: map['n_threads_batch'],
+        ropeScalingType: map['rope_scaling_type'] != null
+            ? RopeScalingType.fromString(map['rope_scaling_type'])
+            : null,
+        poolingType: map['pooling_type'] != null
+            ? PoolingType.fromString(map['pooling_type'])
+            : null,
+        attentionType: map['attention_type'] != null
+            ? AttentionType.fromString(map['attention_type'])
+            : null,
+        ropeFrequencyBase: map['rope_frequency_base'],
+        ropeFrequencyScale: map['rope_frequency_scale'],
+        yarnExtrapolationFactor: map['yarn_extrapolation_factor'],
+        yarnAttenuationFactor: map['yarn_attenuation_factor'],
+        yarnBetaFast: map['yarn_beta_fast'],
+        yarnBetaSlow: map['yarn_beta_slow'],
+        yarnOriginalContext: map['yarn_original_context'],
+        defragmentationThreshold: map['defragmentation_threshold'],
+        typeK:
+            map['type_k'] != null ? GgmlType.fromString(map['type_k']) : null,
+        typeV:
+            map['type_v'] != null ? GgmlType.fromString(map['type_v']) : null,
+        embeddings: map['embeddings'],
+        offloadKqv: map['offload_kqv'],
+        flashAttention: map['flash_attention'],
+        noPerformance: map['no_perf'],
+        greedy: map['greedy'],
+        infill: map['infill'],
+        seed: map['seed'],
+        topK: map['top_k'],
+        topP: map['top_p'],
+        minKeepTopP: map['min_keep_top_p'],
+        minP: map['min_p'],
+        minKeepMinP: map['min_keep_min_p'],
+        typicalP: map['typical_p'],
+        minKeepTypicalP: map['min_keep_typical_p'],
+        temperature: map['temperature'],
+        temperatureDelta: map['temperature_delta'],
+        temperatureExponent: map['temperature_exponent'],
+        xtcP: map['xtc_p'],
+        xtcT: map['xtc_t'],
+        minKeepXtc: map['min_keep_xtc'],
+        xtcSeed: map['xtc_seed'],
+        mirostatNVocab: map['mirostat_n_vocab'],
+        mirostatSeed: map['mirostat_seed'],
+        mirostatTau: map['mirostat_tau'],
+        mirostatEta: map['mirostat_eta'],
+        mirostatM: map['mirostat_m'],
+        mirostatV2Seed: map['mirostat_v2_seed'],
+        mirostatV2Tau: map['mirostat_v2_tau'],
+        mirostatV2Eta: map['mirostat_v2_eta'],
+        grammarStr: map['grammar_str'],
+        grammarRoot: map['grammar_root'],
+        penaltiesLastN: map['penalties_last_n'],
+        penaltiesRepeat: map['penalties_repeat'],
+        penaltiesFrequency: map['penalties_frequency'],
+        penaltiesPresent: map['penalties_present'],
+        drySamplerNCtxTrain: map['dry_sampler_n_ctx_train'],
+        drySamplerMultiplier: map['dry_sampler_multiplier'],
+        drySamplerDryBase: map['dry_sampler_dry_base'],
+        drySamplerAllowedLength: map['dry_sampler_allowed_length'],
+      );
 
   /// Creates a new instance from a JSON string.
-  factory LlamaParams.fromJson(String source) => LlamaParams.fromMap(jsonDecode(source));
+  factory LlamaParams.fromJson(String source) =>
+      LlamaParams.fromMap(jsonDecode(source));
 
   /// Converts the current instance to a map.
   Map<String, dynamic> toMap() => {
-    'model_path': modelFile.path,
-    'vocab_only': vocabOnly,
-    'use_mmap': useMmap,
-    'use_mlock': useMlock,
-    'check_tensors': checkTensors,
-    'n_ctx': nCtx,
-    'n_batch': nBatch,
-    'n_ubatch': nUBatch,
-    'n_seq_max': nSeqMax,
-    'n_threads': nThreads,
-    'n_threads_batch': nThreadsBatch,
-    'rope_scaling_type': ropeScalingType.toString().split('.').last,
-    'pooling_type': poolingType.toString().split('.').last,
-    'attention_type': attentionType.toString().split('.').last,
-    'rope_frequency_base': ropeFrequencyBase,
-    'rope_frequency_scale': ropeFrequencyScale,
-    'yarn_extrapolation_factor': yarnExtrapolationFactor,
-    'yarn_attenuation_factor': yarnAttenuationFactor,
-    'yarn_beta_fast': yarnBetaFast,
-    'yarn_beta_slow': yarnBetaSlow,
-    'yarn_original_context': yarnOriginalContext,
-    'defragmentation_threshold': defragmentationThreshold,
-    'type_k': typeK.toString().split('.').last,
-    'type_v': typeV.toString().split('.').last,
-    'embeddings': embeddings,
-    'offload_kqv': offloadKqv,
-    'flash_attention': flashAttention,
-    'no_perf': noPerformance,
-    'greedy': _greedy,
-    'infill': _infill,
-    'seed': _seed,
-    'top_k': _topK,
-    'top_p': _topP,
-    'top_p_min_keep': _minKeepTopP,
-    'min_p': _minP,
-    'min_p_min_keep': _minKeepMinP,
-    'typical_p': _typicalP,
-    'typical_p_min_keep': _minKeepTypicalP,
-    'temperature': _temperature,
-    'temperature_delta': _temperatureDelta,
-    'temperature_exponent': _temperatureExponent,
-    'xtc_p': _xtcP,
-    'xtc_t': _xtcT,
-    'xtc_min_keep': _minKeepXtc,
-    'xtc_seed': _xtcSeed,
-    'mirostat_n_vocab': _mirostatNVocab,
-    'mirostat_seed': _mirostatSeed,
-    'mirostat_tau': _mirostatTau,
-    'mirostat_eta': _mirostatEta,
-    'mirostat_m': _mirostatM,
-    'mirostat_v2_seed': _mirostatV2Seed,
-    'mirostat_v2_tau': _mirostatV2Tau,
-    'mirostat_v2_eta': _mirostatV2Eta,
-    'grammar_str': _grammarStr,
-    'grammar_root': _grammarRoot,
-    'penalties_last_n': _penaltiesLastN,
-    'penalties_repeat': _penaltiesRepeat,
-    'penalties_frequency': _penaltiesFrequency,
-    'penalties_present': _penaltiesPresent,
-    'dry_sampler_n_ctx_train': _drySamplerNCtxTrain,
-    'dry_sampler_multiplier': _drySamplerMultiplier,
-    'dry_sampler_dry_base': _drySamplerDryBase,
-    'dry_sampler_allowed_length': _drySamplerAllowedLength,
-  };
+        'model_path': modelFile.path,
+        'vocab_only': vocabOnly,
+        'use_mmap': useMmap,
+        'use_mlock': useMlock,
+        'check_tensors': checkTensors,
+        'n_ctx': nCtx,
+        'n_batch': nBatch,
+        'n_ubatch': nUBatch,
+        'n_seq_max': nSeqMax,
+        'n_threads': nThreads,
+        'n_threads_batch': nThreadsBatch,
+        'rope_scaling_type': ropeScalingType.toString().split('.').last,
+        'pooling_type': poolingType.toString().split('.').last,
+        'attention_type': attentionType.toString().split('.').last,
+        'rope_frequency_base': ropeFrequencyBase,
+        'rope_frequency_scale': ropeFrequencyScale,
+        'yarn_extrapolation_factor': yarnExtrapolationFactor,
+        'yarn_attenuation_factor': yarnAttenuationFactor,
+        'yarn_beta_fast': yarnBetaFast,
+        'yarn_beta_slow': yarnBetaSlow,
+        'yarn_original_context': yarnOriginalContext,
+        'defragmentation_threshold': defragmentationThreshold,
+        'type_k': typeK.toString().split('.').last,
+        'type_v': typeV.toString().split('.').last,
+        'embeddings': embeddings,
+        'offload_kqv': offloadKqv,
+        'flash_attention': flashAttention,
+        'no_perf': noPerformance,
+        'greedy': _greedy,
+        'infill': _infill,
+        'seed': _seed,
+        'top_k': _topK,
+        'top_p': _topP,
+        'top_p_min_keep': _minKeepTopP,
+        'min_p': _minP,
+        'min_p_min_keep': _minKeepMinP,
+        'typical_p': _typicalP,
+        'typical_p_min_keep': _minKeepTypicalP,
+        'temperature': _temperature,
+        'temperature_delta': _temperatureDelta,
+        'temperature_exponent': _temperatureExponent,
+        'xtc_p': _xtcP,
+        'xtc_t': _xtcT,
+        'xtc_min_keep': _minKeepXtc,
+        'xtc_seed': _xtcSeed,
+        'mirostat_n_vocab': _mirostatNVocab,
+        'mirostat_seed': _mirostatSeed,
+        'mirostat_tau': _mirostatTau,
+        'mirostat_eta': _mirostatEta,
+        'mirostat_m': _mirostatM,
+        'mirostat_v2_seed': _mirostatV2Seed,
+        'mirostat_v2_tau': _mirostatV2Tau,
+        'mirostat_v2_eta': _mirostatV2Eta,
+        'grammar_str': _grammarStr,
+        'grammar_root': _grammarRoot,
+        'penalties_last_n': _penaltiesLastN,
+        'penalties_repeat': _penaltiesRepeat,
+        'penalties_frequency': _penaltiesFrequency,
+        'penalties_present': _penaltiesPresent,
+        'dry_sampler_n_ctx_train': _drySamplerNCtxTrain,
+        'dry_sampler_multiplier': _drySamplerMultiplier,
+        'dry_sampler_dry_base': _drySamplerDryBase,
+        'dry_sampler_allowed_length': _drySamplerAllowedLength,
+      };
 
   /// Converts the current instance to a JSON string.
   String toJson() => jsonEncode(toMap());
@@ -973,12 +982,12 @@ class LlamaParams extends ChangeNotifier {
   }
 
   /// Returns a configured `llama_context_params` object based on the current instance's properties.
-  /// 
+  ///
   /// This method initializes a `llama_context_params` object with default values and then overrides
   /// those values with the properties of the current instance if they are not null.
-  /// 
+  ///
   /// The following properties are set:
-  /// 
+  ///
   /// - `n_ctx`: The context size.
   /// - `n_batch`: The batch size.
   /// - `n_ubatch`: The unrolled batch size.
@@ -1002,7 +1011,7 @@ class LlamaParams extends ChangeNotifier {
   /// - `offload_kqv`: The offload KQV flag.
   /// - `flash_attn`: The flash attention flag.
   /// - `no_perf`: The no performance flag.
-  /// 
+  ///
   /// Returns:
   /// - A `llama_context_params` object with the configured properties.
   llama_context_params getContextParams() {
@@ -1145,7 +1154,8 @@ class LlamaParams extends ChangeNotifier {
     }
 
     if (_infill) {
-      assert(vocab != null, LlamaException('Vocabulary is required for infill'));
+      assert(
+          vocab != null, LlamaException('Vocabulary is required for infill'));
       Llama.lib.llama_sampler_chain_add(
           sampler, Llama.lib.llama_sampler_init_infill(vocab!));
     }
@@ -1177,13 +1187,13 @@ class LlamaParams extends ChangeNotifier {
 
     if (_temperature != null) {
       if (_temperatureDelta == null || _temperatureExponent == null) {
-        Llama.lib.llama_sampler_chain_add(sampler,
-            Llama.lib.llama_sampler_init_temp(_temperature!));
+        Llama.lib.llama_sampler_chain_add(
+            sampler, Llama.lib.llama_sampler_init_temp(_temperature!));
       } else {
         Llama.lib.llama_sampler_chain_add(
             sampler,
-            Llama.lib.llama_sampler_init_temp_ext(_temperature!,
-                _temperatureDelta!, _temperatureExponent!));
+            Llama.lib.llama_sampler_init_temp_ext(
+                _temperature!, _temperatureDelta!, _temperatureExponent!));
       }
     }
 
@@ -1218,7 +1228,8 @@ class LlamaParams extends ChangeNotifier {
     }
 
     if (_grammarStr != null && _grammarRoot != null) {
-      assert(vocab != null, LlamaException('Vocabulary is required for grammar'));
+      assert(
+          vocab != null, LlamaException('Vocabulary is required for grammar'));
       Llama.lib.llama_sampler_chain_add(
           sampler,
           Llama.lib.llama_sampler_init_grammar(
@@ -1242,7 +1253,8 @@ class LlamaParams extends ChangeNotifier {
         _drySamplerMultiplier != null &&
         _drySamplerDryBase != null &&
         _drySamplerAllowedLength != null) {
-      assert(vocab != null, LlamaException('Vocabulary is required for dry sampler'));
+      assert(vocab != null,
+          LlamaException('Vocabulary is required for dry sampler'));
       final sequenceBreakers =
           calloc<ffi.Pointer<ffi.Char>>(_drySamplerSequenceBreakers!.length);
       for (var i = 0; i < _drySamplerSequenceBreakers!.length; i++) {

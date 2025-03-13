@@ -52,8 +52,7 @@ class LlamaIsolated implements Llama {
   ///
   /// Parameters:
   /// - [llamaParams]: The parameters required for the Llama model.
-  LlamaIsolated(LlamaParams llamaParams)
-      : _llamaParams = llamaParams;
+  LlamaIsolated(LlamaParams llamaParams) : _llamaParams = llamaParams;
 
   void _listener() async {
     _receivePort = ReceivePort();

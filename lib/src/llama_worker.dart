@@ -6,10 +6,7 @@ class _LlamaWorker {
   final SendPort sendPort;
   LlamaNative? native;
 
-  _LlamaWorker({
-    required this.sendPort,
-    required LlamaParams llamaParams
-  }) {
+  _LlamaWorker({required this.sendPort, required LlamaParams llamaParams}) {
     native = LlamaNative(llamaParams);
 
     sendPort.send(receivePort.sendPort);
@@ -17,9 +14,7 @@ class _LlamaWorker {
   }
 
   factory _LlamaWorker.fromRecord(_LlamaWorkerRecord record) => _LlamaWorker(
-    sendPort: record.$1,
-    llamaParams: LlamaParams.fromJson(record.$2)
-  );
+      sendPort: record.$1, llamaParams: LlamaParams.fromJson(record.$2));
 
   void handleData(dynamic data) async {
     switch (data.runtimeType) {
@@ -34,7 +29,7 @@ class _LlamaWorker {
 
   void handlePrompt(List<_ChatMessageRecord> data) async {
     assert(native != null, LlamaException('Llama Native is not initialized'));
-    
+
     final messages = ChatMessages._fromRecords(data);
     final stream = native!.prompt(messages);
 
