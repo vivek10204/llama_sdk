@@ -10,13 +10,16 @@ import 'dart:isolate';
 import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart';
 
-import 'src/bindings.dart';
+import 'src/native/bindings.dart';
 
-part 'src/llama_isolated.dart';
-part 'src/llama_exception.dart';
-part 'src/llama.dart';
-part 'src/llama_native.dart';
-part 'src/llama_worker.dart';
-part 'src/llama_params.dart';
-part 'src/chat_message.dart';
-part 'src/worker_params.dart';
+import 'src/shared/chat_message.dart';
+export 'src/shared/chat_message.dart';
+
+part 'src/native/llama_isolated.dart';
+part 'src/native/llama_exception.dart';
+part 'src/native/llama.dart';
+part 'src/native/llama_native.dart';
+part 'src/native/llama_worker.dart';
+part 'src/native/llama_params.dart';
+part 'src/native/chat_message.dart';
+part 'src/native/worker_params.dart';

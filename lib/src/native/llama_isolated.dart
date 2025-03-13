@@ -89,7 +89,7 @@ class LlamaIsolated implements Llama {
 
     _responseController = StreamController<String>();
 
-    _sendPort!.send(messages._toRecords());
+    _sendPort!.send(messages.toRecords());
 
     await for (final response in _responseController.stream) {
       yield response;

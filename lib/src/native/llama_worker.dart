@@ -30,7 +30,7 @@ class _LlamaWorker {
   void handlePrompt(List<_ChatMessageRecord> data) async {
     assert(native != null, LlamaException('Llama Native is not initialized'));
 
-    final messages = ChatMessages._fromRecords(data);
+    final messages = _ChatMessagesExtension.fromRecords(data);
     final stream = native!.prompt(messages);
 
     await for (final response in stream) {
