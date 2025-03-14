@@ -64,7 +64,7 @@ class Llama {
       } else if (data is String) {
         _responseController.add(data);
       } else if (data == null) {
-        _responseController.close();
+        _receivePort!.close();
       }
     }
 
