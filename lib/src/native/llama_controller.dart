@@ -670,6 +670,7 @@ class LlamaController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Creates a new instance of [LlamaController].
   LlamaController({
     required File modelFile,
     bool? vocabOnly,
