@@ -5,7 +5,7 @@ part of 'package:lcpp/lcpp.dart';
 /// This class implements the [Llama] interface and provides methods to interact
 /// with the Llama model in an isolated environment.
 ///
-/// The [LlamaIsolated] constructor initializes the isolate with the provided
+/// The [Llama] constructor initializes the isolate with the provided
 /// model, context, and sampling parameters.
 ///
 /// The [prompt] method sends a list of [ChatMessage] to the isolate and returns
@@ -16,7 +16,7 @@ part of 'package:lcpp/lcpp.dart';
 /// for the isolate to be initialized before sending the signal.
 ///
 /// The [reload] method stops the current operation and reloads the isolate.
-class LlamaIsolated {
+class Llama {
   Completer _initialized = Completer();
   StreamController<String> _responseController = StreamController<String>()
     ..close();
@@ -45,14 +45,14 @@ class LlamaIsolated {
   /// it is still in use.
   bool isFreed = false;
 
-  /// Constructs an instance of [LlamaIsolated].
+  /// Constructs an instance of [Llama].
   ///
-  /// Initializes the [LlamaIsolated] with the provided parameters and sets up
+  /// Initializes the [Llama] with the provided parameters and sets up
   /// the listener.
   ///
   /// Parameters:
   /// - [llamaController]: The parameters required for the Llama model.
-  LlamaIsolated(LlamaController llamaController) : _llamaController = llamaController;
+  Llama(LlamaController llamaController) : _llamaController = llamaController;
 
   void _listener() async {
     _receivePort = ReceivePort();
@@ -88,7 +88,7 @@ class LlamaIsolated {
   /// - Returns: A [Stream] of strings, where each string is a generated response.
   Stream<String> prompt(List<ChatMessage> messages) async* {
     if (isFreed) {
-      throw LlamaException('LlamaIsolated has been freed');
+      throw LlamaException('Llama has been freed');
     }
 
     if (!_initialized.isCompleted) {

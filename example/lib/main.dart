@@ -19,7 +19,7 @@ class LlamaApp extends StatefulWidget {
 class LlamaAppState extends State<LlamaApp> {
   final TextEditingController controller = TextEditingController();
   final List<ChatMessage> messages = [];
-  LlamaIsolated? model;
+  Llama? model;
   String? modelPath;
   bool busy = false;
 
@@ -43,7 +43,7 @@ class LlamaAppState extends State<LlamaApp> {
       throw Exception('File does not exist');
     }
 
-    final llamaCpp = LlamaIsolated(LlamaController(
+    final llamaCpp = Llama(LlamaController(
         modelFile: resultFile, nCtx: 2048, nBatch: 2048, greedy: true));
 
     setState(() {
