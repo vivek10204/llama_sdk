@@ -21,4 +21,3 @@ part 'src/native/llama_exception.dart';
 part 'src/native/llama_worker.dart';
 part 'src/native/llama_controller.dart';
 part 'src/native/chat_message.dart';
-part 'src/native/worker_params.dart';
