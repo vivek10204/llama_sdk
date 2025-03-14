@@ -40,7 +40,7 @@ class Llama {
   /// - Parameter messages: A list of [ChatMessage] objects that represent the chat history.
   /// - Returns: A [Stream] of strings, where each string is a generated response.
   Stream<String> prompt(List<ChatMessage> messages) async* {
-    throw UnimplementedError();
+    throw LlamaException('Web not supported');
   }
 
   /// Stops the current operation or process.
@@ -49,6 +49,6 @@ class Llama {
   /// processes that need to be halted. It ensures that resources are
   /// properly released and the system is left in a stable state.
   void stop() {
-    throw UnimplementedError();
+    throw LlamaException('Web not supported');
   }
 }
