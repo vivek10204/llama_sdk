@@ -958,8 +958,7 @@ class LlamaController extends ChangeNotifier {
   ///   A `llama_model_params` object containing the initialized and updated
   ///   model parameters.
   llama_model_params getModelParams() {
-    final llama_model_params modelParams =
-        lib.llama_model_default_params();
+    final llama_model_params modelParams = lib.llama_model_default_params();
     log("Model params initialized");
 
     if (vocabOnly != null) {
@@ -1145,12 +1144,11 @@ class LlamaController extends ChangeNotifier {
   /// Throws:
   /// - `LlamaException` if `vocab` is required but not provided.
   ffi.Pointer<llama_sampler> getSampler([ffi.Pointer<llama_vocab>? vocab]) {
-    final sampler = lib.llama_sampler_chain_init(
-        lib.llama_sampler_chain_default_params());
+    final sampler =
+        lib.llama_sampler_chain_init(lib.llama_sampler_chain_default_params());
 
     if (greedy) {
-      lib.llama_sampler_chain_add(
-          sampler, lib.llama_sampler_init_greedy());
+      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_greedy());
     }
 
     if (_infill) {
@@ -1161,8 +1159,7 @@ class LlamaController extends ChangeNotifier {
     }
 
     if (_seed != null) {
-      lib.llama_sampler_chain_add(
-          sampler, lib.llama_sampler_init_dist(_seed!));
+      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_dist(_seed!));
     }
 
     if (_topK != null) {
@@ -1201,10 +1198,8 @@ class LlamaController extends ChangeNotifier {
         _xtcT != null &&
         _minKeepXtc != null &&
         _xtcSeed != null) {
-      lib.llama_sampler_chain_add(
-          sampler,
-          lib
-              .llama_sampler_init_xtc(_xtcP!, _xtcT!, _minKeepXtc!, _xtcSeed!));
+      lib.llama_sampler_chain_add(sampler,
+          lib.llama_sampler_init_xtc(_xtcP!, _xtcT!, _minKeepXtc!, _xtcSeed!));
     }
 
     if (_mirostatNVocab != null &&
@@ -1214,8 +1209,8 @@ class LlamaController extends ChangeNotifier {
         _mirostatM != null) {
       lib.llama_sampler_chain_add(
           sampler,
-          lib.llama_sampler_init_mirostat(_mirostatNVocab!,
-              _mirostatSeed!, _mirostatTau!, _mirostatEta!, _mirostatM!));
+          lib.llama_sampler_init_mirostat(_mirostatNVocab!, _mirostatSeed!,
+              _mirostatTau!, _mirostatEta!, _mirostatM!));
     }
 
     if (_mirostatV2Seed != null &&
@@ -1244,8 +1239,8 @@ class LlamaController extends ChangeNotifier {
         _penaltiesPresent != null) {
       lib.llama_sampler_chain_add(
           sampler,
-          lib.llama_sampler_init_penalties(_penaltiesLastN!,
-              _penaltiesRepeat!, _penaltiesFrequency!, _penaltiesPresent!));
+          lib.llama_sampler_init_penalties(_penaltiesLastN!, _penaltiesRepeat!,
+              _penaltiesFrequency!, _penaltiesPresent!));
     }
 
     if (_drySamplerSequenceBreakers != null &&

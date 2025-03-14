@@ -33,10 +33,9 @@ class _LlamaWorker {
   final ReceivePort receivePort = ReceivePort();
   final SendPort sendPort;
 
-  _LlamaWorker({
-    required this.sendPort, 
-    required LlamaController llamaController
-  }) : _llamaController = llamaController {
+  _LlamaWorker(
+      {required this.sendPort, required LlamaController llamaController})
+      : _llamaController = llamaController {
     lib.ggml_backend_load_all();
     lib.llama_backend_init();
 
@@ -47,7 +46,8 @@ class _LlamaWorker {
   }
 
   factory _LlamaWorker.fromRecord(_LlamaWorkerRecord record) => _LlamaWorker(
-      sendPort: record.$1, llamaController: LlamaController.fromJson(record.$2));
+      sendPort: record.$1,
+      llamaController: LlamaController.fromJson(record.$2));
 
   void _init() {
     final nativeModelParams = _llamaController.getModelParams();
@@ -58,8 +58,7 @@ class _LlamaWorker {
       lib.llama_free_model(_model);
     }
 
-    _model = lib
-        .llama_load_model_from_file(nativeModelPath, nativeModelParams);
+    _model = lib.llama_load_model_from_file(nativeModelPath, nativeModelParams);
     assert(_model != ffi.nullptr, LlamaException('Failed to load model'));
 
     _modelFinalizer.attach(this, _model);
@@ -137,8 +136,8 @@ class _LlamaWorker {
     if (newContextLength > nCtx) {
       calloc.free(formatted);
       formatted = calloc<ffi.Char>(newContextLength);
-      newContextLength = lib.llama_chat_apply_template(template,
-          messagesPtr, messagesCopy.length, true, formatted, newContextLength);
+      newContextLength = lib.llama_chat_apply_template(template, messagesPtr,
+          messagesCopy.length, true, formatted, newContextLength);
     }
 
     messagesPtr.free(messagesCopy.length);
@@ -168,8 +167,7 @@ class _LlamaWorker {
 
     calloc.free(promptPtr);
 
-    llama_batch batch =
-        lib.llama_batch_get_one(promptTokens, nPromptTokens);
+    llama_batch batch = lib.llama_batch_get_one(promptTokens, nPromptTokens);
     ffi.Pointer<llama_token> newTokenId = calloc<llama_token>(1);
 
     String response = '';
@@ -194,8 +192,8 @@ class _LlamaWorker {
       }
 
       final buffer = calloc<ffi.Char>(256);
-      final n = lib
-          .llama_token_to_piece(vocab, newTokenId.value, buffer, 256, 0, true);
+      final n = lib.llama_token_to_piece(
+          vocab, newTokenId.value, buffer, 256, 0, true);
       if (n < 0) {
         throw Exception('Failed to convert token to piece');
       }
