@@ -43,7 +43,7 @@ class LlamaAppState extends State<LlamaApp> {
       throw Exception('File does not exist');
     }
 
-    final llamaCpp = LlamaIsolated(LlamaParams(
+    final llamaCpp = LlamaIsolated(LlamaController(
         modelFile: resultFile, nCtx: 2048, nBatch: 2048, greedy: true));
 
     setState(() {

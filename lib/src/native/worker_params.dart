@@ -4,11 +4,11 @@ typedef _LlamaWorkerRecord = (SendPort, String);
 
 class _LlamaWorkerParams {
   final SendPort sendPort;
-  final LlamaParams llamaParams;
+  final LlamaController llamaController;
 
-  _LlamaWorkerParams({required this.sendPort, required this.llamaParams});
+  _LlamaWorkerParams({required this.sendPort, required this.llamaController});
 
   _LlamaWorkerRecord toRecord() {
-    return (sendPort, llamaParams.toJson());
+    return (sendPort, llamaController.toJson());
   }
 }

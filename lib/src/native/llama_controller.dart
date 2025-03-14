@@ -2,8 +2,8 @@
 
 part of 'package:lcpp/lcpp.dart';
 
-/// A class that represents the parameters for the Llama model.
-class LlamaParams extends ChangeNotifier {
+/// A class to manage the parameters for the llama model.
+class LlamaController extends ChangeNotifier {
   File _modelFile;
 
   /// The path to the model file.
@@ -670,7 +670,7 @@ class LlamaParams extends ChangeNotifier {
     notifyListeners();
   }
 
-  LlamaParams({
+  LlamaController({
     required File modelFile,
     bool? vocabOnly,
     bool? useMmap,
@@ -799,7 +799,7 @@ class LlamaParams extends ChangeNotifier {
         _drySamplerAllowedLength = drySamplerAllowedLength;
 
   /// Creates a new instance from a map.
-  factory LlamaParams.fromMap(Map<String, dynamic> map) => LlamaParams(
+  factory LlamaController.fromMap(Map<String, dynamic> map) => LlamaController(
         modelFile: File(map['model_path']),
         vocabOnly: map['vocab_only'],
         useMmap: map['use_mmap'],
@@ -874,8 +874,8 @@ class LlamaParams extends ChangeNotifier {
       );
 
   /// Creates a new instance from a JSON string.
-  factory LlamaParams.fromJson(String source) =>
-      LlamaParams.fromMap(jsonDecode(source));
+  factory LlamaController.fromJson(String source) =>
+      LlamaController.fromMap(jsonDecode(source));
 
   /// Converts the current instance to a map.
   Map<String, dynamic> toMap() => {
@@ -959,7 +959,7 @@ class LlamaParams extends ChangeNotifier {
   ///   model parameters.
   llama_model_params getModelParams() {
     final llama_model_params modelParams =
-        Llama.lib.llama_model_default_params();
+        lib.llama_model_default_params();
     log("Model params initialized");
 
     if (vocabOnly != null) {
@@ -1016,7 +1016,7 @@ class LlamaParams extends ChangeNotifier {
   /// - A `llama_context_params` object with the configured properties.
   llama_context_params getContextParams() {
     final llama_context_params contextParams =
-        Llama.lib.llama_context_default_params();
+        lib.llama_context_default_params();
 
     contextParams.n_ctx = nCtx;
 
@@ -1145,54 +1145,54 @@ class LlamaParams extends ChangeNotifier {
   /// Throws:
   /// - `LlamaException` if `vocab` is required but not provided.
   ffi.Pointer<llama_sampler> getSampler([ffi.Pointer<llama_vocab>? vocab]) {
-    final sampler = Llama.lib.llama_sampler_chain_init(
-        Llama.lib.llama_sampler_chain_default_params());
+    final sampler = lib.llama_sampler_chain_init(
+        lib.llama_sampler_chain_default_params());
 
     if (greedy) {
-      Llama.lib.llama_sampler_chain_add(
-          sampler, Llama.lib.llama_sampler_init_greedy());
+      lib.llama_sampler_chain_add(
+          sampler, lib.llama_sampler_init_greedy());
     }
 
     if (_infill) {
       assert(
           vocab != null, LlamaException('Vocabulary is required for infill'));
-      Llama.lib.llama_sampler_chain_add(
-          sampler, Llama.lib.llama_sampler_init_infill(vocab!));
+      lib.llama_sampler_chain_add(
+          sampler, lib.llama_sampler_init_infill(vocab!));
     }
 
     if (_seed != null) {
-      Llama.lib.llama_sampler_chain_add(
-          sampler, Llama.lib.llama_sampler_init_dist(_seed!));
+      lib.llama_sampler_chain_add(
+          sampler, lib.llama_sampler_init_dist(_seed!));
     }
 
     if (_topK != null) {
-      Llama.lib.llama_sampler_chain_add(
-          sampler, Llama.lib.llama_sampler_init_top_k(_topK!));
+      lib.llama_sampler_chain_add(
+          sampler, lib.llama_sampler_init_top_k(_topK!));
     }
 
     if (_topP != null && _minKeepTopP != null) {
-      Llama.lib.llama_sampler_chain_add(
-          sampler, Llama.lib.llama_sampler_init_top_p(_topP!, _minKeepTopP!));
+      lib.llama_sampler_chain_add(
+          sampler, lib.llama_sampler_init_top_p(_topP!, _minKeepTopP!));
     }
 
     if (_minP != null && _minKeepMinP != null) {
-      Llama.lib.llama_sampler_chain_add(
-          sampler, Llama.lib.llama_sampler_init_min_p(_minP!, _minKeepMinP!));
+      lib.llama_sampler_chain_add(
+          sampler, lib.llama_sampler_init_min_p(_minP!, _minKeepMinP!));
     }
 
     if (_typicalP != null && _minKeepTypicalP != null) {
-      Llama.lib.llama_sampler_chain_add(sampler,
-          Llama.lib.llama_sampler_init_typical(_typicalP!, _minKeepTypicalP!));
+      lib.llama_sampler_chain_add(sampler,
+          lib.llama_sampler_init_typical(_typicalP!, _minKeepTypicalP!));
     }
 
     if (_temperature != null) {
       if (_temperatureDelta == null || _temperatureExponent == null) {
-        Llama.lib.llama_sampler_chain_add(
-            sampler, Llama.lib.llama_sampler_init_temp(_temperature!));
+        lib.llama_sampler_chain_add(
+            sampler, lib.llama_sampler_init_temp(_temperature!));
       } else {
-        Llama.lib.llama_sampler_chain_add(
+        lib.llama_sampler_chain_add(
             sampler,
-            Llama.lib.llama_sampler_init_temp_ext(
+            lib.llama_sampler_init_temp_ext(
                 _temperature!, _temperatureDelta!, _temperatureExponent!));
       }
     }
@@ -1201,9 +1201,9 @@ class LlamaParams extends ChangeNotifier {
         _xtcT != null &&
         _minKeepXtc != null &&
         _xtcSeed != null) {
-      Llama.lib.llama_sampler_chain_add(
+      lib.llama_sampler_chain_add(
           sampler,
-          Llama.lib
+          lib
               .llama_sampler_init_xtc(_xtcP!, _xtcT!, _minKeepXtc!, _xtcSeed!));
     }
 
@@ -1212,27 +1212,27 @@ class LlamaParams extends ChangeNotifier {
         _mirostatTau != null &&
         _mirostatEta != null &&
         _mirostatM != null) {
-      Llama.lib.llama_sampler_chain_add(
+      lib.llama_sampler_chain_add(
           sampler,
-          Llama.lib.llama_sampler_init_mirostat(_mirostatNVocab!,
+          lib.llama_sampler_init_mirostat(_mirostatNVocab!,
               _mirostatSeed!, _mirostatTau!, _mirostatEta!, _mirostatM!));
     }
 
     if (_mirostatV2Seed != null &&
         _mirostatV2Tau != null &&
         _mirostatV2Eta != null) {
-      Llama.lib.llama_sampler_chain_add(
+      lib.llama_sampler_chain_add(
           sampler,
-          Llama.lib.llama_sampler_init_mirostat_v2(
+          lib.llama_sampler_init_mirostat_v2(
               _mirostatV2Seed!, _mirostatV2Tau!, _mirostatV2Eta!));
     }
 
     if (_grammarStr != null && _grammarRoot != null) {
       assert(
           vocab != null, LlamaException('Vocabulary is required for grammar'));
-      Llama.lib.llama_sampler_chain_add(
+      lib.llama_sampler_chain_add(
           sampler,
-          Llama.lib.llama_sampler_init_grammar(
+          lib.llama_sampler_init_grammar(
               vocab!,
               _grammarStr!.toNativeUtf8().cast<ffi.Char>(),
               _grammarRoot!.toNativeUtf8().cast<ffi.Char>()));
@@ -1242,9 +1242,9 @@ class LlamaParams extends ChangeNotifier {
         _penaltiesRepeat != null &&
         _penaltiesFrequency != null &&
         _penaltiesPresent != null) {
-      Llama.lib.llama_sampler_chain_add(
+      lib.llama_sampler_chain_add(
           sampler,
-          Llama.lib.llama_sampler_init_penalties(_penaltiesLastN!,
+          lib.llama_sampler_init_penalties(_penaltiesLastN!,
               _penaltiesRepeat!, _penaltiesFrequency!, _penaltiesPresent!));
     }
 
@@ -1262,9 +1262,9 @@ class LlamaParams extends ChangeNotifier {
             _drySamplerSequenceBreakers![i].toNativeUtf8().cast<ffi.Char>();
       }
 
-      Llama.lib.llama_sampler_chain_add(
+      lib.llama_sampler_chain_add(
           sampler,
-          Llama.lib.llama_sampler_init_dry(
+          lib.llama_sampler_init_dry(
               vocab!,
               _drySamplerNCtxTrain!,
               _drySamplerMultiplier!,
