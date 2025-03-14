@@ -43,11 +43,6 @@ class _LlamaWorker {
   );
 
   void handlePrompt(dynamic data) async {
-    if (data !is List<_ChatMessageRecord>) {
-      completer.completeError(LlamaException('Invalid data type'));
-      return;
-    }
-
     final messages = _ChatMessagesExtension.fromRecords(data as List<_ChatMessageRecord>);
     final chatMessagesPointer = messages.toPointer();
 
