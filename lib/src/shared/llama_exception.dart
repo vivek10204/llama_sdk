@@ -1,5 +1,3 @@
-part of 'package:lcpp/lcpp.dart';
-
 /// A custom exception class for handling errors specific to the Llama application.
 ///
 /// The [LlamaException] class implements the [Exception] interface and provides
