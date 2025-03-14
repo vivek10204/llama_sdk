@@ -87,3 +87,8 @@ Add IOS action
 ## 0.2.1
 
 Update llama.cpp
+
+## 0.2.2
+
+Refactor
+Update llama.cpp
