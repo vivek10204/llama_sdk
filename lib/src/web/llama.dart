@@ -1,4 +1,4 @@
-part of 'package:lcpp/lcpp.dart';
+part of 'package:lcpp/lcpp.web.dart';
 
 /// A class that isolates the Llama implementation to run in a separate isolate.
 ///
@@ -17,26 +17,8 @@ part of 'package:lcpp/lcpp.dart';
 ///
 /// The [reload] method stops the current operation and reloads the isolate.
 class Llama {
-  Completer _initialized = Completer();
-  StreamController<String> _responseController = StreamController<String>()
-    ..close();
-  Isolate? _isolate;
-  SendPort? _sendPort;
-  ReceivePort? _receivePort;
-
-  LlamaController _llamaController;
-
-  /// Gets the current LlamaController instance.
-  ///
-  /// The [LlamaController] instance contains the parameters used by the llama.
-  ///
-  /// Returns the current [LlamaController] instance.
-  LlamaController get llamaController => _llamaController;
-
-  set llamaController(LlamaController value) {
-    _llamaController = value;
-    stop();
-  }
+  /// A completer that indicates when the isolate has been initialized.
+  LlamaController llamaController;
 
   /// Constructs an instance of [Llama].
   ///
@@ -45,29 +27,7 @@ class Llama {
   ///
   /// Parameters:
   /// - [llamaController]: The parameters required for the Llama model.
-  Llama(LlamaController llamaController) : _llamaController = llamaController;
-
-  void _listener() async {
-    _receivePort = ReceivePort();
-
-    final workerParams = _LlamaWorkerParams(
-      sendPort: _receivePort!.sendPort,
-      llamaController: _llamaController,
-    );
-
-    _isolate = await Isolate.spawn(_LlamaWorker.entry, workerParams.toRecord());
-
-    await for (final data in _receivePort!) {
-      if (data is SendPort) {
-        _sendPort = data;
-        _initialized.complete();
-      } else if (data is String) {
-        _responseController.add(data);
-      } else if (data == null) {
-        _responseController.close();
-      }
-    }
-  }
+  Llama(this.llamaController);
 
   /// Generates a stream of responses based on the provided list of chat messages.
   ///
@@ -80,18 +40,7 @@ class Llama {
   /// - Parameter messages: A list of [ChatMessage] objects that represent the chat history.
   /// - Returns: A [Stream] of strings, where each string is a generated response.
   Stream<String> prompt(List<ChatMessage> messages) async* {
-    if (!_initialized.isCompleted) {
-      _listener();
-      await _initialized.future;
-    }
-
-    _responseController = StreamController<String>();
-
-    _sendPort!.send(messages.toRecords());
-
-    await for (final response in _responseController.stream) {
-      yield response;
-    }
+    throw UnimplementedError();
   }
 
   /// Stops the current operation or process.
@@ -100,8 +49,6 @@ class Llama {
   /// processes that need to be halted. It ensures that resources are
   /// properly released and the system is left in a stable state.
   void stop() {
-    _isolate?.kill(priority: Isolate.immediate);
-    _receivePort?.close();
-    _initialized = Completer();
+    throw UnimplementedError();
   }
 }
