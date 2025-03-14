@@ -6,14 +6,6 @@ extension _ChatMessageExtension on ChatMessage {
   static ChatMessage fromRecord(_ChatMessageRecord record) =>
       ChatMessage.withRole(role: record.$1, content: record.$2);
 
-  llama_chat_message toNative() {
-    final message = calloc<llama_chat_message>();
-    message.ref.role = role.toNativeUtf8().cast<ffi.Char>();
-    message.ref.content = content.toNativeUtf8().cast<ffi.Char>();
-
-    return message.ref;
-  }
-
   _ChatMessageRecord toRecord() => (role, content);
 }
 
@@ -28,15 +20,11 @@ extension _ChatMessagesExtension on List<ChatMessage> {
     return messages;
   }
 
-  ffi.Pointer<llama_chat_message> toNative() {
-    final messages = calloc<llama_chat_message>(length);
+  List<Map<String, String>> toMapList() => map((message) => message.toMap()).toList();
 
-    for (var i = 0; i < length; i++) {
-      messages[i] = this[i].toNative();
-    }
+  String toJson() => jsonEncode(toMapList());
 
-    return messages;
-  }
+  ffi.Pointer<ffi.Char> toPointer() => toJson().toNativeUtf8().cast<ffi.Char>();
 
   List<_ChatMessageRecord> toRecords() {
     final List<_ChatMessageRecord> records = [];
@@ -46,16 +34,5 @@ extension _ChatMessagesExtension on List<ChatMessage> {
     }
 
     return records;
-  }
-}
-
-extension _LlamaChatMessagePtrExtension on ffi.Pointer<llama_chat_message> {
-  void free(int length) {
-    for (var i = 0; i < length; i++) {
-      calloc.free(this[i].role);
-      calloc.free(this[i].content);
-    }
-
-    calloc.free(this);
   }
 }

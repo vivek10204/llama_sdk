@@ -18,7 +18,7 @@ part of 'package:lcpp/lcpp.web.dart';
 /// The [reload] method stops the current operation and reloads the isolate.
 class Llama {
   /// A completer that indicates when the isolate has been initialized.
-  LlamaController llamaController;
+  LlamaController controller;
 
   /// Constructs an instance of [Llama].
   ///
@@ -26,8 +26,8 @@ class Llama {
   /// the listener.
   ///
   /// Parameters:
-  /// - [llamaController]: The parameters required for the Llama model.
-  Llama(this.llamaController);
+  /// - [controller]: The parameters required for the Llama model.
+  Llama(this.controller);
 
   /// Generates a stream of responses based on the provided list of chat messages.
   ///

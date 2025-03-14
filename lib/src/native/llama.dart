@@ -5,7 +5,7 @@ part of 'package:lcpp/lcpp.dart';
 /// This class implements the [Llama] interface and provides methods to interact
 /// with the Llama model in an isolated environment.
 ///
-/// The [Llama] constructor initializes the isolate with the provided
+/// The [LlamaIsolated] constructor initializes the isolate with the provided
 /// model, context, and sampling parameters.
 ///
 /// The [prompt] method sends a list of [ChatMessage] to the isolate and returns
@@ -24,17 +24,17 @@ class Llama {
   SendPort? _sendPort;
   ReceivePort? _receivePort;
 
-  LlamaController _llamaController;
+  LlamaController _controller;
 
   /// Gets the current LlamaController instance.
   ///
   /// The [LlamaController] instance contains the parameters used by the llama.
   ///
   /// Returns the current [LlamaController] instance.
-  LlamaController get llamaController => _llamaController;
+  LlamaController get controller => _controller;
 
-  set llamaController(LlamaController value) {
-    _llamaController = value;
+  set controller(LlamaController value) {
+    _controller = value;
     stop();
   }
 
@@ -44,15 +44,15 @@ class Llama {
   /// the listener.
   ///
   /// Parameters:
-  /// - [llamaController]: The parameters required for the Llama model.
-  Llama(LlamaController llamaController) : _llamaController = llamaController;
+  /// - [controller]: The parameters required for the Llama model.
+  Llama(LlamaController controller) : _controller = controller;
 
   void _listener() async {
     _receivePort = ReceivePort();
 
     final workerParams = _LlamaWorkerParams(
       sendPort: _receivePort!.sendPort,
-      llamaController: _llamaController,
+      controller: _controller,
     );
 
     _isolate = await Isolate.spawn(_LlamaWorker.entry, workerParams.toRecord());
@@ -67,6 +67,8 @@ class Llama {
         _responseController.close();
       }
     }
+
+    _responseController.close();
   }
 
   /// Generates a stream of responses based on the provided list of chat messages.
@@ -99,7 +101,10 @@ class Llama {
   /// This method should be called to terminate any ongoing tasks or
   /// processes that need to be halted. It ensures that resources are
   /// properly released and the system is left in a stable state.
-  void stop() {
+  void stop() => lib.llama_llm_stop();
+
+  /// Frees the resources used by the Llama model.
+  void reload() {
     _isolate?.kill(priority: Isolate.immediate);
     _receivePort?.close();
     _initialized = Completer();
