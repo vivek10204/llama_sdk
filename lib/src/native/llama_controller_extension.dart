@@ -220,8 +220,7 @@ extension LlamaControllerExtension on LlamaController {
     }
 
     if (topK != null) {
-      lib.llama_sampler_chain_add(
-          sampler, lib.llama_sampler_init_top_k(topK!));
+      lib.llama_sampler_chain_add(sampler, lib.llama_sampler_init_top_k(topK!));
     }
 
     if (topP != null && minKeepTopP != null) {
@@ -235,8 +234,8 @@ extension LlamaControllerExtension on LlamaController {
     }
 
     if (typicalP != null && minKeepTypicalP != null) {
-      lib.llama_sampler_chain_add(sampler,
-          lib.llama_sampler_init_typical(typicalP!, minKeepTypicalP!));
+      lib.llama_sampler_chain_add(
+          sampler, lib.llama_sampler_init_typical(typicalP!, minKeepTypicalP!));
     }
 
     if (temperature != null) {
@@ -251,10 +250,7 @@ extension LlamaControllerExtension on LlamaController {
       }
     }
 
-    if (xtcP != null &&
-        xtcT != null &&
-        minKeepXtc != null &&
-        xtcSeed != null) {
+    if (xtcP != null && xtcT != null && minKeepXtc != null && xtcSeed != null) {
       lib.llama_sampler_chain_add(sampler,
           lib.llama_sampler_init_xtc(xtcP!, xtcT!, minKeepXtc!, xtcSeed!));
     }
