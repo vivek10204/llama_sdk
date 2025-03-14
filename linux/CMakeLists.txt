@@ -26,7 +26,6 @@ target_sources(
   PRIVATE 
   ${API_DIR}/params.cpp
   ${API_DIR}/llm.cpp
-  ${API_DIR}/tts.cpp
 )
 
 set_target_properties(llama PROPERTIES
