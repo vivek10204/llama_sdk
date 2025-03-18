@@ -98,3 +98,7 @@ Update llama.cpp
 Fix IOS build
 Enable android optimizations
 Update llama.cpp
+
+## 0.2.4
+
+WASM Ready

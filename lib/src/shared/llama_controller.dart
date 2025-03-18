@@ -1,19 +1,18 @@
 // ignore_for_file: constant_identifier_names
 
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
 /// A class to manage the parameters for the llama model.
 class LlamaController extends ChangeNotifier {
-  File _modelFile;
+  String _modelPath;
 
   /// The path to the model file.
-  File get modelFile => _modelFile;
+  String get modelPath => _modelPath;
 
-  set modelFile(File value) {
-    _modelFile = value;
+  set modelPath(String value) {
+    _modelPath = value;
     notifyListeners();
   }
 
@@ -675,7 +674,7 @@ class LlamaController extends ChangeNotifier {
 
   /// Creates a new instance of [LlamaController].
   LlamaController({
-    required File modelFile,
+    required String modelPath,
     bool? vocabOnly,
     bool? useMmap,
     bool? useMlock,
@@ -738,7 +737,7 @@ class LlamaController extends ChangeNotifier {
     double? drySamplerMultiplier,
     double? drySamplerDryBase,
     int? drySamplerAllowedLength,
-  })  : _modelFile = modelFile,
+  })  : _modelPath = modelPath,
         _vocabOnly = vocabOnly,
         _useMmap = useMmap,
         _useMlock = useMlock,
@@ -804,7 +803,7 @@ class LlamaController extends ChangeNotifier {
 
   /// Creates a new instance from a map.
   factory LlamaController.fromMap(Map<String, dynamic> map) => LlamaController(
-        modelFile: File(map['model_path']),
+        modelPath: map['model_path'],
         vocabOnly: map['vocab_only'],
         useMmap: map['use_mmap'],
         useMlock: map['use_mlock'],
@@ -883,7 +882,7 @@ class LlamaController extends ChangeNotifier {
 
   /// Converts the current instance to a map.
   Map<String, dynamic> toMap() => {
-        'model_path': modelFile.path,
+        'model_path': modelPath,
         'vocab_only': vocabOnly,
         'use_mmap': useMmap,
         'use_mlock': useMlock,
