@@ -6,10 +6,7 @@ class _LlamaWorkerParams {
   final SendPort sendPort;
   final LlamaController controller;
 
-  _LlamaWorkerParams({
-    required this.sendPort,
-    required this.controller
-  });
+  _LlamaWorkerParams({required this.sendPort, required this.controller});
 
   _LlamaWorkerRecord toRecord() {
     return (sendPort, controller.toJson());
@@ -26,10 +23,7 @@ class _LlamaWorker {
   final ReceivePort receivePort = ReceivePort();
   final LlamaController controller;
 
-  _LlamaWorker({
-    required SendPort sendPort,
-    required this.controller
-  }) {
+  _LlamaWorker({required SendPort sendPort, required this.controller}) {
     _sendPort = sendPort;
     sendPort.send(receivePort.sendPort);
     receivePort.listen(handlePrompt);
@@ -38,13 +32,12 @@ class _LlamaWorker {
   }
 
   factory _LlamaWorker.fromRecord(_LlamaWorkerRecord record) => _LlamaWorker(
-    sendPort: record.$1,
-    controller: LlamaController.fromJson(record.$2)
-  );
+      sendPort: record.$1, controller: LlamaController.fromJson(record.$2));
 
   void handlePrompt(dynamic data) async {
     try {
-      final messages = _ChatMessagesExtension.fromRecords(data as List<_ChatMessageRecord>);
+      final messages =
+          _ChatMessagesExtension.fromRecords(data as List<_ChatMessageRecord>);
       final chatMessagesPointer = messages.toPointer();
 
       lib.llama_prompt(chatMessagesPointer, ffi.Pointer.fromFunction(_output));
@@ -58,13 +51,13 @@ class _LlamaWorker {
     await worker.completer.future;
   }
 
-  void _init() => lib.llama_llm_init(controller.toJson().toNativeUtf8().cast<ffi.Char>());
+  void _init() =>
+      lib.llama_llm_init(controller.toJson().toNativeUtf8().cast<ffi.Char>());
 
   static void _output(ffi.Pointer<ffi.Char> buffer) {
     if (buffer == ffi.nullptr) {
       _sendPort!.send(null);
-    }
-    else {
+    } else {
       _sendPort!.send(buffer.cast<Utf8>().toDartString());
     }
   }

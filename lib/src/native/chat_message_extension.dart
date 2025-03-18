@@ -20,7 +20,8 @@ extension _ChatMessagesExtension on List<ChatMessage> {
     return messages;
   }
 
-  List<Map<String, String>> toMapList() => map((message) => message.toMap()).toList();
+  List<Map<String, String>> toMapList() =>
+      map((message) => message.toMap()).toList();
 
   String toJson() => jsonEncode(toMapList());
 
