@@ -19,3 +19,24 @@ target_sources(
   ${API_DIR}/params.cpp
   ${API_DIR}/llm.cpp
 )
+
+target_compile_options(
+  llama 
+  PRIVATE 
+  -O3 
+  -DNDEBUG
+  -ffunction-sections 
+  -fdata-sections
+)
+
+target_link_options(
+  llama 
+  PRIVATE 
+  -Wl,--gc-sections 
+  -flto
+)
+
+# Enable compiler optimizations for arm64-v8a
+if(ANDROID_ABI STREQUAL "arm64-v8a")
+  target_compile_options(llama PRIVATE -march=armv8.4-a+fp16+dotprod)
+endif()
