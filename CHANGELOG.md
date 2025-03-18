@@ -92,3 +92,9 @@ Update llama.cpp
 
 Refactor
 Update llama.cpp
+
+## 0.2.3
+
+Fix IOS build
+Enable android optimizations
+Update llama.cpp
