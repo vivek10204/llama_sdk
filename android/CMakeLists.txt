@@ -38,5 +38,5 @@ target_link_options(
 
 # Enable compiler optimizations for arm64-v8a
 if(ANDROID_ABI STREQUAL "arm64-v8a")
-  target_compile_options(llama PRIVATE -march=armv8.4-a+fp16+dotprod)
+  target_compile_options(llama PRIVATE -march=armv8.4-a+fp16+dotprod -DLM_GGML_USE_CPU -DLM_GGML_USE_CPU_AARCH64 -pthread)
 endif()
