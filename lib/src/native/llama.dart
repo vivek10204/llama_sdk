@@ -64,11 +64,9 @@ class Llama {
       } else if (data is String) {
         _responseController.add(data);
       } else if (data == null) {
-        _receivePort!.close();
+        _responseController.close();
       }
     }
-
-    _responseController.close();
   }
 
   /// Generates a stream of responses based on the provided list of chat messages.
