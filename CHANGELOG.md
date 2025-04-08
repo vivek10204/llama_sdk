@@ -106,3 +106,7 @@ WASM Ready
 ## 0.2.5
 Update llama.cpp
 Fix issue with messages
+
+## 0.2.6
+Update llama.cpp
+Page size fix

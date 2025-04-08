@@ -4,7 +4,8 @@ cmake_minimum_required(VERSION 3.22)
 project(lcpp)
 
 # Set CMake flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBUILD_COMMIT=unknown -DBUILD_COMPILER=unknown -DBUILD_TARGET=Android")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DANDROID_16K_PAGES")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBUILD_COMMIT=unknown -DBUILD_COMPILER=unknown -DBUILD_TARGET=Android -DANDROID_16K_PAGES")
 add_link_options("LINKER:--hash-style=gnu,--build-id=none")
 
 set(API_DIR ../src)
