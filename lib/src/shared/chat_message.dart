@@ -100,9 +100,9 @@ abstract class ChatMessage {
   ///
   /// [message]: The [ChatMessage] object to be converted.
   static Map<String, String> messageToMap(ChatMessage message) => {
-        'role': message.role,
-        'content': message.content,
-      };
+    'role': message.role,
+    'content': message.content,
+  };
 
   /// Converts the current `ChatMessage` instance to a map.
   ///
@@ -230,7 +230,8 @@ extension ChatMessages on List<ChatMessage> {
 
     for (var message in this) {
       messages.add(
-          ChatMessage.withRole(role: message.role, content: message.content));
+        ChatMessage.withRole(role: message.role, content: message.content),
+      );
     }
 
     return messages;
