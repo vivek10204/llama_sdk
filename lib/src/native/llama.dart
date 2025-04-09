@@ -8,7 +8,7 @@ part of 'package:llama_sdk/llama_sdk.dart';
 /// The [LlamaIsolated] constructor initializes the isolate with the provided
 /// model, context, and sampling parameters.
 ///
-/// The [prompt] method sends a list of [ChatMessage] to the isolate and returns
+/// The [prompt] method sends a list of [LlamaMessage] to the isolate and returns
 /// a stream of responses. It waits for the isolate to be initialized before
 /// sending the messages.
 ///
@@ -71,15 +71,15 @@ class Llama {
 
   /// Generates a stream of responses based on the provided list of chat messages.
   ///
-  /// This method takes a list of [ChatMessage] objects and returns a [Stream] of
+  /// This method takes a list of [LlamaMessage] objects and returns a [Stream] of
   /// strings, where each string represents a response generated from the chat messages.
   ///
   /// The stream allows for asynchronous processing of the chat messages, enabling
   /// real-time or batched responses.
   ///
-  /// - Parameter messages: A list of [ChatMessage] objects that represent the chat history.
+  /// - Parameter messages: A list of [LlamaMessage] objects that represent the chat history.
   /// - Returns: A [Stream] of strings, where each string is a generated response.
-  Stream<String> prompt(List<ChatMessage> messages) async* {
+  Stream<String> prompt(List<LlamaMessage> messages) async* {
     if (!_initialized.isCompleted) {
       _listener();
       await _initialized.future;

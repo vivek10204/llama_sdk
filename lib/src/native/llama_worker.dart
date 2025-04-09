@@ -36,12 +36,12 @@ class _LlamaWorker {
 
   void handlePrompt(dynamic data) async {
     try {
-      final messages = _ChatMessagesExtension.fromRecords(
-        data as List<_ChatMessageRecord>,
+      final messages = _LlamaMessagesExtension.fromRecords(
+        data as List<_LlamaMessageRecord>,
       );
-      final chatMessagesPointer = messages.toPointer();
+      final LlamaMessagesPointer = messages.toPointer();
 
-      lib.llama_prompt(chatMessagesPointer, ffi.Pointer.fromFunction(_output));
+      lib.llama_prompt(LlamaMessagesPointer, ffi.Pointer.fromFunction(_output));
     } catch (e) {
       _output(ffi.nullptr);
     }

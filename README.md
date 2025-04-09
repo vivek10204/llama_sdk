@@ -27,7 +27,7 @@ To use this package, add `llama_sdk` as a [dependency in your pubspec.yaml file]
 
 ```yaml
 dependencies:
-  llama_sdk: ^0.0.1
+  llama_sdk: ^0.0.2
 ```
 
 then you can import llama in your Dart code
@@ -49,7 +49,7 @@ final llama = LlamaIsolated(LlamaParams(
 ));
 
 final messages = [
-  ChatMessage.withRole(role: 'user', content: 'Hello World'),
+  LlamaMessage.withRole(role: 'user', content: 'Hello World'),
 ];
 
 final stream = llama.prompt(messages);

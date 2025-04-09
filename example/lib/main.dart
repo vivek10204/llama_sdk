@@ -19,7 +19,7 @@ class LlamaApp extends StatefulWidget {
 
 class LlamaAppState extends State<LlamaApp> {
   final TextEditingController controller = TextEditingController();
-  final List<ChatMessage> messages = [];
+  final List<LlamaMessage> messages = [];
   Llama? model;
   String? modelPath;
   bool busy = false;
@@ -60,13 +60,13 @@ class LlamaAppState extends State<LlamaApp> {
 
     setState(() {
       busy = true;
-      messages.add(UserChatMessage(value));
+      messages.add(UserLlamaMessage(value));
       controller.clear();
     });
 
     final stream = model!.prompt(messages.copy());
 
-    messages.add(AssistantChatMessage(''));
+    messages.add(AssistantLlamaMessage(''));
 
     await for (var response in stream) {
       setState(() {
