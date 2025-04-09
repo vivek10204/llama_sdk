@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 # Define the project
-project(lcpp)
+project(llama_sdk)
 
 # Set CMake flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DANDROID_16K_PAGES")
