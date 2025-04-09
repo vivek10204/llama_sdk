@@ -8,7 +8,7 @@ import 'dart:ffi' as ffi;
 class llama {
   /// Holds the symbol lookup function.
   final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
-  _lookup;
+      _lookup;
 
   /// The symbols are looked up in [dynamicLibrary].
   llama(ffi.DynamicLibrary dynamicLibrary) : _lookup = dynamicLibrary.lookup;
@@ -24,8 +24,8 @@ class llama {
 
   late final _llama_default_paramsPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>(
-        'llama_default_params',
-      );
+    'llama_default_params',
+  );
   late final _llama_default_params =
       _llama_default_paramsPtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
 
@@ -35,8 +35,8 @@ class llama {
 
   late final _llama_llm_initPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
-        'llama_llm_init',
-      );
+    'llama_llm_init',
+  );
   late final _llama_llm_init =
       _llama_llm_initPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
 
@@ -48,15 +48,11 @@ class llama {
   }
 
   late final _llama_promptPtr = _lookup<
-    ffi.NativeFunction<
-      ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<dart_output>)
-    >
-  >('llama_prompt');
-  late final _llama_prompt =
-      _llama_promptPtr
-          .asFunction<
-            int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<dart_output>)
-          >();
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<dart_output>)>>('llama_prompt');
+  late final _llama_prompt = _llama_promptPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<dart_output>)>();
 
   void llama_llm_stop() {
     return _llama_llm_stop();
@@ -75,5 +71,5 @@ class llama {
   late final _llama_llm_free = _llama_llm_freePtr.asFunction<void Function()>();
 }
 
-typedef dart_output =
-    ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Char> buffer)>;
+typedef dart_output
+    = ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Char> buffer)>;

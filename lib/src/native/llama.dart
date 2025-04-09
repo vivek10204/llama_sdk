@@ -18,8 +18,8 @@ part of 'package:llama_sdk/llama_sdk.dart';
 /// The [reload] method stops the current operation and reloads the isolate.
 class Llama {
   Completer _initialized = Completer();
-  StreamController<String> _responseController =
-      StreamController<String>()..close();
+  StreamController<String> _responseController = StreamController<String>()
+    ..close();
   Isolate? _isolate;
   SendPort? _sendPort;
   ReceivePort? _receivePort;

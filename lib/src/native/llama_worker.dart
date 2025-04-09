@@ -30,9 +30,9 @@ class _LlamaWorker {
   }
 
   factory _LlamaWorker.fromRecord(_LlamaWorkerRecord record) => _LlamaWorker(
-    sendPort: record.$1,
-    controller: LlamaController.fromJson(record.$2),
-  );
+        sendPort: record.$1,
+        controller: LlamaController.fromJson(record.$2),
+      );
 
   void handlePrompt(dynamic data) async {
     try {

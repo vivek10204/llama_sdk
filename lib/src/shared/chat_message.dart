@@ -100,9 +100,9 @@ abstract class ChatMessage {
   ///
   /// [message]: The [ChatMessage] object to be converted.
   static Map<String, String> messageToMap(ChatMessage message) => {
-    'role': message.role,
-    'content': message.content,
-  };
+        'role': message.role,
+        'content': message.content,
+      };
 
   /// Converts the current `ChatMessage` instance to a map.
   ///
