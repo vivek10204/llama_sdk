@@ -1,4 +1,4 @@
-part of 'package:lcpp/lcpp.dart';
+part of 'package:llama_sdk/llama_sdk.dart';
 
 typedef _ChatMessageRecord = (String role, String content);
 

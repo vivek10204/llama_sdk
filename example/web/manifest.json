@@ -1,6 +1,6 @@
 {
-    "name": "lcpp_example",
-    "short_name": "lcpp_example",
+    "name": "llama_sdk_example",
+    "short_name": "llama_sdk_example",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

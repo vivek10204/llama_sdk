@@ -15,7 +15,7 @@ llama get lib {
     } else if (Platform.isLinux || Platform.isAndroid) {
       _lib = llama(ffi.DynamicLibrary.open('libllama.so'));
     } else if (Platform.isMacOS || Platform.isIOS) {
-      _lib = llama(ffi.DynamicLibrary.open('lcpp.framework/lcpp'));
+      _lib = llama(ffi.DynamicLibrary.open('llama_sdk.framework/llama_sdk'));
     } else {
       throw PlatformException(code: 'LlamaCPP Unsupported Platform');
     }

@@ -1,4 +1,4 @@
-part of 'package:lcpp/lcpp.web.dart';
+part of 'package:llama_sdk/llama_sdk.web.dart';
 
 /// A class that isolates the Llama implementation to run in a separate isolate.
 ///

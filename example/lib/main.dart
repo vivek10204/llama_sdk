@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:lcpp/lcpp.dart'
-    if (dart.library.html) 'package:lcpp/lcpp.web.dart';
+import 'package:llama_sdk/llama_sdk.dart'
+    if (dart.library.html) 'package:llama_sdk/llama_sdk.web.dart';
 
 void main() {
   runApp(const LlamaApp());
