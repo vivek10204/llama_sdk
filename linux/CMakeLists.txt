@@ -21,6 +21,12 @@ set(LLAMA_VULKAN ON CACHE BOOL "llama: enable vulkan" FORCE)
 
 add_subdirectory(${LLAMA_CPP_DIR} ${CMAKE_CURRENT_BINARY_DIR}/shared)
 
+target_include_directories(
+  llama 
+  PRIVATE 
+  ${LLAMA_CPP_DIR}/common
+)
+
 target_sources(
   llama 
   PRIVATE 

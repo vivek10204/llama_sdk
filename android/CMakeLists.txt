@@ -14,6 +14,12 @@ set(LLAMA_CPP_DIR ${API_DIR}/llama_cpp)
 # Add subdirectory with explicit source and binary directories
 add_subdirectory(${LLAMA_CPP_DIR} ${CMAKE_BINARY_DIR}/llama_cpp_build)
 
+target_include_directories(
+  llama 
+  PRIVATE 
+  ${LLAMA_CPP_DIR}/common
+)
+
 target_sources(
   llama 
   PRIVATE 
