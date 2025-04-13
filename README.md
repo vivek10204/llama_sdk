@@ -41,7 +41,7 @@ import 'package:llama_sdk/llama_sdk.dart';
 Below is a simple example of how to use llama
 
 ```dart
-final llama = LlamaIsolated(LlamaParams(
+final llama = Llama(LlamaParams(
   modelFile: File('path/to/model'),
   nCtx: 2048, 
   nBatch: 2048,
