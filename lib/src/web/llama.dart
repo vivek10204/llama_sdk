@@ -51,4 +51,13 @@ class Llama {
   void stop() {
     throw LlamaException('Web not supported');
   }
+
+  /// Reloads the isolate.
+  ///
+  /// This method stops the current operation and reloads the isolate.
+  /// It is useful for refreshing the state or reinitializing the
+  /// environment.
+  void reload() {
+    throw LlamaException('Web not supported');
+  }
 }
