@@ -3,6 +3,12 @@ description: "llama_sdk is a dart implementation of llama.cpp used by the mobile
 version: 0.0.3
 homepage: "https://github.com/Mobile-Artificial-Intelligence/llama_sdk"
 
+topics:
+  - ai
+  - chatgpt
+  - llama
+  - llm
+
 environment:
   sdk: '>=3.3.0 <4.0.0'
   flutter: '>=3.3.0'
