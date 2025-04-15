@@ -7,3 +7,6 @@ Rename `ChatMessage` to `LlamaMessage`
 
 ## 0.0.3
 Add `reload` method to `Llama` class for web
+
+## 0.0.4
+Fix critical bug causing a crash after reload.
