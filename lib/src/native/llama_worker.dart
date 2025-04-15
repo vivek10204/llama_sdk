@@ -14,7 +14,6 @@ class _LlamaWorkerParams {
 }
 
 class _LlamaWorker {
-  static final _finalizer = Finalizer((_) => lib.llama_llm_free());
   static SendPort? _sendPort;
 
   final Completer<void> completer = Completer<void>();
@@ -26,7 +25,6 @@ class _LlamaWorker {
     sendPort.send(receivePort.sendPort);
     receivePort.listen(handlePrompt);
     _init();
-    _finalizer.attach(this, null);
   }
 
   factory _LlamaWorker.fromRecord(_LlamaWorkerRecord record) => _LlamaWorker(
@@ -39,9 +37,9 @@ class _LlamaWorker {
       final messages = _LlamaMessagesExtension.fromRecords(
         data as List<_LlamaMessageRecord>,
       );
-      final LlamaMessagesPointer = messages.toPointer();
+      final llamaMessagesPointer = messages.toPointer();
 
-      lib.llama_prompt(LlamaMessagesPointer, ffi.Pointer.fromFunction(_output));
+      lib.llama_prompt(llamaMessagesPointer, ffi.Pointer.fromFunction(_output));
     } catch (e) {
       _output(ffi.nullptr);
     }

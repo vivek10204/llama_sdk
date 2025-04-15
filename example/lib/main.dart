@@ -58,6 +58,8 @@ class LlamaAppState extends State<LlamaApp> {
       return;
     }
 
+    model!.reload();
+
     setState(() {
       busy = true;
       messages.add(UserLlamaMessage(value));

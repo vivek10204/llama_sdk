@@ -103,6 +103,7 @@ class Llama {
 
   /// Frees the resources used by the Llama model.
   void reload() {
+    lib.llama_llm_free();
     _isolate?.kill(priority: Isolate.immediate);
     _receivePort?.close();
     _initialized = Completer();
