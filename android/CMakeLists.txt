@@ -41,6 +41,7 @@ target_link_options(
   PRIVATE 
   -Wl,--gc-sections 
   -flto
+  -z,max-page-size=16384
 )
 
 # Enable compiler optimizations for arm64-v8a

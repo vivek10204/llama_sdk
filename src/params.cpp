@@ -95,10 +95,6 @@ struct llama_context_params llama_context_params_from_json(json & params) {
         context_params.defrag_thold = params["defrag_thold"];
     }
 
-    if (params.contains("logits_all") && params["logits_all"].is_boolean()) {
-        context_params.logits_all = params["logits_all"];
-    }
-
     if (params.contains("embeddings") && params["embeddings"].is_boolean()) {
         context_params.embeddings = params["embeddings"];
     }
