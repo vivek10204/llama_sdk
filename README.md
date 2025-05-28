@@ -27,7 +27,7 @@ To use this package, add `llama_sdk` as a [dependency in your pubspec.yaml file]
 
 ```yaml
 dependencies:
-  llama_sdk: ^0.0.4
+  llama_sdk: ^0.0.5
 ```
 
 then you can import llama in your Dart code
