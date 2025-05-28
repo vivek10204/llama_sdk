@@ -40,8 +40,8 @@ target_link_options(
   llama 
   PRIVATE 
   -Wl,--gc-sections 
+  -Wl,-z,max-page-size=16384
   -flto
-  -z,max-page-size=16384
 )
 
 # Enable compiler optimizations for arm64-v8a
