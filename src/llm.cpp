@@ -7,6 +7,13 @@
 #include <atomic>
 #include <mutex>
 
+
+#include <iostream> // For std::cerr
+#include <sys/stat.h> // For stat()
+#include <errno.h>    // For errno
+#include <filesystem> // For std::filesystem (C++17)
+
+
 static std::atomic_bool stop_generation(false);
 static std::mutex continue_mutex;
 
@@ -76,7 +83,7 @@ char * llama_default_params(void) {
     return strdup(params.dump().c_str());
 }
 
-int llama_llm_init(char * params) {
+/*int llama_llm_init(char * params) {
     auto json_params = json::parse(params);
 
     if (!json_params.contains("model_path") || !json_params["model_path"].is_string()) {
@@ -98,7 +105,88 @@ int llama_llm_init(char * params) {
     prev_len = 0;
 
     return 0;
+}*/
+
+int llama_llm_init(char * params_json_str) { // Use a different parameter name to avoid confusion
+    auto json_params = json::parse(params_json_str);
+
+    if (!json_params.contains("model_path") || !json_params["model_path"].is_string()) {
+        std::cerr << "ERROR (C++): Missing 'model_path' in parameters\n";
+        return 1;
+    }
+
+    std::string s_model_path = json_params["model_path"].get<std::string>();
+
+    std::cerr << "DEBUG (C++): Received model_path: " << s_model_path << std::endl;
+
+    // Use std::filesystem for robust path handling and check
+    std::filesystem::path fs_model_path(s_model_path);
+
+    std::error_code ec; // For error handling without throwing
+
+    // Attempt to canonicalize the path first. This resolves symlinks, ".." etc.
+    // It requires the path to exist.
+    std::filesystem::path canonical_path = std::filesystem::canonical(fs_model_path, ec);
+
+    if (ec) {
+        std::cerr << "ERROR (C++): Failed to canonicalize path '" << s_model_path << "': " << ec.message() << std::endl;
+        // If canonicalization fails (e.g., path doesn't exist yet, or permission issue),
+        // fall back to getting an absolute path.
+        canonical_path = std::filesystem::absolute(fs_model_path, ec);
+        if (ec) {
+            std::cerr << "ERROR (C++): Also failed to get absolute path: " << ec.message() << std::endl;
+            return 1; // Return error if path cannot be resolved.
+        }
+    }
+    
+    std::cerr << "DEBUG (C++): Final model path being used (absolute/canonical): " << canonical_path.string() << std::endl;
+
+    // Verify the file exists and is a regular file using std::filesystem
+    if (!std::filesystem::exists(canonical_path, ec)) {
+        std::cerr << "ERROR (C++): Model file does NOT exist at path: " << canonical_path.string() << " (Error: " << ec.message() << ")" << std::endl;
+        return 1;
+    }
+    if (!std::filesystem::is_regular_file(canonical_path, ec)) {
+        std::cerr << "ERROR (C++): Path is not a regular file: " << canonical_path.string() << " (Error: " << ec.message() << ")" << std::endl;
+        return 1;
+    }
+
+    // Use the canonicalized or absolute path for llama_load_model_from_file
+    const char* final_model_path_c_str = canonical_path.string().c_str();
+
+    auto model_params = llama_model_params_from_json(json_params);
+    auto context_params = llama_context_params_from_json(json_params);
+
+    ggml_backend_load_all();
+
+    std::cerr << "DEBUG (C++): Calling llama_model_load_from_file with path: " << final_model_path_c_str << std::endl;
+    model = llama_model_load_from_file(final_model_path_c_str, model_params);
+
+    if (model == nullptr) {
+        std::cerr << "ERROR (C++): llama_model_load_from_file returned nullptr for: " << final_model_path_c_str << std::endl;
+        return 1;
+    }
+
+    std::cerr << "DEBUG (C++): Model loaded successfully. Initializing context." << std::endl;
+
+    ctx = llama_init_from_model(model, context_params);
+    
+    if (ctx == nullptr) {
+        std::cerr << "ERROR (C++): llama_init_from_model returned nullptr." << std::endl;
+        llama_free_model(model);
+        model = nullptr;
+        return 1;
+    }
+
+    smpl = llama_sampler_from_json(model, json_params);
+
+    prev_len = 0;
+
+    std::cerr << "DEBUG (C++): LLM initialization successful." << std::endl;
+
+    return 0;
 }
+
 
 int llama_prompt(char * msgs, dart_output * output) {
     auto messages = llama_parse_messages(msgs);
