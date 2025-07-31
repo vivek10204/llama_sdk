@@ -1,6 +1,6 @@
 #include "api.h"
 #include "llama.h"
-#include "json.hpp"
+#include "llama_cpp/vendor/nlohmann/json.hpp"
 #include "params.hpp"
 #include <cassert>
 #include <vector>
